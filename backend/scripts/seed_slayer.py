@@ -1,9 +1,12 @@
 """Seed script for Slayer data."""
-from sqlmodel import Session
+from sqlmodel import Session, SQLModel
 from backend.database import engine
 from backend.models import Monster, SlayerTask, SlayerMaster
 
 def seed_slayer_data():
+    # Ensure database tables are created before seeding
+    SQLModel.metadata.create_all(engine)
+    
     with Session(engine) as session:
         print("Seeding Slayer Monsters & Tasks...")
         

@@ -50,9 +50,11 @@ class FlippingService:
             query = query.where(PriceSnapshot.low_price <= max_budget)
         
         # Filter: Volume (sum of high/low volume)
-        # Note: SQLite handles NULLs in addition as NULL, so we coalesce
-        total_volume = func.coalesce(PriceSnapshot.high_volume, 0) + func.coalesce(PriceSnapshot.low_volume, 0)
-        query = query.where(total_volume >= min_volume)
+        # Only apply volume filter if min_volume > 0 and volume data exists
+        # Since volume data may not be available, we skip this filter if min_volume is 0
+        if min_volume > 0:
+            total_volume = func.coalesce(PriceSnapshot.high_volume, 0) + func.coalesce(PriceSnapshot.low_volume, 0)
+            query = query.where(total_volume >= min_volume)
         
         results = self.session.exec(query).all()
         opportunities = []
