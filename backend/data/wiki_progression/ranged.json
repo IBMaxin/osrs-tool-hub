@@ -1,0 +1,487 @@
+{
+  "head": [
+    {
+      "tier": "Masori",
+      "items": [
+        "Masori mask (f)",
+        "Masori mask"
+      ]
+    },
+    {
+      "tier": "Crystal",
+      "items": [
+        "Crystal helm"
+      ]
+    },
+    {
+      "tier": "Hueycoatl",
+      "items": [
+        "Hueycoatl hide coif"
+      ]
+    },
+    {
+      "tier": "Void",
+      "items": [
+        "Void ranger helm"
+      ]
+    },
+    {
+      "tier": "Guthix",
+      "items": [
+        "Guthix coif"
+      ]
+    },
+    {
+      "tier": "Archer",
+      "items": [
+        "Archer helm"
+      ]
+    },
+    {
+      "tier": "Snakeskin",
+      "items": [
+        "Snakeskin bandana"
+      ]
+    },
+    {
+      "tier": "Coif",
+      "items": [
+        "Coif"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather cowl"
+      ]
+    }
+  ],
+  "cape": [
+    {
+      "tier": "Dizana",
+      "items": [
+        "Dizana's quiver"
+      ]
+    },
+    {
+      "tier": "Ava",
+      "items": [
+        "Ava's assembler",
+        "Ava's accumulator",
+        "Ava's attractor"
+      ]
+    },
+    {
+      "tier": "Ardougne",
+      "items": [
+        "Ardougne cloak 4",
+        "Ardougne cloak 3",
+        "Ardougne cloak 2",
+        "Ardougne cloak 1"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Black cape"
+      ]
+    }
+  ],
+  "neck": [
+    {
+      "tier": "Anguish",
+      "items": [
+        "Necklace of anguish"
+      ]
+    },
+    {
+      "tier": "Glory",
+      "items": [
+        "Amulet of glory"
+      ]
+    },
+    {
+      "tier": "Power",
+      "items": [
+        "Amulet of power"
+      ]
+    }
+  ],
+  "body": [
+    {
+      "tier": "Masori",
+      "items": [
+        "Masori body (f)",
+        "Masori body"
+      ]
+    },
+    {
+      "tier": "Crystal",
+      "items": [
+        "Crystal body"
+      ]
+    },
+    {
+      "tier": "Elite Void",
+      "items": [
+        "Elite void top"
+      ]
+    },
+    {
+      "tier": "Hueycoatl",
+      "items": [
+        "Hueycoatl hide body"
+      ]
+    },
+    {
+      "tier": "Guthix",
+      "items": [
+        "Guthix d'hide body"
+      ]
+    },
+    {
+      "tier": "Black",
+      "items": [
+        "Black d'hide body"
+      ]
+    },
+    {
+      "tier": "Blue",
+      "items": [
+        "Blue d'hide body"
+      ]
+    },
+    {
+      "tier": "Green",
+      "items": [
+        "Green d'hide body"
+      ]
+    },
+    {
+      "tier": "Mixed",
+      "items": [
+        "Mixed hide top"
+      ]
+    },
+    {
+      "tier": "Studded",
+      "items": [
+        "Studded body"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather body"
+      ]
+    }
+  ],
+  "legs": [
+    {
+      "tier": "Masori",
+      "items": [
+        "Masori chaps (f)",
+        "Masori chaps"
+      ]
+    },
+    {
+      "tier": "Crystal",
+      "items": [
+        "Crystal legs"
+      ]
+    },
+    {
+      "tier": "Elite Void",
+      "items": [
+        "Elite void robe"
+      ]
+    },
+    {
+      "tier": "Hueycoatl",
+      "items": [
+        "Hueycoatl hide chaps"
+      ]
+    },
+    {
+      "tier": "Guthix",
+      "items": [
+        "Guthix chaps"
+      ]
+    },
+    {
+      "tier": "Black",
+      "items": [
+        "Black d'hide chaps"
+      ]
+    },
+    {
+      "tier": "Blue",
+      "items": [
+        "Blue d'hide chaps"
+      ]
+    },
+    {
+      "tier": "Green",
+      "items": [
+        "Green d'hide chaps"
+      ]
+    },
+    {
+      "tier": "Mixed",
+      "items": [
+        "Mixed hide legs"
+      ]
+    },
+    {
+      "tier": "Studded",
+      "items": [
+        "Studded chaps"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather chaps"
+      ]
+    }
+  ],
+  "feet": [
+    {
+      "tier": "Avernic",
+      "items": [
+        "Avernic treads (pe)",
+        "Avernic treads"
+      ]
+    },
+    {
+      "tier": "Guthix",
+      "items": [
+        "Guthix d'hide boots"
+      ]
+    },
+    {
+      "tier": "Mixed",
+      "items": [
+        "Mixed hide boots"
+      ]
+    },
+    {
+      "tier": "Snakeskin",
+      "items": [
+        "Snakeskin boots"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather boots"
+      ]
+    }
+  ],
+  "hands": [
+    {
+      "tier": "Zaryte",
+      "items": [
+        "Zaryte vambraces"
+      ]
+    },
+    {
+      "tier": "Void",
+      "items": [
+        "Void knight gloves"
+      ]
+    },
+    {
+      "tier": "Barrows",
+      "items": [
+        "Barrows gloves"
+      ]
+    },
+    {
+      "tier": "Green",
+      "items": [
+        "Green d'hide vambraces"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather vambraces"
+      ]
+    }
+  ],
+  "ring": [
+    {
+      "tier": "Venator",
+      "items": [
+        "Venator ring"
+      ]
+    },
+    {
+      "tier": "Explorer",
+      "items": [
+        "Explorer's ring 4",
+        "Explorer's ring 3",
+        "Explorer's ring 2",
+        "Explorer's ring 1"
+      ]
+    }
+  ],
+  "weapon": [
+    {
+      "tier": "Twisted",
+      "items": [
+        "Twisted bow"
+      ]
+    },
+    {
+      "tier": "Zaryte",
+      "items": [
+        "Zaryte crossbow"
+      ]
+    },
+    {
+      "tier": "BowFa",
+      "items": [
+        "Bow of faerdhinen"
+      ]
+    },
+    {
+      "tier": "Venator",
+      "items": [
+        "Venator bow"
+      ]
+    },
+    {
+      "tier": "Blowpipe",
+      "items": [
+        "Toxic blowpipe"
+      ]
+    },
+    {
+      "tier": "Crossbow",
+      "items": [
+        "Armadyl crossbow",
+        "Dragon crossbow",
+        "Dragon hunter crossbow"
+      ]
+    },
+    {
+      "tier": "Mid",
+      "items": [
+        "Magic shortbow (i)",
+        "Magic shortbow",
+        "Rune crossbow",
+        "Hunters' sunlight crossbow"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Dorgeshuun crossbow",
+        "Shortbow",
+        "Oak shortbow",
+        "Willow shortbow",
+        "Maple shortbow"
+      ]
+    }
+  ],
+  "shield": [
+    {
+      "tier": "Twisted",
+      "items": [
+        "Twisted buckler"
+      ]
+    },
+    {
+      "tier": "Dragonfire",
+      "items": [
+        "Dragonfire ward"
+      ]
+    },
+    {
+      "tier": "Odium",
+      "items": [
+        "Odium ward"
+      ]
+    },
+    {
+      "tier": "Antler",
+      "items": [
+        "Antler guard"
+      ]
+    },
+    {
+      "tier": "Book",
+      "items": [
+        "Book of law"
+      ]
+    },
+    {
+      "tier": "Green",
+      "items": [
+        "Green d'hide shield"
+      ]
+    }
+  ],
+  "ammo": [
+    {
+      "tier": "Rada",
+      "items": [
+        "Rada's blessing 4",
+        "Rada's blessing 3",
+        "Rada's blessing 2",
+        "Rada's blessing 1"
+      ]
+    },
+    {
+      "tier": "Dragon",
+      "items": [
+        "Dragon arrow",
+        "Dragon dart",
+        "Ruby dragon bolts (e)",
+        "Diamond dragon bolts (e)"
+      ]
+    },
+    {
+      "tier": "Amethyst",
+      "items": [
+        "Amethyst arrow",
+        "Amethyst dart"
+      ]
+    },
+    {
+      "tier": "Rune",
+      "items": [
+        "Rune arrow",
+        "Rune dart"
+      ]
+    },
+    {
+      "tier": "Adamant",
+      "items": [
+        "Adamant arrow",
+        "Adamant dart"
+      ]
+    },
+    {
+      "tier": "Mid",
+      "items": [
+        "Moonlight antler bolts",
+        "Sunlight antler bolts",
+        "Broad bolts",
+        "Diamond bolts (e)",
+        "Ruby bolts (e)"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Bone bolts",
+        "Iron arrow",
+        "Steel arrow",
+        "Mithril arrow"
+      ]
+    }
+  ]
+}

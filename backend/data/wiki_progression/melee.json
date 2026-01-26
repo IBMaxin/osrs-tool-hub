@@ -1,0 +1,513 @@
+{
+  "head": [
+    {
+      "tier": "Torva",
+      "items": [
+        "Torva full helm"
+      ]
+    },
+    {
+      "tier": "Inquisitor",
+      "items": [
+        "Inquisitor's great helm"
+      ]
+    },
+    {
+      "tier": "Oathplate",
+      "items": [
+        "Oathplate helm"
+      ]
+    },
+    {
+      "tier": "Neitiznot",
+      "items": [
+        "Neitiznot faceguard",
+        "Serpentine helm",
+        "Helm of neitiznot"
+      ]
+    },
+    {
+      "tier": "Barrows",
+      "items": [
+        "Dharok's helm",
+        "Torag's helm",
+        "Verac's helm",
+        "Ahrim's hood",
+        "Guthan's helm",
+        "Karil's coif"
+      ]
+    },
+    {
+      "tier": "Mid",
+      "items": [
+        "Berserker helm",
+        "Warrior helm",
+        "Rune full helm"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Iron full helm",
+        "Steel full helm",
+        "Mithril full helm",
+        "Adamant full helm"
+      ]
+    }
+  ],
+  "cape": [
+    {
+      "tier": "Infernal",
+      "items": [
+        "Infernal cape"
+      ]
+    },
+    {
+      "tier": "Fire",
+      "items": [
+        "Fire cape"
+      ]
+    },
+    {
+      "tier": "Mythical",
+      "items": [
+        "Mythical cape"
+      ]
+    },
+    {
+      "tier": "Ardougne",
+      "items": [
+        "Ardougne cloak 4",
+        "Ardougne cloak 3",
+        "Ardougne cloak 2",
+        "Ardougne cloak 1"
+      ]
+    },
+    {
+      "tier": "Obsidian",
+      "items": [
+        "Obsidian cape"
+      ]
+    },
+    {
+      "tier": "Mixed",
+      "items": [
+        "Mixed hide cape"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Black cape"
+      ]
+    }
+  ],
+  "neck": [
+    {
+      "tier": "BiS",
+      "items": [
+        "Amulet of rancour",
+        "Amulet of torture"
+      ]
+    },
+    {
+      "tier": "High",
+      "items": [
+        "Amulet of blood fury",
+        "Amulet of fury"
+      ]
+    },
+    {
+      "tier": "Mid",
+      "items": [
+        "Amulet of glory",
+        "Amulet of power"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Amulet of strength"
+      ]
+    }
+  ],
+  "body": [
+    {
+      "tier": "Torva",
+      "items": [
+        "Torva platebody"
+      ]
+    },
+    {
+      "tier": "Inquisitor",
+      "items": [
+        "Inquisitor's hauberk"
+      ]
+    },
+    {
+      "tier": "Oathplate",
+      "items": [
+        "Oathplate chest"
+      ]
+    },
+    {
+      "tier": "Bandos",
+      "items": [
+        "Bandos chestplate"
+      ]
+    },
+    {
+      "tier": "Fighter",
+      "items": [
+        "Fighter torso"
+      ]
+    },
+    {
+      "tier": "Barrows",
+      "items": [
+        "Dharok's platebody",
+        "Torag's platebody",
+        "Verac's brassard",
+        "Ahrim's robetop",
+        "Guthan's platebody",
+        "Karil's leathertop"
+      ]
+    },
+    {
+      "tier": "Obsidian",
+      "items": [
+        "Obsidian platebody"
+      ]
+    },
+    {
+      "tier": "Rune",
+      "items": [
+        "Rune platebody"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Iron platebody",
+        "Steel platebody",
+        "Mithril platebody",
+        "Adamant platebody"
+      ]
+    }
+  ],
+  "legs": [
+    {
+      "tier": "Torva",
+      "items": [
+        "Torva platelegs"
+      ]
+    },
+    {
+      "tier": "Inquisitor",
+      "items": [
+        "Inquisitor's plateskirt"
+      ]
+    },
+    {
+      "tier": "Oathplate",
+      "items": [
+        "Oathplate legs"
+      ]
+    },
+    {
+      "tier": "Bandos",
+      "items": [
+        "Bandos tassets"
+      ]
+    },
+    {
+      "tier": "Blood moon",
+      "items": [
+        "Blood moon tassets"
+      ]
+    },
+    {
+      "tier": "Obsidian",
+      "items": [
+        "Obsidian platelegs"
+      ]
+    },
+    {
+      "tier": "Barrows",
+      "items": [
+        "Dharok's platelegs",
+        "Torag's platelegs",
+        "Verac's plateskirt",
+        "Ahrim's robeskirt",
+        "Guthan's chainskirt",
+        "Karil's leatherskirt"
+      ]
+    },
+    {
+      "tier": "Dragon",
+      "items": [
+        "Dragon platelegs",
+        "Dragon plateskirt"
+      ]
+    },
+    {
+      "tier": "Rune",
+      "items": [
+        "Rune platelegs"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Iron platelegs",
+        "Steel platelegs",
+        "Mithril platelegs",
+        "Adamant platelegs"
+      ]
+    }
+  ],
+  "feet": [
+    {
+      "tier": "Primordial",
+      "items": [
+        "Primordial boots"
+      ]
+    },
+    {
+      "tier": "Avernic",
+      "items": [
+        "Avernic treads (pr)",
+        "Avernic treads"
+      ]
+    },
+    {
+      "tier": "Dragon",
+      "items": [
+        "Dragon boots"
+      ]
+    },
+    {
+      "tier": "Guardian",
+      "items": [
+        "Guardian boots"
+      ]
+    },
+    {
+      "tier": "Rune",
+      "items": [
+        "Rune boots"
+      ]
+    },
+    {
+      "tier": "Climbing",
+      "items": [
+        "Climbing boots"
+      ]
+    },
+    {
+      "tier": "Fighting",
+      "items": [
+        "Fighting boots"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather boots"
+      ]
+    }
+  ],
+  "hands": [
+    {
+      "tier": "Ferocious",
+      "items": [
+        "Ferocious gloves"
+      ]
+    },
+    {
+      "tier": "Barrows",
+      "items": [
+        "Barrows gloves"
+      ]
+    },
+    {
+      "tier": "Dragon",
+      "items": [
+        "Dragon gloves"
+      ]
+    },
+    {
+      "tier": "Regen",
+      "items": [
+        "Regen bracelet"
+      ]
+    },
+    {
+      "tier": "Combat",
+      "items": [
+        "Combat bracelet"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather gloves"
+      ]
+    }
+  ],
+  "ring": [
+    {
+      "tier": "Ultor",
+      "items": [
+        "Ultor ring"
+      ]
+    },
+    {
+      "tier": "Bellator",
+      "items": [
+        "Bellator ring"
+      ]
+    },
+    {
+      "tier": "Berserker",
+      "items": [
+        "Berserker ring (i)",
+        "Berserker ring"
+      ]
+    },
+    {
+      "tier": "Brimstone",
+      "items": [
+        "Brimstone ring"
+      ]
+    },
+    {
+      "tier": "Warrior",
+      "items": [
+        "Warrior ring (i)",
+        "Warrior ring"
+      ]
+    },
+    {
+      "tier": "Explorer",
+      "items": [
+        "Explorer's ring 4",
+        "Explorer's ring 3",
+        "Explorer's ring 2",
+        "Explorer's ring 1"
+      ]
+    }
+  ],
+  "weapon": [
+    {
+      "tier": "Scythe",
+      "items": [
+        "Scythe of vitur"
+      ]
+    },
+    {
+      "tier": "Soulreaper",
+      "items": [
+        "Soulreaper axe"
+      ]
+    },
+    {
+      "tier": "Rapier/Mace",
+      "items": [
+        "Ghrazi rapier",
+        "Inquisitor's mace"
+      ]
+    },
+    {
+      "tier": "Blade",
+      "items": [
+        "Blade of saeldor"
+      ]
+    },
+    {
+      "tier": "Tentacle",
+      "items": [
+        "Abyssal tentacle"
+      ]
+    },
+    {
+      "tier": "Whip",
+      "items": [
+        "Abyssal whip"
+      ]
+    },
+    {
+      "tier": "D Scim",
+      "items": [
+        "Dragon scimitar"
+      ]
+    },
+    {
+      "tier": "Rune",
+      "items": [
+        "Rune scimitar"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Iron scimitar",
+        "Steel scimitar",
+        "Mithril scimitar",
+        "Adamant scimitar"
+      ]
+    }
+  ],
+  "shield": [
+    {
+      "tier": "Avernic",
+      "items": [
+        "Avernic defender"
+      ]
+    },
+    {
+      "tier": "Dragon",
+      "items": [
+        "Dragon defender"
+      ]
+    },
+    {
+      "tier": "DFS",
+      "items": [
+        "Dragonfire shield"
+      ]
+    },
+    {
+      "tier": "Rune",
+      "items": [
+        "Rune kite shield"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Iron kiteshield",
+        "Steel kiteshield",
+        "Mithril kiteshield",
+        "Adamant kiteshield"
+      ]
+    }
+  ],
+  "ammo": [
+    {
+      "tier": "Rada",
+      "items": [
+        "Rada's blessing 4",
+        "Rada's blessing 3",
+        "Rada's blessing 2",
+        "Rada's blessing 1"
+      ]
+    },
+    {
+      "tier": "Peaceful",
+      "items": [
+        "Peaceful blessing"
+      ]
+    }
+  ]
+}

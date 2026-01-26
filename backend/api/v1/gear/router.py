@@ -1,41 +1,27 @@
-"""Gear API endpoints."""
-from typing import List, Optional, Set
+"""Gear API router and endpoint definitions."""
+from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from pydantic import BaseModel
+from sqlmodel import Session
 
-from backend.database import get_session
-from backend.models import GearSet, Item, PriceSnapshot
+from backend.db.session import get_session
+from backend.models import Item
 from backend.services.gear import GearService
-from backend.services.wiki_data import get_progression_data, get_slot_progression, get_all_slots
-from sqlmodel import Session, select
+from backend.api.v1.gear.schemas import (
+    GearSetCreate,
+    GearSetResponse,
+    BestLoadoutRequest,
+    UpgradePathRequest,
+    DPSRequest,
+)
+from backend.api.v1.gear.mappers import (
+    map_gear_set_to_response,
+    transform_progression_data,
+    transform_slot_progression_data,
+)
+from backend.api.v1.gear.validators import validate_combat_style
 
 
 router = APIRouter()
-
-
-class GearSetCreate(BaseModel):
-    """Request model for creating a gear set."""
-
-    name: str
-    items: dict[int, int]  # item_id -> quantity
-    description: Optional[str] = None
-
-
-class GearSetResponse(BaseModel):
-    """Response model for gear set."""
-
-    id: int
-    name: str
-    description: Optional[str]
-    items: dict[int, int]
-    total_cost: int
-    created_at: str
-    updated_at: str
-
-    class Config:
-        """Pydantic config."""
-
-        from_attributes = True
 
 
 @router.post(
@@ -59,17 +45,7 @@ async def create_gear_set(
         gear_data.name, gear_data.items, gear_data.description
     )
 
-    import json
-
-    return GearSetResponse(
-        id=gear_set.id or 0,
-        name=gear_set.name,
-        description=gear_set.description,
-        items=json.loads(gear_set.items),
-        total_cost=gear_set.total_cost,
-        created_at=gear_set.created_at.isoformat(),
-        updated_at=gear_set.updated_at.isoformat(),
-    )
+    return GearSetResponse(**map_gear_set_to_response(gear_set))
 
 
 @router.get("/gear", response_model=List[GearSetResponse])
@@ -86,20 +62,30 @@ async def get_gear_sets(session: Session = Depends(get_session)) -> List[GearSet
     service = GearService(session)
     gear_sets = service.get_all_gear_sets()
 
-    import json
+    return [GearSetResponse(**map_gear_set_to_response(gs)) for gs in gear_sets]
 
-    return [
-        GearSetResponse(
-            id=gear_set.id or 0,
-            name=gear_set.name,
-            description=gear_set.description,
-            items=json.loads(gear_set.items),
-            total_cost=gear_set.total_cost,
-            created_at=gear_set.created_at.isoformat(),
-            updated_at=gear_set.updated_at.isoformat(),
-        )
-        for gear_set in gear_sets
-    ]
+
+@router.get("/gear/suggestions")
+async def get_gear_suggestions(
+    slot: str,
+    style: str = "melee",
+    defence_level: int = 99,
+    session: Session = Depends(get_session)
+):
+    """
+    Get gear suggestions for a specific slot and combat style.
+
+    Args:
+        slot: Equipment slot (head, cape, neck, etc.)
+        style: Combat style (melee, ranged, magic, prayer)
+        defence_level: Defence level requirement filter
+        session: Database session
+
+    Returns:
+        List of suggested items with scores
+    """
+    service = GearService(session)
+        return service.suggest_gear(slot, style, defence_level=defence_level)
 
 
 @router.get("/gear/{gear_set_id}", response_model=GearSetResponse)
@@ -124,17 +110,7 @@ async def get_gear_set(
             status_code=status.HTTP_404_NOT_FOUND, detail="Gear set not found"
         )
 
-    import json
-
-    return GearSetResponse(
-        id=gear_set.id or 0,
-        name=gear_set.name,
-        description=gear_set.description,
-        items=json.loads(gear_set.items),
-        total_cost=gear_set.total_cost,
-        created_at=gear_set.created_at.isoformat(),
-        updated_at=gear_set.updated_at.isoformat(),
-    )
+    return GearSetResponse(**map_gear_set_to_response(gear_set))
 
 
 @router.delete("/gear/{gear_set_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -155,29 +131,6 @@ async def delete_gear_set(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Gear set not found"
         )
-
-
-@router.get("/gear/suggestions")
-async def get_gear_suggestions(
-    slot: str,
-    style: str = "melee",
-    defence_level: int = 99,
-    session: Session = Depends(get_session)
-):
-    """
-    Get gear suggestions for a specific slot and combat style.
-
-    Args:
-        slot: Equipment slot (head, cape, neck, etc.)
-        style: Combat style (melee, ranged, magic, prayer)
-        defence_level: Defence level requirement filter
-        session: Database session
-
-    Returns:
-        List of suggested items with scores
-    """
-    service = GearService(session)
-    return service.suggest_gear(slot, style, defence_level=defence_level)
 
 
 @router.get("/gear/preset")
@@ -236,17 +189,6 @@ async def get_progression_loadout(
     return result
 
 
-class BestLoadoutRequest(BaseModel):
-    """Request model for best loadout calculation."""
-    combat_style: str
-    budget: int
-    stats: dict[str, int]  # attack, strength, defence, ranged, magic, prayer
-    attack_type: Optional[str] = None  # For melee: stab, slash, crush
-    quests_completed: Optional[List[str]] = None
-    achievements_completed: Optional[List[str]] = None
-    exclude_slots: Optional[List[str]] = None
-
-
 @router.post("/gear/best-loadout")
 async def get_best_loadout(
     request: BestLoadoutRequest,
@@ -282,17 +224,6 @@ async def get_best_loadout(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
-
-
-class UpgradePathRequest(BaseModel):
-    """Request model for upgrade path calculation."""
-    current_loadout: dict[str, Optional[int]]  # slot -> item_id
-    combat_style: str
-    budget: int
-    stats: dict[str, int]
-    attack_type: Optional[str] = None
-    quests_completed: Optional[List[str]] = None
-    achievements_completed: Optional[List[str]] = None
 
 
 @router.post("/gear/upgrade-path")
@@ -397,14 +328,6 @@ async def get_alternatives(
         )
 
 
-class DPSRequest(BaseModel):
-    """Request model for DPS calculation."""
-    loadout: dict[str, Optional[int]]  # slot -> item_id
-    combat_style: str
-    attack_type: Optional[str] = None
-    player_stats: Optional[dict[str, int]] = None  # attack, strength, ranged, magic
-
-
 @router.post("/gear/dps")
 async def calculate_dps(
     request: DPSRequest,
@@ -449,8 +372,6 @@ async def calculate_dps(
         )
 
 
-
-
 @router.get("/gear/progression/{combat_style}")
 async def get_progression(
     combat_style: str,
@@ -466,42 +387,26 @@ async def get_progression(
     Returns:
         Progression data with enriched item information
     """
-    if combat_style not in ["melee", "ranged", "magic"]:
+    try:
+        validate_combat_style(combat_style)
+        
+        service = GearService(session)
+        enriched_data = service.get_wiki_progression(combat_style)
+        
+        transformed_data = transform_progression_data(enriched_data)
+        
+        return {
+            "combat_style": combat_style,
+            "slots": transformed_data
+        }
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error in get_progression for {combat_style}: {e}", exc_info=True)
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid combat style: {combat_style}. Must be one of: melee, ranged, magic"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error loading progression data: {str(e)}"
         )
-    
-    service = GearService(session)
-    enriched_data = service.get_wiki_progression(combat_style)
-    
-    # Transform to match frontend expectations (tier -> tier_name, icon -> icon_url)
-    transformed_data = {}
-    for slot, tiers in enriched_data.items():
-        transformed_tiers = []
-        for tier_data in tiers:
-            transformed_items = []
-            for item in tier_data["items"]:
-                transformed_items.append({
-                    "name": item["name"],
-                    "id": item["id"],
-                    "icon_url": item.get("icon") or item.get("icon_url"),
-                    "price": item["price"],
-                    "wiki_url": item["wiki_url"],
-                    "requirements": item.get("requirements"),
-                    "stats": item.get("stats"),
-                    "not_found": item.get("not_found", False)
-                })
-            transformed_tiers.append({
-                "tier": tier_data["tier"],
-                "items": transformed_items
-            })
-        transformed_data[slot] = transformed_tiers
-    
-    return {
-        "combat_style": combat_style,
-        "slots": transformed_data
-    }
 
 
 @router.get("/gear/progression/{combat_style}/{slot}")
@@ -521,11 +426,7 @@ async def get_slot_progression_data(
     Returns:
         Slot progression data with enriched item information
     """
-    if combat_style not in ["melee", "ranged", "magic"]:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid combat style: {combat_style}"
-        )
+    validate_combat_style(combat_style)
     
     service = GearService(session)
     enriched_data = service.get_wiki_progression(combat_style)
@@ -536,27 +437,7 @@ async def get_slot_progression_data(
             detail=f"Slot '{slot}' not found for combat style '{combat_style}'"
         )
     
-    tiers = enriched_data[slot]
-    
-    # Transform to match frontend expectations
-    transformed_tiers = []
-    for tier_data in tiers:
-        transformed_items = []
-        for item in tier_data["items"]:
-            transformed_items.append({
-                "name": item["name"],
-                "id": item["id"],
-                "icon_url": item.get("icon") or item.get("icon_url"),
-                "price": item["price"],
-                "wiki_url": item["wiki_url"],
-                "requirements": item.get("requirements"),
-                "stats": item.get("stats"),
-                "not_found": item.get("not_found", False)
-            })
-        transformed_tiers.append({
-            "tier": tier_data["tier"],
-            "items": transformed_items
-        })
+    transformed_tiers = transform_slot_progression_data(enriched_data, slot)
     
     return {
         "combat_style": combat_style,
@@ -580,11 +461,7 @@ async def get_wiki_gear_table(
     Returns:
         Wiki progression table structure with enriched item data
     """
-    if style not in ["melee", "ranged", "magic"]:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid combat style: {style}. Must be one of: melee, ranged, magic"
-        )
+    validate_combat_style(style)
     
     service = GearService(session)
     return service.get_wiki_progression(style)

@@ -1,19 +1,23 @@
+"""
+Wiki client module (backward compatibility shim).
+
+This module re-exports from backend.services.wiki for backward compatibility.
+New code should import directly from backend.services.wiki.
+"""
+
 import httpx
-from backend.config import settings
-from backend.models import Item, PriceSnapshot
-from sqlmodel import Session, select
-from typing import Dict, List, Optional
 import logging
+from typing import List, Dict
+from sqlmodel import Session, select
+
+from backend.services.wiki import WikiAPIClient as _WikiAPIClient
+from backend.models import Item, PriceSnapshot
 
 logger = logging.getLogger(__name__)
 
-class WikiAPIClient:
-    def __init__(self):
-        self.base_url = settings.wiki_api_base
-        self.headers = {
-            "User-Agent": settings.user_agent,
-            "Accept": "application/json"
-        }
+
+class WikiAPIClient(_WikiAPIClient):
+    """WikiAPIClient with backward-compatible sync methods."""
     
     async def fetch_mapping(self) -> List[Dict]:
         """Fetch item mapping (ID, name, limit, value) from Wiki."""
@@ -139,5 +143,7 @@ class WikiAPIClient:
         logger.info(f"Synced {count} price snapshots with 24h volume")
 
 
-# Compatibility alias for existing services
+# Backward compatibility alias
 WikiClient = WikiAPIClient
+
+__all__ = ["WikiAPIClient", "WikiClient"]

@@ -1,0 +1,458 @@
+{
+  "head": [
+    {
+      "tier": "Ancestral",
+      "items": [
+        "Ancestral hat"
+      ]
+    },
+    {
+      "tier": "Virtus",
+      "items": [
+        "Virtus mask"
+      ]
+    },
+    {
+      "tier": "Ahrim",
+      "items": [
+        "Ahrim's hood"
+      ]
+    },
+    {
+      "tier": "Void",
+      "items": [
+        "Void mage helm"
+      ]
+    },
+    {
+      "tier": "Bloodbark",
+      "items": [
+        "Bloodbark helm"
+      ]
+    },
+    {
+      "tier": "Mystic",
+      "items": [
+        "Mystic hat"
+      ]
+    },
+    {
+      "tier": "Xerician",
+      "items": [
+        "Xerician hat"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Blue wizard hat"
+      ]
+    }
+  ],
+  "cape": [
+    {
+      "tier": "Imbued",
+      "items": [
+        "Imbued saradomin cape",
+        "Imbued guthix cape",
+        "Imbued zamorak cape"
+      ]
+    },
+    {
+      "tier": "Saradomin",
+      "items": [
+        "Saradomin cape"
+      ]
+    },
+    {
+      "tier": "Ardougne",
+      "items": [
+        "Ardougne cloak 4",
+        "Ardougne cloak 3",
+        "Ardougne cloak 2",
+        "Ardougne cloak 1"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Black cape"
+      ]
+    }
+  ],
+  "neck": [
+    {
+      "tier": "Occult",
+      "items": [
+        "Occult necklace"
+      ]
+    },
+    {
+      "tier": "Glory",
+      "items": [
+        "Amulet of glory"
+      ]
+    },
+    {
+      "tier": "Magic",
+      "items": [
+        "Amulet of magic"
+      ]
+    }
+  ],
+  "body": [
+    {
+      "tier": "Ancestral",
+      "items": [
+        "Ancestral robe top"
+      ]
+    },
+    {
+      "tier": "Virtus",
+      "items": [
+        "Virtus robe top"
+      ]
+    },
+    {
+      "tier": "Elite Void",
+      "items": [
+        "Elite void top"
+      ]
+    },
+    {
+      "tier": "Ahrim",
+      "items": [
+        "Ahrim's robetop"
+      ]
+    },
+    {
+      "tier": "Bloodbark",
+      "items": [
+        "Bloodbark body"
+      ]
+    },
+    {
+      "tier": "Mystic",
+      "items": [
+        "Mystic robe top"
+      ]
+    },
+    {
+      "tier": "Xerician",
+      "items": [
+        "Xerician top"
+      ]
+    },
+    {
+      "tier": "Dagon'hai",
+      "items": [
+        "Dagon'hai robe top"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Blue wizard robe"
+      ]
+    }
+  ],
+  "legs": [
+    {
+      "tier": "Ancestral",
+      "items": [
+        "Ancestral robe bottom"
+      ]
+    },
+    {
+      "tier": "Virtus",
+      "items": [
+        "Virtus robe bottom"
+      ]
+    },
+    {
+      "tier": "Elite Void",
+      "items": [
+        "Elite void robe"
+      ]
+    },
+    {
+      "tier": "Ahrim",
+      "items": [
+        "Ahrim's robeskirt"
+      ]
+    },
+    {
+      "tier": "Bloodbark",
+      "items": [
+        "Bloodbark legs"
+      ]
+    },
+    {
+      "tier": "Mystic",
+      "items": [
+        "Mystic robe bottom"
+      ]
+    },
+    {
+      "tier": "Xerician",
+      "items": [
+        "Xerician robe"
+      ]
+    },
+    {
+      "tier": "Dagon'hai",
+      "items": [
+        "Dagon'hai robe bottom"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Zamorak monk bottom"
+      ]
+    }
+  ],
+  "feet": [
+    {
+      "tier": "Avernic",
+      "items": [
+        "Avernic treads (et)",
+        "Avernic treads"
+      ]
+    },
+    {
+      "tier": "Eternal",
+      "items": [
+        "Eternal boots"
+      ]
+    },
+    {
+      "tier": "Infinity",
+      "items": [
+        "Infinity boots"
+      ]
+    },
+    {
+      "tier": "Mystic",
+      "items": [
+        "Mystic boots"
+      ]
+    },
+    {
+      "tier": "Bloodbark",
+      "items": [
+        "Bloodbark boots"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather boots"
+      ]
+    }
+  ],
+  "hands": [
+    {
+      "tier": "Confliction",
+      "items": [
+        "Confliction gauntlets"
+      ]
+    },
+    {
+      "tier": "Tormented",
+      "items": [
+        "Tormented bracelet"
+      ]
+    },
+    {
+      "tier": "Void",
+      "items": [
+        "Void knight gloves"
+      ]
+    },
+    {
+      "tier": "Barrows",
+      "items": [
+        "Barrows gloves"
+      ]
+    },
+    {
+      "tier": "Combat",
+      "items": [
+        "Combat bracelet"
+      ]
+    },
+    {
+      "tier": "Leather",
+      "items": [
+        "Leather gloves"
+      ]
+    }
+  ],
+  "ring": [
+    {
+      "tier": "Magus",
+      "items": [
+        "Magus ring"
+      ]
+    },
+    {
+      "tier": "Seers",
+      "items": [
+        "Seers ring (i)",
+        "Seers ring"
+      ]
+    },
+    {
+      "tier": "Explorer",
+      "items": [
+        "Explorer's ring 3",
+        "Explorer's ring 2",
+        "Explorer's ring 1"
+      ]
+    }
+  ],
+  "weapon": [
+    {
+      "tier": "Shadow",
+      "items": [
+        "Tumeken's shadow"
+      ]
+    },
+    {
+      "tier": "Harmonised",
+      "items": [
+        "Harmonised nightmare staff"
+      ]
+    },
+    {
+      "tier": "Purging",
+      "items": [
+        "Purging staff"
+      ]
+    },
+    {
+      "tier": "Sang",
+      "items": [
+        "Sanguinesti staff"
+      ]
+    },
+    {
+      "tier": "Eye",
+      "items": [
+        "Eye of ayak"
+      ]
+    },
+    {
+      "tier": "Kodai",
+      "items": [
+        "Kodai wand"
+      ]
+    },
+    {
+      "tier": "Dragon Hunter",
+      "items": [
+        "Dragon hunter wand"
+      ]
+    },
+    {
+      "tier": "Toxic Staff",
+      "items": [
+        "Toxic staff of the dead"
+      ]
+    },
+    {
+      "tier": "Swamp",
+      "items": [
+        "Trident of the swamp"
+      ]
+    },
+    {
+      "tier": "Seas",
+      "items": [
+        "Trident of the seas"
+      ]
+    },
+    {
+      "tier": "Ancient",
+      "items": [
+        "Ancient sceptre",
+        "Ancient staff"
+      ]
+    },
+    {
+      "tier": "Twinflame",
+      "items": [
+        "Twinflame staff"
+      ]
+    },
+    {
+      "tier": "Warped",
+      "items": [
+        "Warped sceptre"
+      ]
+    },
+    {
+      "tier": "Iban",
+      "items": [
+        "Iban's staff (u)",
+        "Iban's staff"
+      ]
+    },
+    {
+      "tier": "Low",
+      "items": [
+        "Staff of air",
+        "Staff of water",
+        "Staff of earth",
+        "Staff of fire"
+      ]
+    }
+  ],
+  "shield": [
+    {
+      "tier": "Elidinis",
+      "items": [
+        "Elidinis' ward (f)",
+        "Elidinis' ward"
+      ]
+    },
+    {
+      "tier": "Mage's",
+      "items": [
+        "Mage's book"
+      ]
+    },
+    {
+      "tier": "Book",
+      "items": [
+        "Book of darkness"
+      ]
+    },
+    {
+      "tier": "Tome",
+      "items": [
+        "Tome of fire",
+        "Tome of water",
+        "Tome of earth"
+      ]
+    }
+  ],
+  "ammo": [
+    {
+      "tier": "Rada",
+      "items": [
+        "Rada's blessing 4",
+        "Rada's blessing 3",
+        "Rada's blessing 2",
+        "Rada's blessing 1"
+      ]
+    },
+    {
+      "tier": "Peaceful",
+      "items": [
+        "Peaceful blessing"
+      ]
+    }
+  ]
+}
