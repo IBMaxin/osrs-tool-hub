@@ -1,0 +1,21 @@
+# OSRS Tool Hub - Cursor Rules
+
+## Project Structure
+- Backend: FastAPI with SQLModel (SQLite), httpx, apscheduler, Poetry
+- Frontend: React + Vite + TypeScript, Mantine UI, TanStack Query
+
+## Code Style
+- Use type hints throughout Python code
+- Follow FastAPI best practices for API design
+- Use async/await for async operations
+- Frontend: Use TypeScript strict mode, functional components with hooks
+
+## API Design
+- RESTful endpoints under `/api/v1/`
+- Use Pydantic models for request/response validation
+- Return proper HTTP status codes
+
+## Database
+- Use SQLModel for ORM
+- SQLite for development (can be swapped for PostgreSQL in production)
+- Use migrations for schema changes

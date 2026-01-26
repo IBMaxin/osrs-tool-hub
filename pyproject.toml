@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "osrs-tool-hub"
+version = "0.1.0"
+description = "OSRS Tool Hub - Flipping and gear calculators"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.109.0"
+sqlmodel = "^0.0.14"
+httpx = "^0.26.0"
+apscheduler = "^3.10.4"
+uvicorn = "^0.27.0"
+pydantic-settings = "^2.1.0"
+pytest = "^7.4.4"
+mwparserfromhell = "^0.6.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = "^0.23.3"
+black = "^24.1.1"
+ruff = "^0.1.11"
+mypy = "^1.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
