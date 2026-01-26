@@ -4,7 +4,6 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session
 
 from backend.tests.e2e.base import BaseE2ETest
-from backend.tests.e2e.helpers import assert_successful_response
 
 
 @pytest.mark.e2e
