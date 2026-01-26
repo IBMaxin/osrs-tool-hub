@@ -6,7 +6,41 @@ export const api = axios.create({
   baseURL: API_URL,
 });
 
-// Slayer Types
+// --- Gear Types ---
+export interface ItemData {
+  id: number | null;
+  name: string;
+  icon_url?: string;
+  price?: number;
+  wiki_url?: string;
+  stats?: Record<string, number>;
+  requirements?: Record<string, number | string>;
+  not_found?: boolean;
+}
+
+export interface TierData {
+  tier: string;
+  items: ItemData[];
+}
+
+export interface SlotData {
+  [key: string]: TierData[];
+}
+
+export interface FullProgressionResponse {
+  combat_style: string;
+  slots: {
+    [slot: string]: TierData[];
+  };
+}
+
+export interface SlotProgressionResponse {
+  combat_style: string;
+  slot: string;
+  tiers: TierData[];
+}
+
+// --- Slayer Types ---
 export interface SlayerTask {
   task_id: number;
   monster_name: string;
@@ -32,7 +66,7 @@ export interface TaskAdvice {
   };
 }
 
-// Flipping Types
+// --- Flipping Types ---
 export interface FlipOpportunity {
   item_id: number;
   item_name: string;
@@ -52,6 +86,21 @@ export interface FlipFilters {
   min_roi?: number;
   min_volume?: number;
 }
+
+// --- API Methods ---
+
+export const fetchFullProgression = async (style: string): Promise<FullProgressionResponse> => {
+  const response = await api.get<FullProgressionResponse>(`/gear/progression/${style}`);
+  return response.data;
+};
+
+export const fetchSlotProgression = async (style: string, slot: string): Promise<SlotProgressionResponse> => {
+  const response = await api.get<SlotProgressionResponse>(`/gear/progression/${style}/${slot}`);
+  return response.data;
+};
+
+// Legacy method alias if needed
+export const fetchWikiProgression = fetchFullProgression;
 
 export const SlayerApi = {
   getMasters: async () => {
