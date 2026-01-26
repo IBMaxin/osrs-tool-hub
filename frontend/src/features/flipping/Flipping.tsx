@@ -1,10 +1,5 @@
-import { Container } from '@mantine/core'
-import { FlipTable } from './FlipTable'
+import { FlippingPage } from './FlippingPage';
 
 export function Flipping() {
-  return (
-    <Container>
-      <FlipTable />
-    </Container>
-  )
+  return <FlippingPage />;
 }
