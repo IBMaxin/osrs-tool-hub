@@ -39,6 +39,14 @@ class WikiAPIClient:
             response.raise_for_status()
             return response.json()
 
+    async def fetch_24h_prices(self) -> Dict:
+        """Fetch 24h average prices and volume."""
+        url = f"{self.base_url}/24h"
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, headers=self.headers, timeout=10.0)
+            response.raise_for_status()
+            return response.json()
+
     async def sync_items_to_db(self, session: Session):
         """Populate or update Item table from mapping."""
         logger.info("Syncing items from Wiki...")
@@ -65,25 +73,34 @@ class WikiAPIClient:
         logger.info(f"Synced {count} items")
 
     async def sync_prices_to_db(self, session: Session):
-        """Populate or update PriceSnapshot table from latest prices."""
+        """Populate or update PriceSnapshot table from latest prices AND 24h volume."""
         logger.info("Syncing prices from Wiki...")
-        prices_data = await self.fetch_latest_prices()
+        
+        # Fetch both real-time prices and 24h volume
+        latest_data = await self.fetch_latest_prices()
+        volume_data = await self.fetch_24h_prices()
         
         # The API returns data in format: {"data": {item_id: {high, low, highTime, lowTime, ...}}}
-        data = prices_data.get("data", {})
+        realtime_data = latest_data.get("data", {})
+        daily_data = volume_data.get("data", {})
+        
         count = 0
         
-        for item_id_str, price_info in data.items():
+        # Iterate through items present in realtime data
+        for item_id_str, price_info in realtime_data.items():
             try:
                 item_id = int(item_id_str)
                 
-                # Extract price data
+                # Extract Real-Time Price Data
                 high_price = price_info.get("high")
                 low_price = price_info.get("low")
-                high_volume = price_info.get("highVolume")
-                low_volume = price_info.get("lowVolume")
                 high_time = price_info.get("highTime")
                 low_time = price_info.get("lowTime")
+                
+                # Extract 24h Volume Data (fallback to realtime if needed, but usually 24h is better)
+                daily_info = daily_data.get(item_id_str, {})
+                high_volume = daily_info.get("highPriceVolume", 0)
+                low_volume = daily_info.get("lowPriceVolume", 0)
                 
                 # Check if price snapshot already exists for this item
                 existing = session.exec(
@@ -119,7 +136,7 @@ class WikiAPIClient:
                 continue
         
         session.commit()
-        logger.info(f"Synced {count} price snapshots")
+        logger.info(f"Synced {count} price snapshots with 24h volume")
 
 
 # Compatibility alias for existing services

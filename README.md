@@ -30,20 +30,24 @@ osrs-tool-hub/
 │   ├── models.py            # SQLModel models
 │   ├── services/            # Business logic
 │   │   ├── wiki_client.py   # OSRS Wiki API client
+│   │   ├── wiki_data.py     # Wiki data service
 │   │   ├── flipping.py      # Flipping service
-│   │   └── gear.py          # Gear service
+│   │   ├── gear.py          # Gear service
+│   │   ├── gear_presets.py  # Gear presets service
+│   │   ├── item_stats.py    # Item stats service
+│   │   └── slayer.py        # Slayer service
 │   └── api/v1/              # API routes
 │       ├── flips.py         # Flipping endpoints
-│       └── gear.py          # Gear endpoints
+│       ├── gear.py          # Gear endpoints
+│       └── slayer.py        # Slayer endpoints
 └── frontend/
     └── src/
         ├── features/        # Feature modules
         │   ├── flipping/
         │   ├── gear/
         │   └── slayer/
-        ├── lib/
-        │   └── api.ts      # API client
-        └── App.tsx          # Main app component
+        ├── App.tsx          # Main app component
+        └── main.tsx         # Application entry point
 ```
 
 ## Setup
@@ -65,7 +69,9 @@ osrs-tool-hub/
 
 ## Docs
 
-API documentation available at: http://localhost:8000/docs
+API documentation available at: http://localhost:8000/docs (when running locally)
+
+See [refactor.md](refactor.md) for planned architectural improvements.
 
 ## API Endpoints
 
@@ -80,6 +86,10 @@ API documentation available at: http://localhost:8000/docs
 - `GET /api/v1/gear` - Get all gear sets
 - `GET /api/v1/gear/{id}` - Get gear set by ID
 - `DELETE /api/v1/gear/{id}` - Delete a gear set
+
+### Slayer
+- `GET /api/v1/slayer/masters` - Get all slayer masters
+- `GET /api/v1/slayer/tasks` - Get slayer tasks
 
 ## Development
 

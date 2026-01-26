@@ -85,6 +85,7 @@ export interface SlayerTask {
 
 export interface TaskAdvice {
   task: string;
+  category: string;
   master: string;
   recommendation: "DO" | "SKIP" | "BLOCK";
   reason: string;
@@ -92,6 +93,13 @@ export interface TaskAdvice {
     hp: number;
     def: number;
     xp: number;
+  };
+  meta: {
+    xp_rate: number;
+    profit_rate: number;
+    attack_style: string;
+    items_needed: string[];
+    weakness: string[];
   };
 }
 

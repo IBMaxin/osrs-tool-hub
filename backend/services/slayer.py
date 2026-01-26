@@ -3,6 +3,7 @@ from typing import List, Optional, Dict
 from sqlmodel import Session, select, func
 
 from backend.models import Monster, SlayerTask, SlayerMaster
+from backend.services.slayer_data import SLAYER_TASK_DATA
 
 
 class SlayerService:
@@ -48,7 +49,7 @@ class SlayerService:
     def suggest_action(self, task_id: int, user_stats: Dict[str, int]) -> Dict:
         """
         Suggest whether to Do, Skip, or Block a task based on stats/efficiency.
-        NOTE: This is a basic implementation. Real efficiency requires comprehensive blocklists.
+        Uses rich metadata from SLAYER_TASK_DATA if available.
         """
         task = self.session.get(SlayerTask, task_id)
         if not task:
@@ -56,20 +57,39 @@ class SlayerService:
         
         monster = self.session.get(Monster, task.monster_id)
         
+        # Defaults
         recommendation = "DO"
         reason = "Good XP/HR or Profit"
-        
-        # Simple Logic Examples
-        if task.weight > 8 and monster.slayer_xp < 50:
-             recommendation = "BLOCK"
-             reason = "High weight but low XP (inefficient)"
-             
-        if monster.name in ["Spiritual Ranger", "Waterfiend", "Killerwatt"]:
-             recommendation = "SKIP"
-             reason = "Generally considered annoying/slow"
+        xp_rate = 0
+        profit_rate = 0
+        attack_style = "Generic Melee/Ranged"
+        items_needed = []
+        weakness = []
+
+        # Try to find data by Category first (usually matches wiki), then Monster Name
+        task_data = SLAYER_TASK_DATA.get(task.category) or SLAYER_TASK_DATA.get(monster.name)
+
+        if task_data:
+            recommendation = task_data.get("recommendation", recommendation)
+            reason = task_data.get("reason", reason)
+            xp_rate = task_data.get("xp_rate", 0)
+            profit_rate = task_data.get("profit_rate", 0)
+            attack_style = task_data.get("attack_style", attack_style)
+            items_needed = task_data.get("items_needed", [])
+            weakness = task_data.get("weakness", [])
+        else:
+            # Fallback Logic
+            if task.weight > 8 and monster.slayer_xp < 50:
+                 recommendation = "BLOCK"
+                 reason = "High weight but low XP (inefficient)"
+            
+            if monster.name in ["Spiritual Ranger", "Waterfiend", "Killerwatt", "Cave Kraken"]:
+                 recommendation = "SKIP"
+                 reason = "Generally considered annoying/slow"
 
         return {
             "task": monster.name,
+            "category": task.category,
             "master": task.master,
             "recommendation": recommendation,
             "reason": reason,
@@ -77,5 +97,12 @@ class SlayerService:
                 "hp": monster.hitpoints,
                 "def": monster.defence_level,
                 "xp": monster.slayer_xp
+            },
+            "meta": {
+                "xp_rate": xp_rate,
+                "profit_rate": profit_rate,
+                "attack_style": attack_style,
+                "items_needed": items_needed,
+                "weakness": weakness
             }
         }
