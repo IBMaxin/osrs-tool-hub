@@ -11,36 +11,36 @@ engine = create_engine(
 )
 
 
-def migrate_item_table() -> None:
-    """Add new columns to item table if they don't exist."""
+def migrate_tables() -> None:
+    """Run table migrations."""
     try:
         inspector = inspect(engine)
+        table_names = inspector.get_table_names()
         
-        # Check if item table exists
-        if "item" not in inspector.get_table_names():
-            return
+        # 1. Item table migrations
+        if "item" in table_names:
+            existing_columns = [col["name"] for col in inspector.get_columns("item")]
+            new_item_columns = {
+                "quest_req": "TEXT",
+                "achievement_req": "TEXT",
+                "is_2h": "INTEGER DEFAULT 0",
+                "attack_speed": "INTEGER DEFAULT 4",
+                "variant_of": "INTEGER"
+            }
+            with engine.begin() as conn:
+                for col, dtype in new_item_columns.items():
+                    if col not in existing_columns:
+                        try:
+                            conn.execute(text(f"ALTER TABLE item ADD COLUMN {col} {dtype}"))
+                            print(f"✓ Added column: item.{col}")
+                        except Exception as e:
+                            print(f"⚠ Could not add column item.{col}: {e}")
+
+        # 2. Monster/Slayer Table checks
+        # Since SQLModel.metadata.create_all handles creation, we just need to verify
+        # manual migrations if we were modifying existing tables.
+        # For new tables (Monster, SlayerTask), create_all is sufficient.
         
-        # Get existing columns
-        existing_columns = [col["name"] for col in inspector.get_columns("item")]
-        
-        # New columns to add (SQLite syntax)
-        new_columns = {
-            "quest_req": "TEXT",
-            "achievement_req": "TEXT",
-            "is_2h": "INTEGER DEFAULT 0",  # SQLite uses INTEGER for boolean
-            "attack_speed": "INTEGER DEFAULT 4",
-            "variant_of": "INTEGER"
-        }
-        
-        # Add missing columns
-        with engine.begin() as conn:  # Use begin() for transaction
-            for column_name, column_type in new_columns.items():
-                if column_name not in existing_columns:
-                    try:
-                        conn.execute(text(f"ALTER TABLE item ADD COLUMN {column_name} {column_type}"))
-                        print(f"✓ Added column: {column_name}")
-                    except Exception as e:
-                        print(f"⚠ Could not add column {column_name}: {e}")
     except Exception as e:
         print(f"⚠ Migration check failed: {e}")
 
@@ -49,7 +49,7 @@ async def init_db() -> None:
     """Initialize database tables."""
     SQLModel.metadata.create_all(engine)
     # Run migration for existing tables
-    migrate_item_table()
+    migrate_tables()
 
 
 def get_session() -> Session:

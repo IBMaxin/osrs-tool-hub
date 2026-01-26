@@ -9,7 +9,7 @@ from sqlmodel import Session, select
 
 from backend.config import settings
 from backend.database import engine, init_db, get_session
-from backend.api.v1 import flips, gear
+from backend.api.v1 import flips, gear, slayer
 from backend.models import Item
 from backend.services.wiki_client import WikiAPIClient
 from backend.services.item_stats import import_item_stats
@@ -25,10 +25,10 @@ logger = logging.getLogger(__name__)
 def create_db_and_tables() -> None:
     """Create database tables."""
     from sqlmodel import SQLModel
-    from backend.database import migrate_item_table
+    from backend.database import migrate_tables
     SQLModel.metadata.create_all(engine)
     # Run migration for existing tables
-    migrate_item_table()
+    migrate_tables()
 
 
 @asynccontextmanager
@@ -92,6 +92,7 @@ app.add_middleware(
 # Include routers
 app.include_router(flips.router, prefix="/api/v1")
 app.include_router(gear.router, prefix="/api/v1")
+app.include_router(slayer.router, prefix="/api/v1")
 
 
 @app.get("/")
