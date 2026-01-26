@@ -65,6 +65,29 @@ async def get_gear_sets(session: Session = Depends(get_session)) -> List[GearSet
     return [GearSetResponse(**map_gear_set_to_response(gs)) for gs in gear_sets]
 
 
+@router.get("/gear/suggestions")
+async def get_gear_suggestions(
+    slot: str,
+    style: str = "melee",
+    defence_level: int = 99,
+    session: Session = Depends(get_session)
+):
+    """
+    Get gear suggestions for a specific slot and combat style.
+
+    Args:
+        slot: Equipment slot (head, cape, neck, etc.)
+        style: Combat style (melee, ranged, magic, prayer)
+        defence_level: Defence level requirement filter
+        session: Database session
+
+    Returns:
+        List of suggested items with scores
+    """
+    service = GearService(session)
+        return service.suggest_gear(slot, style, defence_level=defence_level)
+
+
 @router.get("/gear/{gear_set_id}", response_model=GearSetResponse)
 async def get_gear_set(
     gear_set_id: int, session: Session = Depends(get_session)
@@ -108,29 +131,6 @@ async def delete_gear_set(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Gear set not found"
         )
-
-
-@router.get("/gear/suggestions")
-async def get_gear_suggestions(
-    slot: str,
-    style: str = "melee",
-    defence_level: int = 99,
-    session: Session = Depends(get_session)
-):
-    """
-    Get gear suggestions for a specific slot and combat style.
-
-    Args:
-        slot: Equipment slot (head, cape, neck, etc.)
-        style: Combat style (melee, ranged, magic, prayer)
-        defence_level: Defence level requirement filter
-        session: Database session
-
-    Returns:
-        List of suggested items with scores
-    """
-    service = GearService(session)
-    return service.suggest_gear(slot, style, defence_level=defence_level)
 
 
 @router.get("/gear/preset")

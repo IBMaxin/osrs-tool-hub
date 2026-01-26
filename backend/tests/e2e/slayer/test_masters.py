@@ -22,7 +22,8 @@ class TestSlayerMastersEndpoint(BaseE2ETest):
         assert len(data) > 0
         
         # Check that expected masters are present
-        master_names = [m.get("name") or m for m in data]
+        # Masters can be strings or dicts
+        master_names = [m.get("name") if isinstance(m, dict) else str(m) for m in data]
         assert any("Duradel" in str(m) or "Konar" in str(m) for m in master_names)
     
     def test_masters_response_structure(self, client: TestClient, session: Session):

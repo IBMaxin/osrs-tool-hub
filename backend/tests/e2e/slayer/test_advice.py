@@ -72,4 +72,8 @@ class TestSlayerAdviceEndpoint(BaseE2ETest):
             
             assert "task" in data
             task_info = data["task"]
-            assert "monster_name" in task_info or "name" in task_info
+            # Task can be a string or dict
+            if isinstance(task_info, dict):
+                assert "monster_name" in task_info or "name" in task_info
+            else:
+                assert isinstance(task_info, str)

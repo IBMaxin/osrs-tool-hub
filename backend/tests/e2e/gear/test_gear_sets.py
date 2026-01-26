@@ -35,7 +35,9 @@ class TestGearSetEndpoints(BaseE2ETest):
         
         assert data["name"] == "Test Melee Set"
         assert data["description"] == "A test melee gear set"
-        assert data["items"] == payload["items"]
+        # API returns string keys, convert for comparison
+        response_items = {int(k): v for k, v in data["items"].items()}
+        assert response_items == payload["items"]
         assert "id" in data
         assert "total_cost" in data
         assert data["total_cost"] > 0
