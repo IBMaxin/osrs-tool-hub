@@ -61,14 +61,14 @@ def test_get_flip_opportunities(session: Session):
 
     service = FlippingService(session)
 
-    # Test 1: Basic Fetch (Should find Whip, maybe Feather depending on tax/roi)
+    # Test 1: Basic Fetch (Unlimited Budget)
+    # Tbow has 360m profit vs Whip's 4.9m, so Tbow should be first.
     flips = service.get_flip_opportunities(min_roi=0.1)
-    assert len(flips) >= 1
-    assert flips[0]["item_name"] == "Abyssal whip"
+    assert len(flips) >= 2
+    assert flips[0]["item_name"] == "Twisted bow"
+    assert flips[1]["item_name"] == "Abyssal whip"
     
     # Check Whip Math
-    # Sell: 1,500,000. Tax (1% > 5m cap? No, 2% of 1.5m = 30k). Post-Tax: 1,470,000.
-    # Buy: 1,400,000. Margin: 70,000.
     whip_flip = next(f for f in flips if f["item_name"] == "Abyssal whip")
     assert whip_flip["margin"] == 70000 
     assert whip_flip["tax"] == 30000
@@ -78,8 +78,11 @@ def test_get_flip_opportunities(session: Session):
     item_names = [f["item_name"] for f in budget_flips]
     assert "Abyssal whip" in item_names
     assert "Twisted bow" not in item_names
+    # Now Whip should be first since Tbow is gone
+    assert budget_flips[0]["item_name"] == "Abyssal whip"
 
     # Test 3: High ROI Filter
-    # Whip ROI = 70k / 1.4m = 5%. If we ask for 10%, it should be empty
+    # Whip ROI = 70k / 1.4m = 5%. Tbow ROI = 45m / 1.55b = ~2.9%
+    # If we ask for 10%, result should be empty
     high_roi_flips = service.get_flip_opportunities(min_roi=10.0)
     assert len(high_roi_flips) == 0
