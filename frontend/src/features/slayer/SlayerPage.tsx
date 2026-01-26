@@ -105,14 +105,17 @@ export function SlayerPage() {
     });
   };
 
-  // Calculate XP/hour estimate (simplified - would need actual data)
+  // Calculate XP/hour estimate
   const getXpPerHour = (advice: TaskAdvice | undefined): string | null => {
     if (!advice) return null;
-    // Simplified calculation - in real app, this would use actual kill rates
-    const estimatedKillsPerHour = 200; // Placeholder
+    if (advice.meta?.xp_rate > 0) {
+      return `${advice.meta.xp_rate.toLocaleString()} XP/hr`;
+    }
+    // Fallback: Simplified calculation
+    const estimatedKillsPerHour = 200; 
     const xpPerKill = advice.stats.xp;
     const totalXp = estimatedKillsPerHour * xpPerKill;
-    return `${totalXp.toLocaleString()} XP/hr`;
+    return `~${totalXp.toLocaleString()} XP/hr`;
   };
 
   return (
@@ -323,6 +326,50 @@ export function SlayerPage() {
                 {advice.reason}
               </Text>
             </Card>
+
+            {/* Meta Info */}
+            {advice.meta && (
+              <SimpleGrid cols={2} spacing="xs">
+                 {advice.meta.xp_rate > 0 && (
+                   <Card p="xs" bg="dark.6" withBorder style={{ borderColor: 'var(--mantine-color-dark-4)' }}>
+                     <Text size="xs" c="dimmed">Est. XP/Hr</Text>
+                     <Text fw={700} c="green.4">{advice.meta.xp_rate.toLocaleString()}</Text>
+                   </Card>
+                 )}
+                 {advice.meta.profit_rate > 0 && (
+                   <Card p="xs" bg="dark.6" withBorder style={{ borderColor: 'var(--mantine-color-dark-4)' }}>
+                     <Text size="xs" c="dimmed">Est. GP/Hr</Text>
+                     <Text fw={700} c="yellow.4">{advice.meta.profit_rate.toLocaleString()}</Text>
+                   </Card>
+                 )}
+                 {advice.meta.attack_style && (
+                   <Card p="xs" bg="dark.6" withBorder style={{ borderColor: 'var(--mantine-color-dark-4)', gridColumn: '1 / -1' }}>
+                     <Text size="xs" c="dimmed">Strategy</Text>
+                     <Text fw={700} c="blue.3">{advice.meta.attack_style}</Text>
+                   </Card>
+                 )}
+                 {advice.meta.weakness && advice.meta.weakness.length > 0 && (
+                   <Card p="xs" bg="dark.6" withBorder style={{ borderColor: 'var(--mantine-color-dark-4)', gridColumn: '1 / -1' }}>
+                     <Text size="xs" c="dimmed">Weakness</Text>
+                     <Group gap={4} mt={4}>
+                       {advice.meta.weakness.map(w => (
+                         <Badge key={w} size="sm" variant="outline" color="orange">{w}</Badge>
+                       ))}
+                     </Group>
+                   </Card>
+                 )}
+                 {advice.meta.items_needed && advice.meta.items_needed.length > 0 && (
+                   <Card p="xs" bg="dark.6" withBorder style={{ borderColor: 'var(--mantine-color-dark-4)', gridColumn: '1 / -1' }}>
+                     <Text size="xs" c="dimmed">Required Items</Text>
+                     <Group gap={4} mt={4}>
+                       {advice.meta.items_needed.map(item => (
+                         <Badge key={item} size="sm" variant="dot" color="red">{item}</Badge>
+                       ))}
+                     </Group>
+                   </Card>
+                 )}
+              </SimpleGrid>
+            )}
 
             {/* Stats */}
             <Group gap="xs" mt="xs">
