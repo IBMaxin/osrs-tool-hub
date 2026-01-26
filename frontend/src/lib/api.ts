@@ -109,8 +109,23 @@ export const SlayerApi = {
   },
   
   getTasks: async (master: string) => {
-    const response = await api.get<SlayerTask[]>(`/slayer/tasks/${master}`);
-    return response.data;
+    console.log('SlayerApi.getTasks called with master:', master);
+    const url = `/slayer/tasks/${encodeURIComponent(master)}`;
+    console.log('API URL:', url);
+    try {
+      const response = await api.get<SlayerTask[]>(url);
+      console.log('API response status:', response.status);
+      console.log('API response data length:', response.data?.length);
+      return response.data;
+    } catch (error: any) {
+      console.error('API error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
+      throw error;
+    }
   },
   
   getAdvice: async (taskId: number) => {

@@ -57,19 +57,75 @@ def seed_slayer_data():
             # In a real app we'd map this better, but for MVP we match category string
             monster = next((m for m in monsters if m.slayer_category == cat), None)
             if monster:
-                # Check if task exists
-                # This is a naive check; in prod use proper lookup
-                task = SlayerTask(
-                    master=SlayerMaster.DURADEL,
-                    monster_id=monster.id,
-                    category=cat,
-                    quantity_min=min_q,
-                    quantity_max=max_q,
-                    weight=weight,
-                    is_skippable=skip,
-                    is_blockable=True
-                )
-                session.add(task)
+                # Check if task already exists
+                from sqlmodel import select
+                existing_task = session.exec(
+                    select(SlayerTask).where(
+                        SlayerTask.master == SlayerMaster.DURADEL,
+                        SlayerTask.monster_id == monster.id
+                    )
+                ).first()
+                
+                if not existing_task:
+                    task = SlayerTask(
+                        master=SlayerMaster.DURADEL,
+                        monster_id=monster.id,
+                        category=cat,
+                        quantity_min=min_q,
+                        quantity_max=max_q,
+                        weight=weight,
+                        is_skippable=skip,
+                        is_blockable=True
+                    )
+                    session.add(task)
+                    print(f"  Added task: {cat}")
+                else:
+                    print(f"  Task already exists: {cat}")
+        
+        # 3. Define Tasks (Nieve)
+        nieve_tasks = [
+            ("Abyssal demons", 120, 185, 12, True),
+            ("Aberrant spectres", 135, 175, 8, True),
+            ("Smoke devils", 135, 185, 9, True),
+            ("Gargoyles", 130, 200, 9, True),
+            ("Nechryaels", 130, 200, 9, True),
+            ("Bloodvelds", 130, 200, 8, True),
+            ("Dagannoth", 130, 200, 9, True),
+            ("Kalphite", 130, 200, 9, True),
+            ("Hellhounds", 130, 200, 10, True),
+            ("Dust devils", 120, 170, 6, True),
+            ("Wyrms", 125, 160, 8, True),
+            ("Drakes", 80, 145, 8, True),
+            ("Hydras", 135, 160, 10, True),
+            ("Kraken", 100, 120, 9, True),
+        ]
+        
+        for cat, min_q, max_q, weight, skip in nieve_tasks:
+            monster = next((m for m in monsters if m.slayer_category == cat), None)
+            if monster:
+                from sqlmodel import select
+                existing_task = session.exec(
+                    select(SlayerTask).where(
+                        SlayerTask.master == SlayerMaster.NIEVE,
+                        SlayerTask.monster_id == monster.id
+                    )
+                ).first()
+                
+                if not existing_task:
+                    task = SlayerTask(
+                        master=SlayerMaster.NIEVE,
+                        monster_id=monster.id,
+                        category=cat,
+                        quantity_min=min_q,
+                        quantity_max=max_q,
+                        weight=weight,
+                        is_skippable=skip,
+                        is_blockable=True
+                    )
+                    session.add(task)
+                    print(f"  Added Nieve task: {cat}")
+                else:
+                    print(f"  Nieve task already exists: {cat}")
         
         session.commit()
         print("✅ Slayer data seeded!")

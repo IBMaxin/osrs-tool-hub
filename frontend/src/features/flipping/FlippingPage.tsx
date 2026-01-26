@@ -18,9 +18,12 @@ import {
   Card,
   Select,
   Box,
-  Divider
+  Divider,
+  ThemeIcon,
+  Skeleton,
+  ActionIcon
 } from '@mantine/core';
-import { IconCoins, IconFilter, IconAlertCircle, IconRefresh, IconArrowsSort, IconSortAscending, IconSortDescending } from '@tabler/icons-react';
+import { IconCoins, IconFilter, IconAlertCircle, IconRefresh, IconArrowsSort, IconSortAscending, IconSortDescending, IconChartBar, IconX } from '@tabler/icons-react';
 import { FlippingApi, FlipFilters } from '../../lib/api';
 
 type SortField = 'roi' | 'margin' | 'potential_profit' | 'buy_price';
@@ -92,15 +95,21 @@ export function FlippingPage() {
     return sortDirection === 'asc' ? <IconSortAscending size={14} /> : <IconSortDescending size={14} />;
   };
 
-  // Format GP (e.g., 1.5M, 500k)
+  // Format GP (e.g., 1.5M, 500k) - for compact display
   const formatGP = (val: number) => {
     if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
     if (val >= 1_000) return `${(val / 1_000).toFixed(0)}k`;
     return val.toString();
   };
 
+  // Format number with thousand separators (e.g., 1,234,567)
   const formatNumber = (val: number) => {
     return new Intl.NumberFormat().format(val);
+  };
+
+  // Format price with "gp" suffix (e.g., 1,234,567 gp)
+  const formatPrice = (val: number) => {
+    return `${formatNumber(val)} gp`;
   };
 
   return (
@@ -122,7 +131,7 @@ export function FlippingPage() {
         </Group>
         
         {/* Filters Bar */}
-        <Card withBorder shadow="sm" p="md">
+        <Card withBorder shadow="md" radius="md" p="md">
           <Stack gap="md">
             <Group gap="xs">
               <IconFilter size={18} />
@@ -136,10 +145,24 @@ export function FlippingPage() {
                   placeholder="Unlimited"
                   thousandSeparator=","
                   min={0}
-                  leftSection={<IconCoins size={16} />}
+                  leftSection={
+                    <ThemeIcon size="sm" variant="light" color="yellow">
+                      <IconCoins size={16} />
+                    </ThemeIcon>
+                  }
                   value={filters.max_budget || ''}
                   onChange={(val) => setFilters(prev => ({ ...prev, max_budget: val as number | undefined }))}
-                  clearable
+                  rightSection={
+                    filters.max_budget ? (
+                      <ActionIcon
+                        variant="subtle"
+                        size="sm"
+                        onClick={() => setFilters(prev => ({ ...prev, max_budget: undefined }))}
+                      >
+                        <IconX size={14} />
+                      </ActionIcon>
+                    ) : null
+                  }
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 6, sm: 4 }}>
@@ -151,6 +174,11 @@ export function FlippingPage() {
                   step={0.1}
                   decimalScale={1}
                   suffix="%"
+                  leftSection={
+                    <ThemeIcon size="sm" variant="light" color="blue">
+                      <IconChartBar size={16} />
+                    </ThemeIcon>
+                  }
                   value={filters.min_roi}
                   onChange={(val) => setFilters(prev => ({ ...prev, min_roi: val as number }))}
                 />
@@ -178,12 +206,56 @@ export function FlippingPage() {
         {/* Results Table */}
         <Card withBorder shadow="sm" p={0}>
           {isLoading ? (
-            <Center p="xl">
-              <Stack align="center" gap="md">
-                <Loader size="lg" />
-                <Text c="dimmed">Loading flip opportunities...</Text>
-              </Stack>
-            </Center>
+            <Box p="md">
+              <Table.ScrollContainer minWidth={900}>
+                <Table striped highlightOnHover verticalSpacing="md">
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>Item</Table.Th>
+                      <Table.Th style={{ textAlign: 'right' }}>Buy Price</Table.Th>
+                      <Table.Th style={{ textAlign: 'right' }}>Sell Price</Table.Th>
+                      <Table.Th style={{ textAlign: 'right' }}>Margin</Table.Th>
+                      <Table.Th style={{ textAlign: 'right' }}>ROI</Table.Th>
+                      <Table.Th style={{ textAlign: 'right' }}>Potential Profit</Table.Th>
+                      <Table.Th style={{ textAlign: 'center' }}>Volume</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Table.Tr key={i}>
+                        <Table.Td>
+                          <Group gap="sm">
+                            <Skeleton height={40} circle />
+                            <Stack gap={4}>
+                              <Skeleton height={16} width={150} />
+                              <Skeleton height={12} width={100} />
+                            </Stack>
+                          </Group>
+                        </Table.Td>
+                        <Table.Td style={{ textAlign: 'right' }}>
+                          <Skeleton height={16} width={100} ml="auto" />
+                        </Table.Td>
+                        <Table.Td style={{ textAlign: 'right' }}>
+                          <Skeleton height={16} width={100} ml="auto" />
+                        </Table.Td>
+                        <Table.Td style={{ textAlign: 'right' }}>
+                          <Skeleton height={16} width={80} ml="auto" />
+                        </Table.Td>
+                        <Table.Td style={{ textAlign: 'right' }}>
+                          <Skeleton height={24} width={60} ml="auto" />
+                        </Table.Td>
+                        <Table.Td style={{ textAlign: 'right' }}>
+                          <Skeleton height={16} width={90} ml="auto" />
+                        </Table.Td>
+                        <Table.Td style={{ textAlign: 'center' }}>
+                          <Skeleton height={16} width={70} mx="auto" />
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+              </Table.ScrollContainer>
+            </Box>
           ) : sortedFlips.length === 0 ? (
             <Center p="xl">
               <Stack align="center" gap="md">
@@ -259,28 +331,34 @@ export function FlippingPage() {
                             <Avatar src={flip.icon_url} size="md" radius="sm" bg="gray.1">
                               {flip.item_name.charAt(0)}
                             </Avatar>
-                            <Stack gap={2}>
-                              <Text size="sm" fw={500} lineClamp={1}>{flip.item_name}</Text>
-                              <Text size="xs" c="dimmed">Limit: {flip.limit ? formatNumber(flip.limit) : 'N/A'}</Text>
+                            <Stack gap={4}>
+                              <Group gap="xs" align="center">
+                                <Text size="md" fw={700} lineClamp={1}>{flip.item_name}</Text>
+                                {flip.limit && (
+                                  <Badge variant="light" color="blue" size="sm">
+                                    Limit: {formatNumber(flip.limit)}
+                                  </Badge>
+                                )}
+                              </Group>
                             </Stack>
                           </Group>
                         </Table.Td>
                         <Table.Td style={{ textAlign: 'right' }}>
                           <Text size="sm" ff="monospace" fw={500}>
-                            {formatNumber(flip.buy_price)} GP
+                            {formatPrice(flip.buy_price)}
                           </Text>
                         </Table.Td>
                         <Table.Td style={{ textAlign: 'right' }}>
                           <Text size="sm" ff="monospace" fw={500}>
-                            {formatNumber(flip.sell_price)} GP
+                            {formatPrice(flip.sell_price)}
                           </Text>
                         </Table.Td>
                         <Table.Td style={{ textAlign: 'right' }}>
                           <Stack gap={2} align="flex-end">
                             <Text c={flip.margin > 0 ? 'green' : 'red'} fw={700} size="sm">
-                              {flip.margin > 0 ? '+' : ''}{formatGP(flip.margin)}
+                              {flip.margin > 0 ? '+' : ''}{formatPrice(flip.margin)}
                             </Text>
-                            <Text size="xs" c="dimmed">Tax: {formatGP(flip.tax)}</Text>
+                            <Text size="xs" c="dimmed">Tax: {formatPrice(flip.tax)}</Text>
                           </Stack>
                         </Table.Td>
                         <Table.Td style={{ textAlign: 'right' }}>
@@ -307,7 +385,7 @@ export function FlippingPage() {
                               'dark'
                             }
                           >
-                            {formatGP(flip.potential_profit)}
+                            {formatPrice(flip.potential_profit)}
                           </Text>
                         </Table.Td>
                         <Table.Td style={{ textAlign: 'center' }}>

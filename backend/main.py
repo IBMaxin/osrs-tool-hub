@@ -5,14 +5,15 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from sqlmodel import Session, select
+from sqlmodel import Session, select, func
 
 from backend.config import settings
 from backend.database import engine, init_db, get_session
 from backend.api.v1 import flips, gear, slayer
-from backend.models import Item
+from backend.models import Item, SlayerTask, Monster
 from backend.services.wiki_client import WikiAPIClient
 from backend.services.item_stats import import_item_stats
+from backend.scripts.seed_slayer import seed_slayer_data
 
 # Configure logging
 logging.basicConfig(
@@ -66,6 +67,20 @@ async def lifespan(app: FastAPI):
         # Always sync prices on startup to ensure we have current data
         logger.info("Running initial price sync...")
         await wiki_client.sync_prices_to_db(session)
+        
+        # Check if slayer data exists, seed if missing
+        slayer_task_count = session.exec(select(func.count(SlayerTask.id))).one()
+        monster_count = session.exec(select(func.count(Monster.id))).one()
+        logger.info(f"Slayer tasks in DB: {slayer_task_count}, Monsters in DB: {monster_count}")
+        if slayer_task_count == 0 or monster_count == 0:
+            logger.info("Slayer data missing, seeding slayer monsters and tasks...")
+            try:
+                seed_slayer_data()
+                logger.info("✅ Slayer data seeded successfully")
+            except Exception as e:
+                logger.error(f"Failed to seed slayer data: {e}")
+        else:
+            logger.info("Slayer data already exists, skipping seed")
     
     yield
     

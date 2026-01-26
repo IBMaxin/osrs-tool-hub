@@ -17,8 +17,13 @@ class SlayerService:
         """
         Get all tasks assignable by a specific master.
         """
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"SlayerService.get_tasks called with master: {master} (type: {type(master)}, value: {master.value if hasattr(master, 'value') else master})")
+        
         query = select(SlayerTask, Monster).join(Monster).where(SlayerTask.master == master)
         results = self.session.exec(query).all()
+        logger.info(f"Query returned {len(results)} results")
         
         tasks = []
         for task, monster in results:
@@ -37,6 +42,7 @@ class SlayerService:
         
         # Sort by weight descending (highest probability first)
         tasks.sort(key=lambda x: x["weight"], reverse=True)
+        logger.info(f"Returning {len(tasks)} tasks")
         return tasks
 
     def suggest_action(self, task_id: int, user_stats: Dict[str, int]) -> Dict:
