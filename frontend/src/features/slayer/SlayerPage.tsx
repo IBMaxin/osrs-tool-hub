@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Container, Title, Text, Stack } from '@mantine/core';
 import { SlayerApi } from '../../lib/api';
+import type { TaskAdvice } from '../../lib/api';
 import { MasterSelector } from './components/MasterSelector';
 import { TaskGrid } from './components/TaskGrid';
 import { AdviceModal } from './components/AdviceModal';

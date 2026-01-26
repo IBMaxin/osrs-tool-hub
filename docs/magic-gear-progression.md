@@ -2,7 +2,7 @@
 
 From Old School RuneScape Wiki
 
-For melee equipment progression, see Guide:Melee Gear Progression. For ranged equipent progression, see Guide:Ranged Gear Progression.
+For melee equipment progression, see Guide:Melee Gear Progression. For ranged equipment progression, see Guide:Ranged Gear Progression.
 
 This guide is a reference for magic gear progression, both in effectiveness at different encounters and price. Upfront equipment cost as well as estimated rune costs are compared, with a generic magic strength bonus comparison below.
 
