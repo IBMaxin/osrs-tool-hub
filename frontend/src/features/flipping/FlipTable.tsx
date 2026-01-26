@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { MantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
 import { Slider, Text, Group, Paper, Title } from '@mantine/core';
-import { fetchFlips, type FlipOpportunity } from '../../lib/api';
+import { FlippingApi, type FlipOpportunity } from '../../lib/api';
 
 export function FlipTable() {
   const [maxBudget, setMaxBudget] = useState<number>(10000000); // 10M default
@@ -13,7 +13,7 @@ export function FlipTable() {
     queryFn: async () => {
       try {
         console.log('Fetching flips with params:', { max_budget: maxBudget, min_roi: minRoi });
-        const result = await fetchFlips({ max_budget: maxBudget, min_roi: minRoi });
+        const result = await FlippingApi.getOpportunities({ max_budget: maxBudget, min_roi: minRoi });
         console.log('Fetched Data:', result);
         console.log('Data length:', result?.length || 0);
         return result;

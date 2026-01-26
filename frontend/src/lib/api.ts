@@ -10,7 +10,7 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     console.log('🚀 API Request:', config.method?.toUpperCase(), config.url);
-    console.log('   Full URL:', config.baseURL + config.url);
+    console.log('   Full URL:', (config.baseURL || '') + (config.url || ''));
     return config;
   },
   (error) => {

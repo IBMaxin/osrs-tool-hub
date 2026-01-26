@@ -2,46 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Card, Group, Text, Badge, Button, Stack, Avatar, Box, Image } from '@mantine/core';
 import { IconSword } from '@tabler/icons-react';
 import { SlayerTask } from '../../lib/api';
+import { getMonsterIconUrl, getCategoryColor } from './utils/monsterImages';
 
 interface TaskCardProps {
   task: SlayerTask;
   onGetAdvice: (taskId: number) => void;
   index?: number;
 }
-
-// Generate monster icon URL (OSRS wiki format)
-const getMonsterIconUrl = (monsterName: string): string => {
-  // OSRS wiki monster images typically use: Monster_name.png or Monster_name_detail.png
-  // Names are usually title case with underscores
-  let safeName = monsterName
-    .trim()
-    .replace(/ /g, '_')
-    .replace(/'/g, '%27');
-  
-  // OSRS wiki uses title case for monster names
-  // e.g., "Abyssal demon" -> "Abyssal_demon"
-  safeName = safeName.split('_').map(word => {
-    // Handle special cases
-    if (word.toLowerCase() === 'demon') return 'demon';
-    if (word.toLowerCase() === 'devil') return 'devil';
-    if (word.toLowerCase() === 'spectre') return 'spectre';
-    // Capitalize first letter, rest lowercase
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  }).join('_');
-  
-  // Try detail version first (most common for monsters)
-  return `https://oldschool.runescape.wiki/images/${safeName}_detail.png`;
-};
-
-// Get category color for border
-const getCategoryColor = (category: string): string => {
-  const lower = category.toLowerCase();
-  if (lower.includes('demon')) return 'red';
-  if (lower.includes('dragon')) return 'green';
-  if (lower.includes('undead')) return 'gray';
-  if (lower.includes('kalphite')) return 'yellow';
-  return 'blue';
-};
 
 export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
   const categoryColor = getCategoryColor(task.category);

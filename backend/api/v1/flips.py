@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session
 from backend.database import get_session
 from backend.services.flipping import FlippingService
-from typing import List, Optional
+from typing import Optional
 
 router = APIRouter(prefix="/flips", tags=["Flipping"])
 

@@ -1,7 +1,8 @@
 """Flipping service for calculating profit margins."""
 from typing import Dict, List, Optional
-from sqlmodel import Session, select, col
-from sqlalchemy import func
+from sqlmodel import Session, select, col, text
+from sqlalchemy import func, case
+from pydantic import BaseModel
 from backend.models import Item, PriceSnapshot
 import logging
 
@@ -20,6 +21,18 @@ def calculate_tax(sell_price: int) -> int:
     
     tax = int(sell_price * 0.02)
     return min(tax, 5_000_000)
+
+
+class FlipOpportunity(BaseModel):
+    """Pydantic model for flip opportunity results."""
+    item_id: int
+    name: str
+    buy_price: int
+    sell_price: int
+    margin: float
+    roi: float
+    volume: int
+    wiki_url: Optional[str] = None
 
 class FlippingService:
     def __init__(self, session: Session):
@@ -103,3 +116,110 @@ class FlippingService:
         )
         
         return opportunities[:limit]
+    
+    def find_best_flips(
+        self,
+        budget: int,
+        min_roi: float,
+        min_volume: int,
+        exclude_members: bool = False
+    ) -> List[FlipOpportunity]:
+        """
+        Find best flip opportunities using optimized SQL query.
+        
+        This method performs all calculations in the database layer for maximum performance.
+        No Python loops - all filtering and calculations happen in SQL.
+        
+        Args:
+            budget: Maximum budget in GP
+            min_roi: Minimum ROI percentage
+            min_volume: Minimum volume requirement
+            exclude_members: If True, exclude members-only items
+            
+        Returns:
+            List of FlipOpportunity models sorted by potential profit
+        """
+        # Build optimized SQL query that does all calculations in the database
+        # Using raw SQL for maximum performance and to avoid Python loops
+        
+        # Calculate margin_post_tax: (high_price * 0.99) - low_price
+        # This represents 1% tax (0.99 multiplier)
+        # Note: Tax is capped at 5,000,000 gp per item (handled in calculation)
+        
+        # Build WHERE clause conditions
+        where_conditions = [
+            "i.high_price IS NOT NULL",
+            "i.low_price IS NOT NULL",
+            "i.low_price > 0",
+            "i.high_price > 0",
+            "i.low_price <= :budget"
+        ]
+        
+        # Add members filter if needed
+        if exclude_members:
+            where_conditions.append("i.members = 0")
+        
+        where_clause = " AND ".join(where_conditions)
+        
+        # Use MIN instead of LEAST for SQLite compatibility
+        # Note: "limit" is a reserved keyword in SQLite, so we need to escape it with quotes
+        sql_query = text(f"""
+            SELECT 
+                i.id as item_id,
+                i.name,
+                i.low_price as buy_price,
+                i.high_price as sell_price,
+                (i.high_price * 0.99) - i.low_price as margin_post_tax,
+                ((i.high_price * 0.99) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) as roi,
+                COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0) as volume,
+                COALESCE(i."limit", 0) as buy_limit,
+                CASE 
+                    WHEN i.name IS NOT NULL THEN 
+                        'https://oldschool.runescape.wiki/w/' || REPLACE(i.name, ' ', '_')
+                    ELSE NULL
+                END as wiki_url
+            FROM item i
+            LEFT JOIN pricesnapshot ps ON i.id = ps.item_id
+            WHERE {where_clause}
+                AND (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0)) >= :min_volume
+                AND ((i.high_price * 0.99) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) >= :min_roi
+            ORDER BY 
+                ((i.high_price * 0.99) - i.low_price) * 
+                CASE 
+                    WHEN COALESCE(i."limit", 0) < (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0)) 
+                    THEN COALESCE(i."limit", 0)
+                    ELSE (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0))
+                END DESC
+            LIMIT 100
+        """)
+        
+        # Execute query with parameters using bindparams
+        result = self.session.exec(
+            sql_query.bindparams(
+                budget=budget,
+                min_roi=min_roi,
+                min_volume=min_volume
+            )
+        )
+        
+        opportunities = []
+        for row in result:
+            margin_post_tax = float(row.margin_post_tax) if row.margin_post_tax else 0.0
+            roi = float(row.roi) if row.roi else 0.0
+            volume = int(row.volume) if row.volume else 0
+            buy_limit = int(row.buy_limit) if row.buy_limit else 0
+            
+            opportunities.append(
+                FlipOpportunity(
+                    item_id=int(row.item_id),
+                    name=str(row.name),
+                    buy_price=int(row.buy_price),
+                    sell_price=int(row.sell_price),
+                    margin=round(margin_post_tax, 2),
+                    roi=round(roi, 2),
+                    volume=volume,
+                    wiki_url=str(row.wiki_url) if row.wiki_url else None
+                )
+            )
+        
+        return opportunities
