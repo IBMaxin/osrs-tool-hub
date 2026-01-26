@@ -2,7 +2,7 @@
 name = "osrs-tool-hub"
 version = "0.1.0"
 description = "OSRS Tool Hub - Flipping and gear calculators"
-authors = ["Your Name <you@example.com>"]
+authors = ["OSRS Tool Hub Team <maintainers@osrstoolhub.com>"]
 readme = "README.md"
 packages = [{include = "backend"}]
 
@@ -14,10 +14,10 @@ httpx = "^0.26.0"
 apscheduler = "^3.10.4"
 uvicorn = "^0.27.0"
 pydantic-settings = "^2.1.0"
-pytest = "^7.4.4"
 mwparserfromhell = "^0.6.5"
 
 [tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
 pytest-asyncio = "^0.23.3"
 black = "^24.1.1"
 ruff = "^0.1.11"
