@@ -68,19 +68,23 @@ async def lifespan(app: FastAPI):
         logger.info("Running initial price sync...")
         await wiki_client.sync_prices_to_db(session)
         
-        # Check if slayer data exists, seed if missing
-        slayer_task_count = session.exec(select(func.count(SlayerTask.id))).one()
-        monster_count = session.exec(select(func.count(Monster.id))).one()
-        logger.info(f"Slayer tasks in DB: {slayer_task_count}, Monsters in DB: {monster_count}")
-        if slayer_task_count == 0 or monster_count == 0:
-            logger.info("Slayer data missing, seeding slayer monsters and tasks...")
-            try:
-                seed_slayer_data()
-                logger.info("✅ Slayer data seeded successfully")
-            except Exception as e:
-                logger.error(f"Failed to seed slayer data: {e}")
-        else:
-            logger.info("Slayer data already exists, skipping seed")
+        # Always run seed to ensure data is up to date
+        logger.info("Running slayer data seed/update...")
+        try:
+            seed_slayer_data()
+            # Verify after seeding
+            slayer_task_count = session.exec(select(func.count(SlayerTask.id))).one()
+            monster_count = session.exec(select(func.count(Monster.id))).one()
+            logger.info(f"✅ Slayer data updated: {slayer_task_count} tasks, {monster_count} monsters")
+        except Exception as e:
+            logger.error(f"Failed to seed slayer data: {e}")
+            # If seeding fails, check if we have any data
+            slayer_task_count = session.exec(select(func.count(SlayerTask.id))).one()
+            monster_count = session.exec(select(func.count(Monster.id))).one()
+            if slayer_task_count == 0 or monster_count == 0:
+                logger.warning("⚠️  No slayer data in database after failed seed attempt")
+            else:
+                logger.info(f"Using existing slayer data: {slayer_task_count} tasks, {monster_count} monsters")
     
     yield
     

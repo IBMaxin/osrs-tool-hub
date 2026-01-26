@@ -6,6 +6,35 @@ export const api = axios.create({
   baseURL: API_URL,
 });
 
+// Add request interceptor for debugging
+api.interceptors.request.use(
+  (config) => {
+    console.log('🚀 API Request:', config.method?.toUpperCase(), config.url);
+    console.log('   Full URL:', config.baseURL + config.url);
+    return config;
+  },
+  (error) => {
+    console.error('❌ Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  (response) => {
+    console.log('✅ API Response:', response.status, response.config.url);
+    console.log('   Data type:', typeof response.data);
+    console.log('   Is array:', Array.isArray(response.data));
+    console.log('   Data length:', Array.isArray(response.data) ? response.data.length : 'N/A');
+    return response;
+  },
+  (error) => {
+    console.error('❌ Response Error:', error.response?.status, error.config?.url);
+    console.error('   Error data:', error.response?.data);
+    return Promise.reject(error);
+  }
+);
+
 // --- Gear Types ---
 export interface ItemData {
   id: number | null;

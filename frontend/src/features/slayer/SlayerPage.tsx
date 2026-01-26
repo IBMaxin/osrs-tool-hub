@@ -39,18 +39,38 @@ export function SlayerPage() {
     queryKey: ['slayerTasks', selectedMaster],
     queryFn: async () => {
       try {
-        console.log('Fetching tasks for master:', selectedMaster);
+        console.log('=== FETCHING TASKS ===');
+        console.log('Master:', selectedMaster);
+        console.log('Master type:', typeof selectedMaster);
+        console.log('API base URL:', 'http://localhost:8000/api/v1');
         const result = await SlayerApi.getTasks(selectedMaster!);
-        console.log('Tasks fetched:', result, 'Count:', result?.length);
+        console.log('=== API RESPONSE ===');
+        console.log('Result type:', typeof result);
+        console.log('Is array:', Array.isArray(result));
+        console.log('Result length:', result?.length);
+        console.log('Full result:', result);
+        if (!Array.isArray(result)) {
+          console.error('ERROR: Result is not an array!', result);
+          return [];
+        }
         return result;
-      } catch (error) {
-        console.error('Error fetching tasks:', error);
+      } catch (error: any) {
+        console.error('=== API ERROR ===');
+        console.error('Error type:', typeof error);
+        console.error('Error message:', error?.message);
+        console.error('Error response:', error?.response);
+        console.error('Error status:', error?.response?.status);
+        console.error('Error data:', error?.response?.data);
+        console.error('Full error:', error);
         throw error;
       }
     },
     enabled: !!selectedMaster,
-    staleTime: 0, // Always refetch to avoid cache issues
-    gcTime: 0 // React Query v5 uses gcTime instead of cacheTime
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    retry: 1
   });
 
   // 3. Fetch Advice (conditional)
@@ -110,8 +130,17 @@ export function SlayerPage() {
           <SegmentedControl
             value={selectedMaster || ''}
             onChange={(value) => {
-              console.log('Master selected:', value);
-              setSelectedMaster(value);
+              console.log('=== MASTER SELECTED ===');
+              console.log('Value:', value);
+              console.log('Value type:', typeof value);
+              console.log('Value length:', value?.length);
+              console.log('Value JSON:', JSON.stringify(value));
+              // Clear any cached queries for the previous master
+              setSelectedMaster(null);
+              // Use setTimeout to ensure state clears before setting new value
+              setTimeout(() => {
+                setSelectedMaster(value);
+              }, 0);
             }}
             data={masters.map(master => ({ value: master, label: master }))}
             fullWidth
