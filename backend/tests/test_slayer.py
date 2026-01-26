@@ -1,12 +1,17 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
+from sqlalchemy.pool import StaticPool
 from backend.main import app
 from backend.models import Monster, SlayerTask, SlayerMaster
 from backend.database import get_session
 import pytest
 
-# Setup in-memory DB for testing
-engine = create_engine("sqlite:///:memory:")
+# Use StaticPool to share the same in-memory database across threads/connections
+engine = create_engine(
+    "sqlite://", 
+    connect_args={"check_same_thread": False}, 
+    poolclass=StaticPool
+)
 
 def create_test_db():
     SQLModel.metadata.create_all(engine)
@@ -15,14 +20,17 @@ def get_test_session():
     with Session(engine) as session:
         yield session
 
+# Apply dependency override globally for the client
 app.dependency_overrides[get_session] = get_test_session
 client = TestClient(app)
 
 @pytest.fixture(name="session")
 def session_fixture():
+    # Create tables before each test
     create_test_db()
     with Session(engine) as session:
         yield session
+    # Clean up after each test
     SQLModel.metadata.drop_all(engine)
 
 def test_get_slayer_masters(session: Session):
