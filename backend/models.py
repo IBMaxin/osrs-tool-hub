@@ -1,5 +1,5 @@
 """Database models."""
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List
 from enum import Enum
 
@@ -88,8 +88,8 @@ class Flip(SQLModel, table=True):
     profit: int
     profit_percent: float
     volume: Optional[int] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class GearSet(SQLModel, table=True):
@@ -100,8 +100,8 @@ class GearSet(SQLModel, table=True):
     description: Optional[str] = None
     items: str  # JSON string of item IDs and quantities
     total_cost: int
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class Item(SQLModel, table=True):
@@ -169,7 +169,7 @@ class PriceSnapshot(SQLModel, table=True):
     low_volume: Optional[int] = None
     high_time: Optional[int] = None  # Unix timestamp
     low_time: Optional[int] = None  # Unix timestamp
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     
     @property
     def high(self) -> Optional[int]:
