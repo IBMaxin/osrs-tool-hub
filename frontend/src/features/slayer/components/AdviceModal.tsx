@@ -6,8 +6,8 @@ import {
   Stack, 
   Badge, 
   Divider,
-  Loader,
-  Button
+  Button,
+  Loader
 } from '@mantine/core';
 import { IconX, IconCopy, IconCheck } from '@tabler/icons-react';
 import type { TaskAdvice } from '../../../lib/api';

@@ -80,12 +80,11 @@ class SlayerService:
         else:
             # Fallback Logic
             if task.weight > 8 and monster.slayer_xp < 50:
-                 recommendation = "BLOCK"
-                 reason = "High weight but low XP (inefficient)"
-            
-            if monster.name in ["Spiritual Ranger", "Waterfiend", "Killerwatt", "Cave Kraken"]:
-                 recommendation = "SKIP"
-                 reason = "Generally considered annoying/slow"
+                recommendation = "BLOCK"
+                reason = "High weight but low XP (inefficient)"
+            elif monster.name in ["Spiritual Ranger", "Waterfiend", "Killerwatt", "Cave Kraken"]:
+                recommendation = "SKIP"
+                reason = "Generally considered annoying/slow"
 
         return {
             "task": monster.name,

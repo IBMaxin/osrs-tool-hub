@@ -1,0 +1,54 @@
+"""Demon slayer task data."""
+
+DEMON_TASK_DATA = {
+    "Black Demons": {
+        "weakness": ["Demonbane"],
+        "items_needed": [],
+        "attack_style": "Melee (Cannon) or Ranged",
+        "xp_rate": 20000,
+        "profit_rate": 0,
+        "recommendation": "BLOCK",
+        "reason": "High weighting, high HP, low drops. Block unless doing Demonic Gorillas.",
+        "locations": ["Taverley Dungeon", "Chasm of Fire"]
+    },
+    "Black demons": {
+        "weakness": ["Demonbane"],
+        "items_needed": [],
+        "attack_style": "Melee (Cannon) or Ranged",
+        "xp_rate": 20000,
+        "profit_rate": 0,
+        "recommendation": "BLOCK",
+        "reason": "High weighting, high HP, low drops. Block unless doing Demonic Gorillas.",
+        "locations": ["Taverley Dungeon", "Chasm of Fire"]
+    },
+    "Greater Demons": {
+        "weakness": ["Demonbane"],
+        "items_needed": [],
+        "attack_style": "Melee (Cannon)",
+        "xp_rate": 25000,
+        "profit_rate": 50000,
+        "recommendation": "DO",
+        "reason": "Decent cannon task. Can do K'ril Tsutsaroth (Zammy GWD) for boss task.",
+        "locations": ["Chasm of Fire", "Stronghold Slayer Cave"]
+    },
+    "Greater demons": {
+        "weakness": ["Demonbane"],
+        "items_needed": [],
+        "attack_style": "Melee (Cannon)",
+        "xp_rate": 25000,
+        "profit_rate": 50000,
+        "recommendation": "DO",
+        "reason": "Decent cannon task. Can do K'ril Tsutsaroth (Zammy GWD) for boss task.",
+        "locations": ["Chasm of Fire", "Stronghold Slayer Cave"]
+    },
+    "Smoke devils": {
+        "weakness": [],
+        "items_needed": ["Facemask/Slayer Helmet"],
+        "attack_style": "Magic (Burst/Barrage)",
+        "xp_rate": 70000,
+        "profit_rate": 500000,
+        "recommendation": "DO",
+        "reason": "One of the best XP tasks when bursting. Great profit from Occult Necklace drops.",
+        "locations": ["Smoke Devil Dungeon"]
+    },
+}

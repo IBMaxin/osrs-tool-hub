@@ -1,21 +1,25 @@
-import { useState } from 'react';
-import { 
-  Card, 
-  Image, 
-  Text, 
-  Group, 
-  Badge, 
-  Anchor, 
-  ScrollArea, 
-  Table, 
-  Button, 
+import { useState } from "react";
+import {
+  Card,
+  Image,
+  Text,
+  Group,
+  Badge,
+  Anchor,
+  ScrollArea,
+  Table,
+  Button,
   Box,
   Stack,
-  Collapse
-} from '@mantine/core';
-import { IconExternalLink, IconChevronDown, IconChevronUp } from '@tabler/icons-react';
-import type { ProgressionItem } from '../../../lib/api/index';
-import { formatPriceOrNA } from '../../../lib/utils/format';
+  Collapse,
+} from "@mantine/core";
+import {
+  IconExternalLink,
+  IconChevronDown,
+  IconChevronUp,
+} from "@tabler/icons-react";
+import type { ProgressionItem } from "../../../lib/api/index";
+import { formatPriceOrNA } from "../../../lib/utils/format";
 
 interface ItemCardProps {
   item: ProgressionItem;
@@ -24,16 +28,33 @@ interface ItemCardProps {
 
 export function ItemCard({ item, tier }: ItemCardProps) {
   const [opened, setOpened] = useState(false);
-  
+
   return (
-    <Card withBorder padding="sm" radius="md" style={{ height: '100%' }}>
+    <Card
+      withBorder
+      padding="sm"
+      radius="md"
+      style={{
+        height: "100%",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        cursor: "pointer",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.boxShadow = "var(--mantine-shadow-md)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "var(--mantine-shadow-sm)";
+      }}
+    >
       <Group justify="space-between" align="flex-start" mb="xs">
         <Group gap="xs" wrap="nowrap">
           {item.icon_url ? (
-            <Image 
-              src={item.icon_url} 
-              w={40} 
-              h={40} 
+            <Image
+              src={item.icon_url}
+              w={40}
+              h={40}
               fit="contain"
               fallbackSrc="https://placehold.co/40?text=?"
             />
@@ -47,10 +68,13 @@ export function ItemCard({ item, tier }: ItemCardProps) {
               rel="noopener noreferrer"
               size="sm"
               fw={500}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
             >
               {item.name}
-              <IconExternalLink size={12} style={{ marginLeft: 4, display: 'inline' }} />
+              <IconExternalLink
+                size={12}
+                style={{ marginLeft: 4, display: "inline" }}
+              />
             </Anchor>
             {item.price !== null && (
               <Text size="xs" c="dimmed" fw={600}>
@@ -59,17 +83,17 @@ export function ItemCard({ item, tier }: ItemCardProps) {
             )}
           </Stack>
         </Group>
-        <Badge size="sm" variant="light" color="blue">
+        <Badge size="sm" variant="light" color="yellow">
           {tier}
         </Badge>
       </Group>
-      
+
       {item.not_found && (
         <Badge color="red" size="xs" mb="xs">
           Not in database
         </Badge>
       )}
-      
+
       {item.stats && (
         <>
           <Button
@@ -77,40 +101,52 @@ export function ItemCard({ item, tier }: ItemCardProps) {
             size="xs"
             fullWidth
             onClick={() => setOpened(!opened)}
-            rightSection={opened ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+            rightSection={
+              opened ? (
+                <IconChevronUp size={14} />
+              ) : (
+                <IconChevronDown size={14} />
+              )
+            }
             mb="xs"
           >
-            {opened ? 'Hide' : 'Show'} Stats
+            {opened ? "Hide" : "Show"} Stats
           </Button>
-          
+
           <Collapse in={opened}>
             <ScrollArea h={200}>
               <Table striped>
                 <Table.Tbody>
-                  {item.stats.melee_strength && item.stats.melee_strength > 0 && (
-                    <Table.Tr>
-                      <Table.Td>Melee Str</Table.Td>
-                      <Table.Td>+{item.stats.melee_strength}</Table.Td>
-                    </Table.Tr>
-                  )}
-                  {item.stats.ranged_strength && item.stats.ranged_strength > 0 && (
-                    <Table.Tr>
-                      <Table.Td>Ranged Str</Table.Td>
-                      <Table.Td>+{item.stats.ranged_strength}</Table.Td>
-                    </Table.Tr>
-                  )}
+                  {item.stats.melee_strength &&
+                    item.stats.melee_strength > 0 && (
+                      <Table.Tr>
+                        <Table.Td>Melee Str</Table.Td>
+                        <Table.Td>+{item.stats.melee_strength}</Table.Td>
+                      </Table.Tr>
+                    )}
+                  {item.stats.ranged_strength &&
+                    item.stats.ranged_strength > 0 && (
+                      <Table.Tr>
+                        <Table.Td>Ranged Str</Table.Td>
+                        <Table.Td>+{item.stats.ranged_strength}</Table.Td>
+                      </Table.Tr>
+                    )}
                   {item.stats.magic_damage && item.stats.magic_damage > 0 && (
                     <Table.Tr>
                       <Table.Td>Magic Dmg</Table.Td>
                       <Table.Td>+{item.stats.magic_damage}%</Table.Td>
                     </Table.Tr>
                   )}
-                  {item.stats.prayer_bonus !== undefined && item.stats.prayer_bonus !== 0 && (
-                    <Table.Tr>
-                      <Table.Td>Prayer</Table.Td>
-                      <Table.Td>{item.stats.prayer_bonus > 0 ? '+' : ''}{item.stats.prayer_bonus}</Table.Td>
-                    </Table.Tr>
-                  )}
+                  {item.stats.prayer_bonus !== undefined &&
+                    item.stats.prayer_bonus !== 0 && (
+                      <Table.Tr>
+                        <Table.Td>Prayer</Table.Td>
+                        <Table.Td>
+                          {item.stats.prayer_bonus > 0 ? "+" : ""}
+                          {item.stats.prayer_bonus}
+                        </Table.Td>
+                      </Table.Tr>
+                    )}
                   {item.stats.attack_stab && item.stats.attack_stab > 0 && (
                     <Table.Tr>
                       <Table.Td>Stab</Table.Td>
@@ -143,28 +179,46 @@ export function ItemCard({ item, tier }: ItemCardProps) {
                   )}
                 </Table.Tbody>
               </Table>
-              
+
               {item.requirements && (
                 <Stack gap="xs" mt="xs">
-                  <Text size="xs" fw={700} c="dimmed">Requirements:</Text>
+                  <Text size="xs" fw={700} c="dimmed">
+                    Requirements:
+                  </Text>
                   <Group gap="xs">
-                    {item.requirements.attack && item.requirements.attack > 1 && (
-                      <Badge size="xs" variant="outline">Atk {item.requirements.attack}</Badge>
-                    )}
-                    {item.requirements.strength && item.requirements.strength > 1 && (
-                      <Badge size="xs" variant="outline">Str {item.requirements.strength}</Badge>
-                    )}
-                    {item.requirements.defence && item.requirements.defence > 1 && (
-                      <Badge size="xs" variant="outline">Def {item.requirements.defence}</Badge>
-                    )}
-                    {item.requirements.ranged && item.requirements.ranged > 1 && (
-                      <Badge size="xs" variant="outline">Rng {item.requirements.ranged}</Badge>
-                    )}
+                    {item.requirements.attack &&
+                      item.requirements.attack > 1 && (
+                        <Badge size="xs" variant="outline">
+                          Atk {item.requirements.attack}
+                        </Badge>
+                      )}
+                    {item.requirements.strength &&
+                      item.requirements.strength > 1 && (
+                        <Badge size="xs" variant="outline">
+                          Str {item.requirements.strength}
+                        </Badge>
+                      )}
+                    {item.requirements.defence &&
+                      item.requirements.defence > 1 && (
+                        <Badge size="xs" variant="outline">
+                          Def {item.requirements.defence}
+                        </Badge>
+                      )}
+                    {item.requirements.ranged &&
+                      item.requirements.ranged > 1 && (
+                        <Badge size="xs" variant="outline">
+                          Rng {item.requirements.ranged}
+                        </Badge>
+                      )}
                     {item.requirements.magic && item.requirements.magic > 1 && (
-                      <Badge size="xs" variant="outline">Mag {item.requirements.magic}</Badge>
+                      <Badge size="xs" variant="outline">
+                        Mag {item.requirements.magic}
+                      </Badge>
                     )}
                     {item.requirements.quest && (
-                      <Badge size="xs" color="orange" variant="light">{item.requirements.quest}</Badge>
+                      <Badge size="xs" color="orange" variant="light">
+                        {item.requirements.quest}
+                      </Badge>
                     )}
                   </Group>
                 </Stack>

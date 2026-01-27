@@ -46,7 +46,7 @@ def migrate_tables() -> None:
                             low_price = (SELECT low_price FROM pricesnapshot WHERE pricesnapshot.item_id = item.id),
                             high_time = (SELECT high_time FROM pricesnapshot WHERE pricesnapshot.item_id = item.id),
                             low_time = (SELECT low_time FROM pricesnapshot WHERE pricesnapshot.item_id = item.id),
-                            buy_limit = item.limit
+                            buy_limit = item."limit"
                         WHERE EXISTS (SELECT 1 FROM pricesnapshot WHERE pricesnapshot.item_id = item.id)
                     """))
                     print("✓ Synced price data from PriceSnapshot to Item table")

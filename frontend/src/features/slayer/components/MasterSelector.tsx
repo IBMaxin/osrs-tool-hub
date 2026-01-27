@@ -25,12 +25,12 @@ export function MasterSelector({
     <SegmentedControl
       value={selectedMaster || ''}
       onChange={(value) => {
-        // Clear any cached queries for the previous master
         onMasterChange(value);
       }}
       data={masters.map(master => ({ value: master, label: master }))}
       fullWidth
       size="md"
+      color="yellow"
     />
   );
 }

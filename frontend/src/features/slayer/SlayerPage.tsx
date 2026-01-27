@@ -1,52 +1,23 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Container, Title, Text, Stack } from '@mantine/core';
-import { SlayerApi } from '../../lib/api';
-import type { TaskAdvice } from '../../lib/api';
 import { MasterSelector } from './components/MasterSelector';
 import { TaskGrid } from './components/TaskGrid';
 import { AdviceModal } from './components/AdviceModal';
+import { useSlayerMasters } from './hooks/useSlayerMasters';
+import { useSlayerTasks } from './hooks/useSlayerTasks';
+import { useSlayerAdvice } from './hooks/useSlayerAdvice';
 
 export function SlayerPage() {
   const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
   const [adviceModalOpen, setAdviceModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
 
-  // 1. Fetch Masters
-  const { data: masters, isLoading: mastersLoading } = useQuery({
-    queryKey: ['slayerMasters'],
-    queryFn: SlayerApi.getMasters
-  });
-
-  // 2. Fetch Tasks (conditional)
-  const { data: tasks, isLoading: tasksLoading, error: tasksError } = useQuery({
-    queryKey: ['slayerTasks', selectedMaster],
-    queryFn: async () => {
-      try {
-        const result = await SlayerApi.getTasks(selectedMaster!);
-        if (!Array.isArray(result)) {
-          console.error('ERROR: Result is not an array!', result);
-          return [];
-        }
-        return result;
-      } catch (error: any) {
-        console.error('API Error:', error);
-        throw error;
-      }
-    },
-    enabled: !!selectedMaster,
-    staleTime: 0,
-    gcTime: 0,
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
-    retry: 1
-  });
-
-  // 3. Fetch Advice (conditional)
-  const { data: advice, isLoading: adviceLoading } = useQuery({
-    queryKey: ['taskAdvice', selectedTaskId],
-    queryFn: () => SlayerApi.getAdvice(selectedTaskId!),
-    enabled: !!selectedTaskId && adviceModalOpen
+  // Use custom hooks for data fetching
+  const { masters, isLoading: mastersLoading } = useSlayerMasters();
+  const { tasks, isLoading: tasksLoading, error: tasksError } = useSlayerTasks({ selectedMaster });
+  const { advice, isLoading: adviceLoading } = useSlayerAdvice({
+    selectedTaskId,
+    enabled: adviceModalOpen
   });
 
   const handleGetAdvice = (taskId: number) => {

@@ -26,6 +26,23 @@ def seed_slayer_data():
             Monster(id=15, name="Drake", combat_level=84, hitpoints=250, slayer_xp=316.8, slayer_category="Drakes", is_dragon=True),
             Monster(id=24, name="Hydra", combat_level=194, hitpoints=300, slayer_xp=660, slayer_category="Hydras", is_dragon=True),
             Monster(id=31, name="Kraken", combat_level=291, hitpoints=255, slayer_xp=255, slayer_category="Kraken"),
+            # Additional monsters
+            Monster(id=19, name="Black demon", combat_level=172, hitpoints=178, slayer_xp=178, slayer_category="Black demons", is_demon=True),
+            Monster(id=20, name="Greater demon", combat_level=92, hitpoints=87, slayer_xp=87, slayer_category="Greater demons", is_demon=True),
+            Monster(id=21, name="Blue dragon", combat_level=111, hitpoints=107, slayer_xp=107, slayer_category="Blue dragons", is_dragon=True),
+            Monster(id=22, name="Steel dragon", combat_level=246, hitpoints=180, slayer_xp=180, slayer_category="Steel dragons", is_dragon=True),
+            Monster(id=23, name="Iron dragon", combat_level=189, hitpoints=150, slayer_xp=150, slayer_category="Iron dragons", is_dragon=True),
+            Monster(id=25, name="Dark beast", combat_level=182, hitpoints=140, slayer_xp=140, slayer_category="Dark beasts"),
+            Monster(id=26, name="Suqah", combat_level=111, hitpoints=84, slayer_xp=84, slayer_category="Suqah"),
+            Monster(id=27, name="TzHaar", combat_level=103, hitpoints=100, slayer_xp=100, slayer_category="TzHaar"),
+            Monster(id=28, name="Spiritual mage", combat_level=83, hitpoints=75, slayer_xp=75, slayer_category="Spiritual Creatures"),
+            Monster(id=29, name="Spiritual ranger", combat_level=63, hitpoints=60, slayer_xp=60, slayer_category="Spiritual Creatures"),
+            Monster(id=30, name="Spiritual warrior", combat_level=68, hitpoints=65, slayer_xp=65, slayer_category="Spiritual Creatures"),
+            Monster(id=32, name="Cave kraken", combat_level=127, hitpoints=90, slayer_xp=90, slayer_category="Cave kraken"),
+            Monster(id=33, name="Fire giant", combat_level=86, hitpoints=111, slayer_xp=111, slayer_category="Fire giants"),
+            Monster(id=34, name="Mithril dragon", combat_level=304, hitpoints=255, slayer_xp=255, slayer_category="Mithril dragons", is_dragon=True),
+            Monster(id=35, name="Adamant dragon", combat_level=338, hitpoints=240, slayer_xp=240, slayer_category="Adamant dragons", is_dragon=True),
+            Monster(id=36, name="Rune dragon", combat_level=380, hitpoints=255, slayer_xp=255, slayer_category="Rune dragons", is_dragon=True),
         ]
         
         for m in monsters:
@@ -82,11 +99,10 @@ def seed_slayer_data():
                 else:
                     print(f"  Task already exists: {cat}")
         
-        # 3. Define Tasks (Nieve)
+        # 3. Define Tasks (Nieve) - Nieve assigns different tasks than Duradel
         nieve_tasks = [
             ("Abyssal demons", 120, 185, 12, True),
             ("Aberrant spectres", 135, 175, 8, True),
-            ("Smoke devils", 135, 185, 9, True),
             ("Gargoyles", 130, 200, 9, True),
             ("Nechryaels", 130, 200, 9, True),
             ("Bloodvelds", 130, 200, 8, True),
@@ -94,10 +110,17 @@ def seed_slayer_data():
             ("Kalphite", 130, 200, 9, True),
             ("Hellhounds", 130, 200, 10, True),
             ("Dust devils", 120, 170, 6, True),
-            ("Wyrms", 125, 160, 8, True),
-            ("Drakes", 80, 145, 8, True),
-            ("Hydras", 135, 160, 10, True),
-            ("Kraken", 100, 120, 9, True),
+            ("Black demons", 120, 200, 9, True),
+            ("Greater demons", 120, 200, 8, True),
+            ("Blue dragons", 100, 150, 7, True),
+            ("Fire giants", 120, 200, 8, True),
+            ("Dark beasts", 100, 200, 9, True),
+            ("Suqah", 100, 200, 8, True),
+            ("TzHaar", 100, 200, 6, True),
+            ("Spiritual Creatures", 100, 200, 7, True),
+            ("Cave kraken", 100, 200, 8, True),
+            ("Steel dragons", 30, 50, 6, True),
+            ("Iron dragons", 30, 50, 6, True),
         ]
         
         for cat, min_q, max_q, weight, skip in nieve_tasks:

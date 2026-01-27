@@ -1,23 +1,16 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { 
   Table, Text, Group, Stack, SegmentedControl, 
   Card, Loader
 } from '@mantine/core';
-import { apiClient } from '../../lib/api/client';
 import { SLOT_ORDER, type TierGroup } from './utils/wikiGearHelpers';
 import { WikiTierRow } from './components/WikiTierRow';
+import { useWikiGearProgression } from './hooks/useWikiGearProgression';
 
 export function WikiGearTable() {
   const [style, setStyle] = useState("melee");
   
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['wiki-gear', style],
-    queryFn: async () => {
-      const res = await apiClient.get(`/gear/wiki-progression/${style}`);
-      return res.data;
-    }
-  });
+  const { data, isLoading, error } = useWikiGearProgression({ style });
 
   if (isLoading) {
     return (
@@ -48,7 +41,7 @@ export function WikiGearTable() {
 
   return (
     <Stack gap="lg">
-      <Group justify="space-between" align="center">
+      <Group justify="space-between" align="center" wrap="wrap">
         <Text size="xl" fw={700}>OSRS Wiki Gear Progression</Text>
         <SegmentedControl
           value={style}
@@ -58,37 +51,40 @@ export function WikiGearTable() {
             { label: 'Ranged', value: 'ranged' },
             { label: 'Magic', value: 'magic' },
           ]}
+          color="yellow"
         />
       </Group>
 
       <Card withBorder padding={0} radius="md" style={{ overflow: 'hidden' }}>
-        <Table striped highlightOnHover verticalSpacing="md">
-          <Table.Thead bg="gray.1">
-            <Table.Tr>
-              <Table.Th w={120}>Slot</Table.Th>
-              <Table.Th>Progression Path (Best → Worst)</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {sortedSlots.map(([slot, tiers]) => {
-              const typedTiers = tiers as TierGroup[];
-              return (
-              <Table.Tr key={slot}>
-                <Table.Td fw={700} tt="capitalize" fz="lg" style={{ verticalAlign: 'top', paddingTop: '1rem' }}>
-                  {slot}
-                </Table.Td>
-                <Table.Td>
-                  <Stack gap="sm" py="xs">
-                    {typedTiers.map((tier: TierGroup) => (
-                      <WikiTierRow key={tier.tier} tier={tier} />
-                    ))}
-                  </Stack>
-                </Table.Td>
+        <Table.ScrollContainer minWidth={800}>
+          <Table striped highlightOnHover verticalSpacing="md">
+            <Table.Thead bg="gray.1">
+              <Table.Tr>
+                <Table.Th w={120}>Slot</Table.Th>
+                <Table.Th>Progression Path (Best → Worst)</Table.Th>
               </Table.Tr>
-              );
-            })}
-          </Table.Tbody>
-        </Table>
+            </Table.Thead>
+            <Table.Tbody>
+              {sortedSlots.map(([slot, tiers]) => {
+                const typedTiers = tiers as TierGroup[];
+                return (
+                <Table.Tr key={slot}>
+                  <Table.Td fw={700} tt="capitalize" fz="lg" style={{ verticalAlign: 'top', paddingTop: '1rem' }}>
+                    {slot}
+                  </Table.Td>
+                  <Table.Td>
+                    <Stack gap="sm" py="xs">
+                      {typedTiers.map((tier: TierGroup) => (
+                        <WikiTierRow key={tier.tier} tier={tier} />
+                      ))}
+                    </Stack>
+                  </Table.Td>
+                </Table.Tr>
+                );
+              })}
+            </Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
       </Card>
     </Stack>
   );

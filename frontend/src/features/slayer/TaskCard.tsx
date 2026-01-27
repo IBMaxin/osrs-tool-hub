@@ -39,7 +39,7 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
       style={{
         borderLeftWidth: 4,
         borderLeftColor: `var(--mantine-color-${categoryColor}-6)`,
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.5s ease',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.5s ease, border-color 0.2s ease',
         opacity: 0,
         transform: 'translateY(10px)',
         cursor: 'pointer',
@@ -47,10 +47,12 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-4px)';
         e.currentTarget.style.boxShadow = 'var(--mantine-shadow-md)';
+        e.currentTarget.style.borderLeftColor = `var(--mantine-color-${categoryColor}-7)`;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = 'var(--mantine-shadow-sm)';
+        e.currentTarget.style.borderLeftColor = `var(--mantine-color-${categoryColor}-6)`;
       }}
       tabIndex={0}
       onKeyDown={(e) => {
@@ -136,6 +138,12 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
             color="yellow"
             onClick={() => onGetAdvice(task.task_id)}
             style={{ fontWeight: 600 }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
           >
             Get Advice
           </Button>

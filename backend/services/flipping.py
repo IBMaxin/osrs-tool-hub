@@ -18,7 +18,7 @@ def calculate_tax(sell_price: int) -> int:
     """
     if sell_price < 50:
         return 0
-    
+
     tax = int(sell_price * 0.02)
     return min(tax, 5_000_000)
 
@@ -37,9 +37,9 @@ class FlipOpportunity(BaseModel):
 class FlippingService:
     def __init__(self, session: Session):
         self.session = session
-    
+
     def get_flip_opportunities(
-        self, 
+        self,
         max_budget: Optional[int] = None,
         min_roi: float = 1.0,
         min_volume: int = 10,
@@ -53,29 +53,29 @@ class FlippingService:
         query = select(Item, PriceSnapshot).join(
             PriceSnapshot, Item.id == PriceSnapshot.item_id
         )
-        
+
         # Filter: Must have valid prices
         query = query.where(PriceSnapshot.high_price.is_not(None))
         query = query.where(PriceSnapshot.low_price.is_not(None))
-        
+
         # Filter: Max Budget (using low_price as buy price)
         if max_budget:
             query = query.where(PriceSnapshot.low_price <= max_budget)
-        
+
         # Filter: Volume (sum of high/low volume)
         # Only apply volume filter if min_volume > 0 and volume data exists
         # Since volume data may not be available, we skip this filter if min_volume is 0
         if min_volume > 0:
             total_volume = func.coalesce(PriceSnapshot.high_volume, 0) + func.coalesce(PriceSnapshot.low_volume, 0)
             query = query.where(total_volume >= min_volume)
-        
+
         results = self.session.exec(query).all()
         opportunities = []
-        
+
         for item, price in results:
             buy_price = price.low_price
             sell_price = price.high_price
-            
+
             # Skip invalid prices (e.g. 0)
             if not buy_price or not sell_price or buy_price <= 0:
                 continue
@@ -84,17 +84,17 @@ class FlippingService:
             tax = calculate_tax(sell_price)
             post_tax_revenue = sell_price - tax
             margin = post_tax_revenue - buy_price
-            
+
             # Calculate ROI
             roi = (margin / buy_price * 100)
-            
+
             if roi < min_roi:
                 continue
-                
+
             # Potential Profit
             item_limit = item.limit or 0
             potential_profit = margin * item_limit if item_limit > 0 else 0
-            
+
             opportunities.append({
                 "item_id": item.id,
                 "item_name": item.name,
@@ -108,15 +108,15 @@ class FlippingService:
                 "roi": round(roi, 2),
                 "potential_profit": potential_profit
             })
-            
+
         # Sort by Potential Profit descending
         opportunities.sort(
-            key=lambda x: x["potential_profit"] or 0, 
+            key=lambda x: x["potential_profit"] or 0,
             reverse=True
         )
-        
+
         return opportunities[:limit]
-    
+
     def find_best_flips(
         self,
         budget: int,
@@ -126,26 +126,27 @@ class FlippingService:
     ) -> List[FlipOpportunity]:
         """
         Find best flip opportunities using optimized SQL query.
-        
+
         This method performs all calculations in the database layer for maximum performance.
         No Python loops - all filtering and calculations happen in SQL.
-        
+
         Args:
             budget: Maximum budget in GP
             min_roi: Minimum ROI percentage
             min_volume: Minimum volume requirement
             exclude_members: If True, exclude members-only items
-            
+
         Returns:
             List of FlipOpportunity models sorted by potential profit
         """
         # Build optimized SQL query that does all calculations in the database
         # Using raw SQL for maximum performance and to avoid Python loops
-        
-        # Calculate margin_post_tax: (high_price * 0.99) - low_price
-        # This represents 1% tax (0.99 multiplier)
-        # Note: Tax is capped at 5,000,000 gp per item (handled in calculation)
-        
+
+        # Calculate margin_post_tax: (high_price - tax) - low_price
+        # Tax is 2% of sell price, capped at 5,000,000 gp, exempt for items under 50gp
+        # Formula: high_price - MIN(high_price * 0.02, 5000000) - low_price
+        # For items under 50gp, tax is 0
+
         # Build WHERE clause conditions
         where_conditions = [
             "i.high_price IS NOT NULL",
@@ -154,27 +155,36 @@ class FlippingService:
             "i.high_price > 0",
             "i.low_price <= :budget"
         ]
-        
+
         # Add members filter if needed
         if exclude_members:
             where_conditions.append("i.members = 0")
-        
+
         where_clause = " AND ".join(where_conditions)
-        
+
         # Use MIN instead of LEAST for SQLite compatibility
         # Note: "limit" is a reserved keyword in SQLite, so we need to escape it with quotes
+        # Tax calculation: 2% of sell price, capped at 5M, exempt for items under 50gp
         sql_query = text(f"""
-            SELECT 
+            SELECT
                 i.id as item_id,
                 i.name,
                 i.low_price as buy_price,
                 i.high_price as sell_price,
-                (i.high_price * 0.99) - i.low_price as margin_post_tax,
-                ((i.high_price * 0.99) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) as roi,
+                (i.high_price - CASE
+                    WHEN i.high_price < 50 THEN 0
+                    WHEN i.high_price * 0.02 > 5000000 THEN 5000000
+                    ELSE CAST(i.high_price * 0.02 AS INTEGER)
+                END) - i.low_price as margin_post_tax,
+                ((i.high_price - CASE
+                    WHEN i.high_price < 50 THEN 0
+                    WHEN i.high_price * 0.02 > 5000000 THEN 5000000
+                    ELSE CAST(i.high_price * 0.02 AS INTEGER)
+                END) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) as roi,
                 COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0) as volume,
                 COALESCE(i."limit", 0) as buy_limit,
-                CASE 
-                    WHEN i.name IS NOT NULL THEN 
+                CASE
+                    WHEN i.name IS NOT NULL THEN
                         'https://oldschool.runescape.wiki/w/' || REPLACE(i.name, ' ', '_')
                     ELSE NULL
                 END as wiki_url
@@ -182,17 +192,25 @@ class FlippingService:
             LEFT JOIN pricesnapshot ps ON i.id = ps.item_id
             WHERE {where_clause}
                 AND (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0)) >= :min_volume
-                AND ((i.high_price * 0.99) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) >= :min_roi
-            ORDER BY 
-                ((i.high_price * 0.99) - i.low_price) * 
-                CASE 
-                    WHEN COALESCE(i."limit", 0) < (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0)) 
+                AND ((i.high_price - CASE
+                    WHEN i.high_price < 50 THEN 0
+                    WHEN i.high_price * 0.02 > 5000000 THEN 5000000
+                    ELSE CAST(i.high_price * 0.02 AS INTEGER)
+                END) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) >= :min_roi
+            ORDER BY
+                ((i.high_price - CASE
+                    WHEN i.high_price < 50 THEN 0
+                    WHEN i.high_price * 0.02 > 5000000 THEN 5000000
+                    ELSE CAST(i.high_price * 0.02 AS INTEGER)
+                END) - i.low_price) *
+                CASE
+                    WHEN COALESCE(i."limit", 0) < (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0))
                     THEN COALESCE(i."limit", 0)
                     ELSE (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0))
                 END DESC
             LIMIT 100
         """)
-        
+
         # Execute query with parameters using bindparams
         result = self.session.exec(
             sql_query.bindparams(
@@ -201,14 +219,14 @@ class FlippingService:
                 min_volume=min_volume
             )
         )
-        
+
         opportunities = []
         for row in result:
             margin_post_tax = float(row.margin_post_tax) if row.margin_post_tax else 0.0
             roi = float(row.roi) if row.roi else 0.0
             volume = int(row.volume) if row.volume else 0
             buy_limit = int(row.buy_limit) if row.buy_limit else 0
-            
+
             opportunities.append(
                 FlipOpportunity(
                     item_id=int(row.item_id),
@@ -221,5 +239,5 @@ class FlippingService:
                     wiki_url=str(row.wiki_url) if row.wiki_url else None
                 )
             )
-        
+
         return opportunities

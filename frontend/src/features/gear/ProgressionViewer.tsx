@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { 
   Tabs, 
   Text, 
@@ -9,17 +8,14 @@ import {
   Title,
   ScrollArea
 } from '@mantine/core';
-import { fetchFullProgression, type FullProgressionResponse } from '../../lib/api';
 import { SlotProgression } from './components/SlotProgression';
 import { SLOT_ORDER } from './constants';
+import { useGearProgression } from './hooks/useGearProgression';
 
 export function ProgressionViewer() {
   const [style, setStyle] = useState<string>("melee");
 
-  const { data, isLoading, error } = useQuery<FullProgressionResponse>({
-    queryKey: ['gear-progression-full', style],
-    queryFn: () => fetchFullProgression(style),
-  });
+  const { data, isLoading, error } = useGearProgression({ style });
 
   if (isLoading) {
     return (
@@ -50,7 +46,7 @@ export function ProgressionViewer() {
 
   return (
     <Stack gap="lg">
-      <Group justify="space-between" align="center">
+      <Group justify="space-between" align="center" wrap="wrap">
         <Title order={2}>Gear Progression Guide</Title>
         
         <Tabs value={style} onChange={(val) => setStyle(val || "melee")}>
