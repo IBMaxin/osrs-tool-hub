@@ -18,7 +18,8 @@ class TestSlayerMastersEndpoint:
         assert isinstance(data, list)
         
         # Check that expected masters are present
-        master_names = [m.get("name") or m for m in data]
+        # Response is a list of strings (master names)
+        master_names = [m if isinstance(m, str) else m.get("name", "") for m in data]
         assert "Duradel" in master_names or "Konar" in master_names
 
 

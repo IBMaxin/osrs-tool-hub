@@ -19,7 +19,7 @@ def setup_scheduler() -> AsyncIOScheduler:
     scheduler = AsyncIOScheduler()
     wiki_client = WikiAPIClient()
     
-    # Define job to run every 60 seconds
+    # Define job to run every 5 minutes (300 seconds)
     async def update_prices_job():
         try:
             with Session(engine) as session:
@@ -27,6 +27,6 @@ def setup_scheduler() -> AsyncIOScheduler:
         except Exception as e:
             logger.error(f"Price update failed: {e}")
 
-    scheduler.add_job(update_prices_job, 'interval', seconds=60)
+    scheduler.add_job(update_prices_job, 'interval', seconds=300)
     
     return scheduler

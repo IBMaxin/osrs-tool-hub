@@ -223,7 +223,7 @@ class TestFlippingScannerEndpoint:
     def test_scanner_margin_calculation(self, client: TestClient, session: Session,
                                         sample_items: list[Item],
                                         sample_price_snapshots: list[PriceSnapshot]):
-        """Test that margin calculation is correct (1% tax)."""
+        """Test that margin calculation is correct (2% tax)."""
         response = client.get(
             "/api/v1/flipping/scanner?"
             "budget=1000000000&"
@@ -237,9 +237,10 @@ class TestFlippingScannerEndpoint:
         # Find Abyssal whip in results
         whip_result = next((r for r in data if r["name"] == "Abyssal whip"), None)
         if whip_result:
-            # Margin should be: (high_price * 0.99) - low_price
-            # (1500000 * 0.99) - 1400000 = 1485000 - 1400000 = 85000
-            expected_margin = (1500000 * 0.99) - 1400000
+            # Margin should be: (high_price - tax) - low_price
+            # Tax = 1500000 * 0.02 = 30000
+            # (1500000 - 30000) - 1400000 = 1470000 - 1400000 = 70000
+            expected_margin = (1500000 - (1500000 * 0.02)) - 1400000
             assert abs(whip_result["margin"] - expected_margin) < 1.0  # Allow for floating point
     
     def test_scanner_roi_calculation(self, client: TestClient, session: Session,

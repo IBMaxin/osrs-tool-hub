@@ -9,13 +9,12 @@ from backend.db.migrations import migrate_tables
 from backend.models import Item, SlayerTask, Monster
 from backend.services.wiki_client import WikiAPIClient
 from backend.app.scheduler import setup_scheduler
+from backend.app.logging_config import setup_logging
 from backend.seeds.slayer import seed_slayer_data
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# Configure logging - DEBUG level for all modules
+setup_logging()
+
 logger = logging.getLogger(__name__)
 
 

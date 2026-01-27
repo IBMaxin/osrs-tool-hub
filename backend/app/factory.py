@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.app.lifespan import lifespan
 from backend.app.routers import include_routers
+from backend.app.middleware import setup_rate_limiting
+from backend.config import settings
 
 
 def create_app() -> FastAPI:
@@ -28,6 +30,10 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    # Rate limiting middleware (if enabled)
+    if settings.rate_limit_enabled:
+        app = setup_rate_limiting(app)
 
     # Include routers
     include_routers(app)

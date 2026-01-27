@@ -1,21 +1,26 @@
 from typing import List, Dict
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlmodel import Session
 
 from backend.database import get_session
 from backend.services.slayer import SlayerService
 from backend.models import SlayerMaster
+from backend.app.middleware import limiter
+from backend.config import settings
 
 router = APIRouter(prefix="/slayer", tags=["Slayer"])
 
 @router.get("/masters")
-def get_slayer_masters(session: Session = Depends(get_session)):
+@limiter.limit(settings.default_rate_limit)
+def get_slayer_masters(request: Request, session: Session = Depends(get_session)):
     """Get list of Slayer Masters."""
     service = SlayerService(session)
     return service.get_masters()
 
 @router.get("/tasks/{master}")
+@limiter.limit(settings.default_rate_limit)
 def get_master_tasks(
+    request: Request,
     master: SlayerMaster,
     session: Session = Depends(get_session)
 ):
@@ -60,7 +65,9 @@ def get_master_tasks(
     return tasks
 
 @router.get("/advice/{task_id}")
+@limiter.limit(settings.default_rate_limit)
 def get_task_advice(
+    request: Request,
     task_id: int,
     session: Session = Depends(get_session)
 ):

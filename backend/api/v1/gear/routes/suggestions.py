@@ -5,6 +5,8 @@ from sqlmodel import Session
 
 from backend.db.session import get_session
 from backend.services.gear import GearService
+from backend.api.v1.gear.validators import validate_combat_style
+from backend.api.v1.validators import validate_slot
 
 router = APIRouter()
 
@@ -12,8 +14,8 @@ router = APIRouter()
 @router.get("/gear/suggestions")
 async def get_gear_suggestions(
     slot: str,
-    style: str = "melee",
-    defence_level: int = 99,
+    style: str = Query("melee", description="Combat style"),
+    defence_level: int = Query(99, ge=1, le=99, description="Defence level"),
     session: Session = Depends(get_session)
 ):
     """
@@ -28,6 +30,10 @@ async def get_gear_suggestions(
     Returns:
         List of suggested items with scores
     """
+    # Validate inputs
+    slot = validate_slot(slot)
+    validate_combat_style(style)
+    
     service = GearService(session)
     return service.suggest_gear(slot, style, defence_level=defence_level)
 
@@ -36,15 +42,15 @@ async def get_gear_suggestions(
 async def get_alternatives(
     slot: str = Query(..., description="Equipment slot (head, cape, neck, etc.)"),
     combat_style: str = Query("melee", description="Combat style (melee, ranged, magic)"),
-    budget: Optional[int] = Query(None, description="Maximum budget for items"),
-    attack: Optional[int] = Query(None, description="Attack level"),
-    strength: Optional[int] = Query(None, description="Strength level"),
-    defence: Optional[int] = Query(None, description="Defence level"),
-    ranged: Optional[int] = Query(None, description="Ranged level"),
-    magic: Optional[int] = Query(None, description="Magic level"),
-    prayer: Optional[int] = Query(None, description="Prayer level"),
+    budget: Optional[int] = Query(None, ge=0, description="Maximum budget for items"),
+    attack: Optional[int] = Query(None, ge=1, le=99, description="Attack level"),
+    strength: Optional[int] = Query(None, ge=1, le=99, description="Strength level"),
+    defence: Optional[int] = Query(None, ge=1, le=99, description="Defence level"),
+    ranged: Optional[int] = Query(None, ge=1, le=99, description="Ranged level"),
+    magic: Optional[int] = Query(None, ge=1, le=99, description="Magic level"),
+    prayer: Optional[int] = Query(None, ge=1, le=99, description="Prayer level"),
     attack_type: Optional[str] = Query(None, description="For melee: stab, slash, crush"),
-    limit: int = Query(10, description="Maximum number of alternatives to return"),
+    limit: int = Query(10, ge=1, le=100, description="Maximum number of alternatives to return"),
     session: Session = Depends(get_session)
 ):
     """
@@ -67,6 +73,10 @@ async def get_alternatives(
     Returns:
         List of alternative items sorted by score
     """
+    # Validate inputs
+    slot = validate_slot(slot)
+    validate_combat_style(combat_style)
+    
     service = GearService(session)
     
     stats = None

@@ -28,9 +28,10 @@ async def get_progression(
     Returns:
         Progression data with enriched item information
     """
+    # Validate combat style (raises HTTPException with 400 if invalid)
+    validate_combat_style(combat_style)
+    
     try:
-        validate_combat_style(combat_style)
-        
         service = GearService(session)
         enriched_data = service.get_wiki_progression(combat_style)
         
@@ -40,6 +41,9 @@ async def get_progression(
             "combat_style": combat_style,
             "slots": transformed_data
         }
+    except HTTPException:
+        # Re-raise HTTPExceptions (like validation errors) as-is
+        raise
     except Exception as e:
         import logging
         logger = logging.getLogger(__name__)

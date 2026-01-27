@@ -14,11 +14,15 @@ def map_gear_set_to_response(gear_set) -> Dict[str, Any]:
     """
     import json
     
+    # Parse JSON and convert string keys to integers (JSON keys are always strings)
+    items_dict = json.loads(gear_set.items)
+    items_with_int_keys = {int(k): int(v) for k, v in items_dict.items()}
+    
     return {
         "id": gear_set.id or 0,
         "name": gear_set.name,
         "description": gear_set.description,
-        "items": json.loads(gear_set.items),
+        "items": items_with_int_keys,
         "total_cost": gear_set.total_cost,
         "created_at": gear_set.created_at.isoformat(),
         "updated_at": gear_set.updated_at.isoformat(),

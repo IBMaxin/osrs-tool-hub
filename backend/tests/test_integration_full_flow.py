@@ -135,7 +135,9 @@ class TestFullGearWorkflow:
         # Step 4: Verify data
         assert data["name"] == "My Melee Set"
         assert data["description"] == "A complete melee setup"
-        assert data["items"] == payload["items"]
+        # JSON serializes dict keys as strings, so convert for comparison
+        items_response = {int(k): v for k, v in data["items"].items()}
+        assert items_response == payload["items"]
         assert data["total_cost"] == 1_400_000 + 50_000_000
         
         # Step 5: List all gear sets
@@ -242,5 +244,7 @@ class TestCrossFeatureIntegration:
         flip_data = flip_response.json()
         
         # Item should appear in both
-        assert gear_response.json()["items"] == {4151: 1}
+        # JSON serializes dict keys as strings, so convert for comparison
+        gear_items = {int(k): v for k, v in gear_response.json()["items"].items()}
+        assert gear_items == {4151: 1}
         assert any(r["item_id"] == 4151 for r in flip_data)

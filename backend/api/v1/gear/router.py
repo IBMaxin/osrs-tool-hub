@@ -1,6 +1,6 @@
 """Gear API router and endpoint definitions."""
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from sqlmodel import Session
 
 from backend.db.session import get_session
@@ -19,6 +19,9 @@ from backend.api.v1.gear.mappers import (
     transform_slot_progression_data,
 )
 from backend.api.v1.gear.validators import validate_combat_style
+from backend.api.v1.validators import validate_slot
+from backend.app.middleware import limiter
+from backend.config import settings
 
 
 router = APIRouter()
@@ -68,8 +71,8 @@ async def get_gear_sets(session: Session = Depends(get_session)) -> List[GearSet
 @router.get("/gear/suggestions")
 async def get_gear_suggestions(
     slot: str,
-    style: str = "melee",
-    defence_level: int = 99,
+    style: str = Query("melee", description="Combat style"),
+    defence_level: int = Query(99, ge=1, le=99, description="Defence level"),
     session: Session = Depends(get_session)
 ):
     """
@@ -84,8 +87,12 @@ async def get_gear_suggestions(
     Returns:
         List of suggested items with scores
     """
+    # Validate inputs
+    slot = validate_slot(slot)
+    validate_combat_style(style)
+    
     service = GearService(session)
-        return service.suggest_gear(slot, style, defence_level=defence_level)
+    return service.suggest_gear(slot, style, defence_level=defence_level)
 
 
 @router.get("/gear/{gear_set_id}", response_model=GearSetResponse)
@@ -457,11 +464,30 @@ async def get_wiki_gear_table(
     Args:
         style: Combat style (melee, ranged, magic)
         session: Database session
-        
+    
     Returns:
         Wiki progression table structure with enriched item data
     """
-    validate_combat_style(style)
-    
-    service = GearService(session)
-    return service.get_wiki_progression(style)
+    try:
+        validate_combat_style(style)
+        
+        service = GearService(session)
+        result = service.get_wiki_progression(style)
+        
+        if not result:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No progression data found for style '{style}'"
+            )
+        
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error in get_wiki_gear_table for {style}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error loading wiki progression data: {str(e)}"
+        )
