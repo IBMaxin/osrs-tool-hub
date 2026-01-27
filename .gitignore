@@ -23,6 +23,11 @@ wheels/
 .installed.cfg
 *.egg
 
+# Python caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
 # Database
 *.db
 *.sqlite
@@ -31,6 +36,7 @@ wheels/
 # Environment
 .env
 .env.local
+frontend/.env
 
 # IDE
 .vscode/
@@ -57,5 +63,7 @@ Thumbs.db
 
 # Coverage
 .coverage
+.coverage.*
 htmlcov/
 *.cover
+coverage.xml
