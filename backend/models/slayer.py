@@ -43,9 +43,9 @@ class SlayerTask(SQLModel, table=True):
     """Slayer task configuration."""
     
     id: Optional[int] = Field(default=None, primary_key=True)
-    master: SlayerMaster
-    monster_id: int = Field(foreign_key="monster.id")
-    category: str
+    master: SlayerMaster = Field(index=True)  # Index for filtering by master
+    monster_id: int = Field(foreign_key="monster.id", index=True)  # Index for joins
+    category: str = Field(index=True)  # Index for category lookups
     quantity_min: int
     quantity_max: int
     weight: int
