@@ -83,6 +83,37 @@ export interface SlayerTask {
   is_blockable: boolean;
 }
 
+export interface Location {
+  name: string;
+  requirements: string[];
+  multi_combat: boolean;
+  cannon: boolean;
+  safespot: boolean;
+  notes: string;
+  pros: string[];
+  cons: string[];
+  best_for: string;
+}
+
+export interface Alternative {
+  name: string;
+  notes: string;
+}
+
+export interface TaskLocationData {
+  task_id: number;
+  monster_name: string;
+  category: string;
+  master: string;
+  locations: Location[];
+  alternatives: Alternative[];
+  strategy: string;
+  weakness: string[];
+  items_needed: string[];
+  attack_style: string;
+  has_detailed_data: boolean;
+}
+
 export interface TaskAdvice {
   task: string;
   category: string;
@@ -188,6 +219,11 @@ export const SlayerApi = {
     }
     
     const response = await api.get<TaskAdvice>(`/slayer/advice/${taskId}`, { params });
+    return response.data;
+  },
+  
+  getLocation: async (taskId: number) => {
+    const response = await api.get<TaskLocationData>(`/slayer/location/${taskId}`);
     return response.data;
   }
 };
