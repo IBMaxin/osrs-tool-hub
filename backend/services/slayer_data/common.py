@@ -51,16 +51,6 @@ COMMON_TASK_DATA = {
         "reason": "One of the best XP tasks in the game when bursting. Very profitable too.",
         "locations": ["Catacombs of Kourend", "Smoke Dungeon"]
     },
-    "Dust Devils": {
-        "weakness": [],
-        "items_needed": ["Facemask/Slayer Helmet"],
-        "attack_style": "Magic (Burst/Barrage)",
-        "xp_rate": 65000,
-        "profit_rate": 200000,
-        "recommendation": "DO",
-        "reason": "One of the best XP tasks in the game when bursting. Very profitable too.",
-        "locations": ["Catacombs of Kourend", "Smoke Dungeon"]
-    },
     "Hellhounds": {
         "weakness": ["Slash"],
         "items_needed": [],
@@ -90,16 +80,6 @@ COMMON_TASK_DATA = {
         "recommendation": "DO",
         "reason": "Very fast points/XP with cannon (Workers). Can do Kalphite Queen for boss task.",
         "locations": ["Kalphite Cave"]
-    },
-    "Aberrant Spectres": {
-        "weakness": [],
-        "items_needed": ["Nose peg/Slayer Helmet"],
-        "attack_style": "Magic or Ranged",
-        "xp_rate": 25000,
-        "profit_rate": 300000,
-        "recommendation": "DO",
-        "reason": "Good herbs/seeds drops. Decent XP.",
-        "locations": ["Slayer Tower", "Stronghold Slayer Cave"]
     },
     "Aberrant spectres": {
         "weakness": [],
