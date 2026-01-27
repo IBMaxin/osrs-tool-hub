@@ -7,11 +7,15 @@ import {
   Badge, 
   Divider,
   Button,
-  Loader
+  Loader,
+  ScrollArea,
 } from '@mantine/core';
 import { IconX, IconCopy, IconCheck } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
 import type { TaskAdvice } from '../../../lib/api';
+import { SlayerApi } from '../../../lib/api';
 import { notifications } from '@mantine/notifications';
+import { LocationSection } from './LocationSection';
 
 interface AdviceModalProps {
   opened: boolean;
@@ -19,6 +23,7 @@ interface AdviceModalProps {
   advice: TaskAdvice | undefined;
   isLoading: boolean;
   taskName: string;
+  taskId: number | null;
 }
 
 export function AdviceModal({
@@ -26,13 +31,21 @@ export function AdviceModal({
   onClose,
   advice,
   isLoading,
-  taskName
+  taskName,
+  taskId,
 }: AdviceModalProps) {
+  // Fetch location data when modal opens
+  const { data: locationData, isLoading: locationLoading } = useQuery({
+    queryKey: ['slayer', 'location', taskId],
+    queryFn: () => taskId ? SlayerApi.getLocation(taskId) : null,
+    enabled: opened && taskId !== null,
+  });
+
   const getRecommendationColor = (rec: string) => {
     switch (rec) {
-      case 'DO': return 'green';
-      case 'SKIP': return 'yellow';
-      case 'BLOCK': return 'red';
+      case 'DO': return 'osrsGreen';
+      case 'SKIP': return 'osrsOrange';
+      case 'BLOCK': return 'osrsRed';
       default: return 'gray';
     }
   };
@@ -54,62 +67,103 @@ export function AdviceModal({
       onClose={onClose}
       title={
         <Group justify="space-between" w="100%">
-          <Text fw={700} size="lg">Task Advice</Text>
+          <Text fw={700} size="lg" c="osrsGold.4">Task Advice</Text>
           <ActionIcon
             variant="subtle"
-            color="gray"
+            color="osrsGold"
             onClick={onClose}
           >
             <IconX size={18} />
           </ActionIcon>
         </Group>
       }
-      size="lg"
+      size="xl"
       centered
+      scrollAreaComponent={ScrollArea.Autosize}
+      styles={{
+        body: {
+          maxHeight: '80vh',
+        },
+      }}
     >
       {isLoading ? (
         <Stack align="center" gap="md" py="xl">
-          <Loader size="lg" />
+          <Loader size="lg" color="osrsOrange" />
           <Text c="dimmed">Loading advice...</Text>
         </Stack>
       ) : advice ? (
         <Stack gap="md">
+          {/* Task Header */}
           <Group justify="space-between">
-            <Text fw={600} size="lg">{taskName}</Text>
+            <Text fw={600} size="lg" c="osrsGold.4">{taskName}</Text>
             <Button
               size="xs"
               variant="subtle"
-              leftSection={<IconCopy size={14} />}
+              color="osrsGold"
+              leftSection={<IconCopy size={14} />
               onClick={() => handleCopyTaskName(taskName)}
             >
               Copy Name
             </Button>
           </Group>
           
-          <Divider />
+          <Divider color="osrsBrown.6" />
           
+          {/* Recommendation */}
           <Group>
-            <Text size="sm" c="dimmed">Recommendation:</Text>
+            <Text size="sm" c="dimmed" fw={600}>Recommendation:</Text>
             <Badge 
               size="lg" 
               color={getRecommendationColor(advice.recommendation)}
-              variant="light"
+              variant="filled"
+              style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)' }}
             >
               {advice.recommendation}
             </Badge>
           </Group>
           
-          <Text size="sm">{advice.reason}</Text>
+          <Text size="sm" style={{ lineHeight: 1.6 }}>{advice.reason}</Text>
           
-          <Divider />
+          <Divider color="osrsBrown.6" />
+          
+          {/* Monster Stats */}
           <Stack gap="xs">
-            <Text fw={600} size="sm">Monster Stats:</Text>
+            <Text fw={600} size="sm" c="osrsGold.4">Monster Stats:</Text>
             <Group gap="md">
-              <Text size="sm">HP: {advice.stats.hp}</Text>
-              <Text size="sm">Defence: {advice.stats.def}</Text>
-              <Text size="sm">XP: {advice.stats.xp}</Text>
+              <Badge size="md" color="osrsRed" variant="light">
+                HP: {advice.stats.hp}
+              </Badge>
+              <Badge size="md" color="osrsOrange" variant="light">
+                Defence: {advice.stats.def}
+              </Badge>
+              <Badge size="md" color="osrsGreen" variant="light">
+                XP: {advice.stats.xp}
+              </Badge>
             </Group>
           </Stack>
+
+          {/* Location Section */}
+          {locationLoading ? (
+            <>
+              <Divider color="osrsBrown.6" />
+              <Stack align="center" gap="xs" py="md">
+                <Loader size="sm" color="osrsOrange" />
+                <Text size="sm" c="dimmed">Loading location data...</Text>
+              </Stack>
+            </>
+          ) : locationData ? (
+            <>
+              <Divider color="osrsBrown.6" />
+              <LocationSection
+                locations={locationData.locations}
+                strategy={locationData.strategy}
+                weaknesses={locationData.weakness}
+                itemsNeeded={locationData.items_needed}
+                alternatives={locationData.alternatives}
+                hasDetailedData={locationData.has_detailed_data}
+              />
+            </>
+          ) : null}
         </Stack>
       ) : (
         <Text c="dimmed">No advice available for this task.</Text>
