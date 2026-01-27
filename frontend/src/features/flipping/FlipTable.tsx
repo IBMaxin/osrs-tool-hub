@@ -44,12 +44,16 @@ export function FlipTable() {
       {
         accessorKey: 'buy_price',
         header: 'Buy',
-        Cell: ({ cell }) => cell.getValue<number>().toLocaleString(),
+        Cell: ({ cell }) => (
+          <Text c="osrsGold.4">{cell.getValue<number>().toLocaleString()}</Text>
+        ),
       },
       {
         accessorKey: 'sell_price',
         header: 'Sell',
-        Cell: ({ cell }) => cell.getValue<number>().toLocaleString(),
+        Cell: ({ cell }) => (
+          <Text c="osrsGold.4">{cell.getValue<number>().toLocaleString()}</Text>
+        ),
       },
       {
         accessorKey: 'margin',
@@ -57,7 +61,7 @@ export function FlipTable() {
         Cell: ({ cell }) => {
           const val = cell.getValue<number>();
           return (
-            <Text c={val > 0 ? 'green' : 'red'} fw={700}>
+            <Text c={val > 0 ? 'osrsGreen.4' : 'osrsRed.4'} fw={700}>
               {val.toLocaleString()}
             </Text>
           );
@@ -66,7 +70,11 @@ export function FlipTable() {
       {
         accessorKey: 'roi',
         header: 'ROI %',
-        Cell: ({ cell }) => `${cell.getValue<number>().toFixed(2)}%`,
+        Cell: ({ cell }) => (
+          <Text c="osrsOrange.4" fw={600}>
+            {cell.getValue<number>().toFixed(2)}%
+          </Text>
+        ),
       },
       {
         accessorKey: 'potential_profit',
@@ -75,15 +83,20 @@ export function FlipTable() {
         Cell: ({ row }) => {
           const val = row.original.potential_profit;
           return val ? (
-            <Text fw={700} c="blue">
+            <Text fw={700} c="osrsGreen.4">
               {val.toLocaleString()}
             </Text>
-          ) : 'N/A';
+          ) : (
+            <Text c="dimmed">N/A</Text>
+          );
         },
       },
       {
         accessorKey: 'limit',
         header: 'Limit',
+        Cell: ({ cell }) => (
+          <Text c="osrsGold.4">{cell.getValue<number>()}</Text>
+        ),
       },
     ],
     []
@@ -91,33 +104,35 @@ export function FlipTable() {
 
   return (
     <Paper p="md" shadow="sm" withBorder>
-      <Title order={3} mb="md">Flip Finder</Title>
+      <Title order={3} mb="md" c="osrsGold.4">Flip Finder</Title>
       
       <Group mb="lg" grow>
         <div>
-          <Text size="sm">Max Budget: {maxBudget.toLocaleString()} gp</Text>
+          <Text size="sm" c="osrsGold.4" fw={600}>Max Budget: {maxBudget.toLocaleString()} gp</Text>
           <Slider
             value={maxBudget}
             onChange={setMaxBudget}
             min={100000}
             max={100000000}
             step={100000}
+            color="osrsGold"
           />
         </div>
         <div>
-          <Text size="sm">Min ROI: {minRoi}%</Text>
+          <Text size="sm" c="osrsGold.4" fw={600}>Min ROI: {minRoi}%</Text>
           <Slider
             value={minRoi}
             onChange={setMinRoi}
             min={0}
             max={20}
             step={0.5}
+            color="osrsGold"
           />
         </div>
       </Group>
 
       {isError && (
-        <Text c="red" mb="md">
+        <Text c="osrsRed.4" mb="md" fw={600}>
           Error loading data: {error instanceof Error ? error.message : 'Unknown error'}
         </Text>
       )}
@@ -135,6 +150,60 @@ export function FlipTable() {
         initialState={{ 
           sorting: [{ id: 'potential_profit', desc: true }],
           pagination: { pageSize: 15, pageIndex: 0 }
+        }}
+        mantineTableProps={{
+          striped: false,
+          highlightOnHover: true,
+          withColumnBorders: false,
+          withTableBorder: true,
+          sx: {
+            backgroundColor: '#2B1B0E',
+            border: '2px solid #4A360C',
+          },
+        }}
+        mantineTableHeadCellProps={{
+          sx: {
+            backgroundColor: '#4A360C',
+            color: '#FFE799',
+            fontWeight: 700,
+            borderBottom: '2px solid #8B6914',
+            '& .mantine-TableHeadCell-Content': {
+              justifyContent: 'space-between',
+            },
+          },
+        }}
+        mantineTableBodyCellProps={{
+          sx: {
+            backgroundColor: '#2B1B0E',
+            borderBottom: '1px solid #4A360C',
+          },
+        }}
+        mantineTableBodyRowProps={({ row }) => ({
+          sx: {
+            backgroundColor: '#2B1B0E',
+            '&:hover': {
+              backgroundColor: '#4A360C',
+            },
+            cursor: 'default',
+          },
+        })}
+        mantinePaginationProps={{
+          sx: {
+            backgroundColor: '#2B1B0E',
+            '& button': {
+              color: '#D4AF37',
+              '&:hover': {
+                backgroundColor: '#4A360C',
+              },
+              '&[data-active]': {
+                backgroundColor: '#8B6914',
+                color: '#FFE799',
+              },
+            },
+          },
+        }}
+        mantineProgressProps={{
+          color: 'osrsOrange',
         }}
       />
     </Paper>
