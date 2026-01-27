@@ -2,7 +2,7 @@ from typing import List, Dict
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlmodel import Session
 
-from backend.database import get_session
+from backend.db.session import get_session
 from backend.services.slayer import SlayerService
 from backend.models import SlayerMaster
 from backend.app.middleware import limiter
@@ -25,56 +25,33 @@ def get_master_tasks(
     session: Session = Depends(get_session)
 ):
     """Get tasks for a specific master."""
-    import logging
-    from sqlmodel import select, func
-    from backend.models import SlayerTask, Monster
-    
-    logger = logging.getLogger(__name__)
-    logger.info(f"Getting tasks for master: {master} (type: {type(master)}, value: {master.value})")
-    
-    # Debug: Check what's in the database
-    task_count = session.exec(select(func.count(SlayerTask.id)).where(SlayerTask.master == master)).one()
-    logger.info(f"Total tasks in DB for {master}: {task_count}")
-    
     service = SlayerService(session)
-    tasks = service.get_tasks(master)
-    logger.info(f"Returning {len(tasks)} tasks for {master}")
-    
-    if len(tasks) == 0 and task_count > 0:
-        logger.warning(f"WARNING: Database has {task_count} tasks but service returned 0!")
-        # Try direct query as fallback
-        query = select(SlayerTask, Monster).join(Monster).where(SlayerTask.master == master)
-        results = session.exec(query).all()
-        logger.info(f"Direct query returned {len(results)} results")
-        if results:
-            tasks = [{
-                "task_id": task.id,
-                "monster_name": monster.name,
-                "monster_id": monster.id,
-                "category": task.category,
-                "amount": f"{task.quantity_min}-{task.quantity_max}",
-                "weight": task.weight,
-                "combat_level": monster.combat_level,
-                "slayer_xp": monster.slayer_xp,
-                "is_skippable": task.is_skippable,
-                "is_blockable": task.is_blockable
-            } for task, monster in results]
-            tasks.sort(key=lambda x: x["weight"], reverse=True)
-            logger.info(f"Fallback query returned {len(tasks)} tasks")
-    
-    return tasks
+    return service.get_tasks(master)
 
 @router.get("/advice/{task_id}")
 @limiter.limit(settings.default_rate_limit)
 def get_task_advice(
     request: Request,
     task_id: int,
+    slayer_level: int = Query(1, ge=1, le=99, description="Player's Slayer level"),
+    combat_level: int = Query(3, ge=3, le=126, description="Player's Combat level"),
     session: Session = Depends(get_session)
 ):
-    """Get advice (Block/Skip/Do) for a task."""
+    """Get advice (Block/Skip/Do) for a task based on player stats.
+    
+    Args:
+        task_id: The slayer task ID
+        slayer_level: Player's slayer level (1-99)
+        combat_level: Player's combat level (3-126)
+    
+    Returns:
+        Task advice with recommendation (DO/SKIP/BLOCK) and reasoning
+    """
     service = SlayerService(session)
-    # Mock user stats for now - in future extract from auth token or query param
-    user_stats = {"slayer": 85, "combat": 110} 
+    user_stats = {
+        "slayer": slayer_level,
+        "combat": combat_level
+    }
     
     result = service.suggest_action(task_id, user_stats)
     if "error" in result:
