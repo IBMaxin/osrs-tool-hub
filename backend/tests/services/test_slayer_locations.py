@@ -79,7 +79,7 @@ def test_get_task_locations_success(session: Session, sample_task: SlayerTask):
     assert result["task_id"] == sample_task.id
     assert result["monster_name"] == "Abyssal demon"
     assert result["category"] == "Abyssal demons"
-    assert result["master"] == "duradel"
+    assert result["master"] == "Duradel"  # Capitalized from enum
     
     # Verify locations structure
     assert "locations" in result
