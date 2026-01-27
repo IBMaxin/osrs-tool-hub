@@ -100,7 +100,7 @@ export function AdviceModal({
               size="xs"
               variant="subtle"
               color="osrsGold"
-              leftSection={<IconCopy size={14} />
+              leftSection={<IconCopy size={14} />}
               onClick={() => handleCopyTaskName(taskName)}
             >
               Copy Name
