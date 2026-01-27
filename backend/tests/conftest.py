@@ -6,8 +6,8 @@ from sqlalchemy.pool import StaticPool
 from typing import Generator
 
 from backend.main import app
-from backend.database import get_session
-from backend.models import Item, PriceSnapshot, Monster, SlayerTask, GearSet, SlayerMaster
+from backend.db.session import get_session
+from backend.models import Item, PriceSnapshot, Monster, SlayerTask, GearSet, SlayerMaster, Flip
 
 
 # Create in-memory SQLite database for testing
@@ -26,26 +26,46 @@ def get_test_session() -> Generator[Session, None, None]:
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_test_db():
-    """Create and drop test database tables for each test."""
-    SQLModel.metadata.create_all(test_engine)
-    yield
-    SQLModel.metadata.drop_all(test_engine)
-
-
-@pytest.fixture(scope="function")
-def session() -> Generator[Session, None, None]:
-    """Provide a test database session."""
-    # Override the dependency
+    """Create and drop test database tables for each test.
+    
+    This fixture:
+    1. Overrides the app's get_session dependency to use test database
+    2. Creates all tables
+    3. Yields for test execution
+    4. Drops all tables
+    5. Clears dependency overrides
+    """
+    # Override dependency BEFORE creating tables
     app.dependency_overrides[get_session] = get_test_session
-    with Session(test_engine) as session:
-        yield session
-    # Clear dependency overrides after test
+    
+    # Create all tables
+    SQLModel.metadata.create_all(test_engine)
+    
+    yield
+    
+    # Cleanup
+    SQLModel.metadata.drop_all(test_engine)
     app.dependency_overrides.clear()
 
 
 @pytest.fixture(scope="function")
+def session() -> Generator[Session, None, None]:
+    """Provide a test database session.
+    
+    This fixture is for tests that need direct database access.
+    The setup_test_db fixture (autouse=True) ensures tables exist.
+    """
+    with Session(test_engine) as session:
+        yield session
+
+
+@pytest.fixture(scope="function")
 def client() -> TestClient:
-    """Provide a test client for API requests."""
+    """Provide a test client for API requests.
+    
+    The client will use the test database via dependency override
+    set up in setup_test_db fixture.
+    """
     return TestClient(app)
 
 
