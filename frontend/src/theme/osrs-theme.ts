@@ -154,6 +154,15 @@ export const osrsTheme = createTheme({
       },
     },
     
+    Paper: {
+      styles: {
+        root: {
+          backgroundColor: '#2B1B0E',
+          border: '2px solid #4A360C',
+        },
+      },
+    },
+    
     Button: {
       styles: {
         root: {
@@ -215,6 +224,31 @@ export const osrsTheme = createTheme({
           color: '#FFE799',
         },
       },
+    },
+    
+    Slider: {
+      styles: {
+        root: {
+          '--slider-color': '#D4AF37',
+        },
+        thumb: {
+          backgroundColor: '#D4AF37',
+          borderColor: '#FFE799',
+        },
+        track: {
+          '&::before': {
+            backgroundColor: '#D4AF37',
+          },
+        },
+      },
+    },
+  },
+  
+  // Global styles for MantineReactTable
+  other: {
+    MantineReactTable: {
+      baseBackgroundColor: '#2B1B0E',
+      selectedRowBackgroundColor: '#4A360C',
     },
   },
 });
