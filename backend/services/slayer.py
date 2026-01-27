@@ -1,6 +1,6 @@
 """Slayer service logic."""
 from typing import List, Optional, Dict
-from sqlmodel import Session, select, func
+from sqlmodel import Session, select
 
 from backend.models import Monster, SlayerTask, SlayerMaster
 from backend.services.slayer_data import SLAYER_TASK_DATA
@@ -15,16 +15,16 @@ class SlayerService:
         return [master.value for master in SlayerMaster]
 
     def get_tasks(self, master: SlayerMaster) -> List[Dict]:
-        """
-        Get all tasks assignable by a specific master.
-        """
-        import logging
-        logger = logging.getLogger(__name__)
-        logger.info(f"SlayerService.get_tasks called with master: {master} (type: {type(master)}, value: {master.value if hasattr(master, 'value') else master})")
+        """Get all tasks assignable by a specific master.
         
+        Args:
+            master: The slayer master to get tasks for
+            
+        Returns:
+            List of task dictionaries with monster and task information
+        """
         query = select(SlayerTask, Monster).join(Monster).where(SlayerTask.master == master)
         results = self.session.exec(query).all()
-        logger.info(f"Query returned {len(results)} results")
         
         tasks = []
         for task, monster in results:
@@ -43,13 +43,19 @@ class SlayerService:
         
         # Sort by weight descending (highest probability first)
         tasks.sort(key=lambda x: x["weight"], reverse=True)
-        logger.info(f"Returning {len(tasks)} tasks")
         return tasks
 
     def suggest_action(self, task_id: int, user_stats: Dict[str, int]) -> Dict:
-        """
-        Suggest whether to Do, Skip, or Block a task based on stats/efficiency.
+        """Suggest whether to Do, Skip, or Block a task based on stats/efficiency.
+        
         Uses rich metadata from SLAYER_TASK_DATA if available.
+        
+        Args:
+            task_id: The slayer task ID
+            user_stats: Dictionary with player stats (slayer, combat)
+            
+        Returns:
+            Dictionary with recommendation, reason, and task metadata
         """
         task = self.session.get(SlayerTask, task_id)
         if not task:
