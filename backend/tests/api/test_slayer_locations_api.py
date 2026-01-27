@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session, create_engine, SQLModel
 from sqlalchemy.pool import StaticPool
 
-from backend.app.main import app
+from backend.main import app
 from backend.db.session import get_session
 from backend.models import Monster, SlayerTask, SlayerMaster
 
