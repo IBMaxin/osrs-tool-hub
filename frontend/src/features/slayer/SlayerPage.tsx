@@ -72,6 +72,7 @@ export function SlayerPage() {
         advice={advice}
         isLoading={adviceLoading}
         taskName={taskName}
+        taskId={selectedTaskId}
       />
     </Container>
   );
