@@ -103,6 +103,11 @@ export interface TaskAdvice {
   };
 }
 
+export interface SlayerStats {
+  slayer_level?: number;
+  combat_level?: number;
+}
+
 // --- Flipping Types ---
 export interface FlipOpportunity {
   item_id: number;
@@ -165,8 +170,24 @@ export const SlayerApi = {
     }
   },
   
-  getAdvice: async (taskId: number) => {
-    const response = await api.get<TaskAdvice>(`/slayer/advice/${taskId}`);
+  getAdvice: async (taskId: number, stats?: SlayerStats) => {
+    const params = new URLSearchParams();
+    
+    // Default to level 85 slayer and 110 combat if not provided
+    // These are reasonable mid-high level defaults
+    if (stats?.slayer_level !== undefined) {
+      params.append('slayer_level', stats.slayer_level.toString());
+    } else {
+      params.append('slayer_level', '85');
+    }
+    
+    if (stats?.combat_level !== undefined) {
+      params.append('combat_level', stats.combat_level.toString());
+    } else {
+      params.append('combat_level', '110');
+    }
+    
+    const response = await api.get<TaskAdvice>(`/slayer/advice/${taskId}`, { params });
     return response.data;
   }
 };
