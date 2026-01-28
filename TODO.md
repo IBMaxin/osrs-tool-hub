@@ -582,9 +582,13 @@
 #### Integration Test Coverage
 - [x] E2E smoke test added (`test_smoke.py`) ✅
 - [x] Contract tests for flips and gear endpoints ✅
-- [ ] Expand E2E test coverage (more endpoints)
-- [ ] Test critical user flows
-- [ ] Test error scenarios
+- [x] Expand E2E test coverage (more endpoints) ✅
+- [x] Test critical user flows ✅
+- [x] Test error scenarios ✅
+- [x] Trade + Watchlist service integration tests ✅
+- [x] Gear + Slayer service integration tests ✅
+- [x] Complete multi-step workflow tests ✅
+- [x] Cross-feature data consistency tests ✅
 
 ### Database Improvements
 

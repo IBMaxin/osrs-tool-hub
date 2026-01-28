@@ -19,11 +19,18 @@ e2e/
 │   ├── test_gear_sets.py
 │   ├── test_suggestions.py
 │   ├── test_progression.py
-│   └── test_advanced.py
+│   ├── test_advanced.py
+│   ├── test_boss.py
+│   ├── test_items.py
+│   └── test_slayer_gear.py
 ├── flipping/             # Flipping endpoint tests
 │   ├── test_opportunities.py
 │   ├── test_scanner.py
 │   └── test_calculations.py
+├── trades/               # Trades endpoint tests
+│   └── test_trades.py
+├── watchlist/            # Watchlist endpoint tests
+│   └── test_watchlist.py
 ├── health/               # Health check tests
 │   └── test_health.py
 └── admin/                # Admin endpoint tests
@@ -88,10 +95,25 @@ pytest -m e2e -v
 - ✅ `/api/v1/gear/best-loadout` - Best loadout calculator
 - ✅ `/api/v1/gear/upgrade-path` - Upgrade path recommendations
 - ✅ `/api/v1/gear/dps` - DPS calculations
+- ✅ `/api/v1/gear/bosses` - List available bosses
+- ✅ `/api/v1/gear/bis/{boss_name}` - Boss BiS calculator
+- ✅ `/api/v1/gear/items/{item_id}` - Get item details
+- ✅ `/api/v1/gear/slayer-gear` - Slayer gear suggestions
 
 ### Flipping Endpoints
 - ✅ `/api/v1/flips/opportunities` - Flip opportunities
 - ✅ `/api/v1/flipping/scanner` - GE Tracker-style scanner
+
+### Trades Endpoints
+- ✅ `POST /api/v1/trades` - Create trade
+- ✅ `GET /api/v1/trades` - Get trade history with filters
+- ✅ `GET /api/v1/trades/stats` - Get trade statistics
+
+### Watchlist Endpoints
+- ✅ `POST /api/v1/watchlist` - Add item to watchlist
+- ✅ `GET /api/v1/watchlist` - Get user's watchlist
+- ✅ `DELETE /api/v1/watchlist/{watchlist_item_id}` - Remove from watchlist
+- ✅ `GET /api/v1/watchlist/alerts` - Get triggered alerts
 
 ### Health & Admin
 - ✅ `/` - Root endpoint

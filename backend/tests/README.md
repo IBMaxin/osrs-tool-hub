@@ -78,6 +78,9 @@ End-to-end tests that test complete API workflows:
 Integration tests that test component interactions:
 - **test_integration_db_sync.py**: Tests database synchronization and price updates
 - **test_integration_full_flow.py**: Tests complete user workflows across features
+- **test_integration_trade_watchlist.py**: Tests Trade and Watchlist service interactions
+- **test_integration_gear_slayer.py**: Tests Gear and Slayer service interactions
+- **test_integration_workflows.py**: Tests complete multi-step user workflows and cross-feature data consistency
 
 ### Unit Tests (`test_*.py`)
 
