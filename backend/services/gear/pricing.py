@@ -1,4 +1,5 @@
 """Item pricing utilities."""
+
 from sqlmodel import Session, select
 
 from backend.models import Item, PriceSnapshot

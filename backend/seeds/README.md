@@ -33,7 +33,7 @@ python -m backend.seeds.slayer.seed
 
 ```bash
 # Delete the database file
-rm backend/slayer.db
+rm osrs_hub.db
 
 # Run the seed script (it will create tables automatically)
 poetry run python -m backend.seeds.slayer.seed
@@ -45,7 +45,7 @@ After seeding, verify the data:
 
 ```bash
 # Check that database was created
-ls backend/slayer.db
+ls osrs_hub.db
 
 # Start the backend
 poetry run uvicorn backend.main:app --reload
@@ -74,14 +74,14 @@ poetry run python -m backend.seeds.slayer.seed
 **Problem**: Duplicate tasks warning
 ```
 ✓ This is normal - the script skips existing tasks
-✓ Delete slayer.db to start fresh
+✓ Delete osrs_hub.db to start fresh
 ```
 
 **Problem**: Missing monsters in frontend
 ```bash
 # Check backend logs for errors
 # Verify monsters were seeded:
-sqlite3 backend/slayer.db "SELECT COUNT(*) FROM monster;"
+sqlite3 osrs_hub.db "SELECT COUNT(*) FROM monster;"
 # Should show 50+
 ```
 

@@ -9,7 +9,7 @@ DEMON_TASK_DATA = {
         "profit_rate": 0,
         "recommendation": "BLOCK",
         "reason": "High weighting, high HP, low drops. Block unless doing Demonic Gorillas.",
-        "locations": ["Taverley Dungeon", "Chasm of Fire"]
+        "locations": ["Taverley Dungeon", "Chasm of Fire"],
     },
     "Black demons": {
         "weakness": ["Demonbane"],
@@ -19,7 +19,7 @@ DEMON_TASK_DATA = {
         "profit_rate": 0,
         "recommendation": "BLOCK",
         "reason": "High weighting, high HP, low drops. Block unless doing Demonic Gorillas.",
-        "locations": ["Taverley Dungeon", "Chasm of Fire"]
+        "locations": ["Taverley Dungeon", "Chasm of Fire"],
     },
     "Greater Demons": {
         "weakness": ["Demonbane"],
@@ -29,7 +29,7 @@ DEMON_TASK_DATA = {
         "profit_rate": 50000,
         "recommendation": "DO",
         "reason": "Decent cannon task. Can do K'ril Tsutsaroth (Zammy GWD) for boss task.",
-        "locations": ["Chasm of Fire", "Stronghold Slayer Cave"]
+        "locations": ["Chasm of Fire", "Stronghold Slayer Cave"],
     },
     "Greater demons": {
         "weakness": ["Demonbane"],
@@ -39,7 +39,7 @@ DEMON_TASK_DATA = {
         "profit_rate": 50000,
         "recommendation": "DO",
         "reason": "Decent cannon task. Can do K'ril Tsutsaroth (Zammy GWD) for boss task.",
-        "locations": ["Chasm of Fire", "Stronghold Slayer Cave"]
+        "locations": ["Chasm of Fire", "Stronghold Slayer Cave"],
     },
     "Smoke devils": {
         "weakness": [],
@@ -49,6 +49,6 @@ DEMON_TASK_DATA = {
         "profit_rate": 500000,
         "recommendation": "DO",
         "reason": "One of the best XP tasks when bursting. Great profit from Occult Necklace drops.",
-        "locations": ["Smoke Devil Dungeon"]
+        "locations": ["Smoke Devil Dungeon"],
     },
 }

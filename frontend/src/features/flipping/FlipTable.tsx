@@ -156,12 +156,14 @@ export function FlipTable() {
           highlightOnHover: true,
           withColumnBorders: false,
           withTableBorder: true,
+          // @ts-expect-error MRT/Mantine sx typing mismatch
           sx: {
             backgroundColor: '#2B1B0E',
             border: '2px solid #4A360C',
           },
         }}
         mantineTableHeadCellProps={{
+          // @ts-expect-error MRT/Mantine sx typing mismatch
           sx: {
             backgroundColor: '#4A360C',
             color: '#FFE799',
@@ -173,28 +175,26 @@ export function FlipTable() {
           },
         }}
         mantineTableBodyCellProps={{
+          // @ts-expect-error MRT/Mantine sx typing mismatch
           sx: {
             backgroundColor: '#2B1B0E',
             borderBottom: '1px solid #4A360C',
           },
         }}
-        mantineTableBodyRowProps={({ row }) => ({
+        mantineTableBodyRowProps={((_props: { row?: unknown }) => ({
           sx: {
             backgroundColor: '#2B1B0E',
-            '&:hover': {
-              backgroundColor: '#4A360C',
-            },
+            '&:hover': { backgroundColor: '#4A360C' },
             cursor: 'default',
           },
-        })}
+        })) as any}
         mantinePaginationProps={{
+          // @ts-expect-error MRT/Mantine sx typing mismatch
           sx: {
             backgroundColor: '#2B1B0E',
             '& button': {
               color: '#D4AF37',
-              '&:hover': {
-                backgroundColor: '#4A360C',
-              },
+              '&:hover': { backgroundColor: '#4A360C' },
               '&[data-active]': {
                 backgroundColor: '#8B6914',
                 color: '#FFE799',
@@ -202,9 +202,7 @@ export function FlipTable() {
             },
           },
         }}
-        mantineProgressProps={{
-          color: 'osrsOrange',
-        }}
+        mantineProgressProps={{ color: 'osrsOrange' } as any}
       />
     </Paper>
   );

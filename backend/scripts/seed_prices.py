@@ -1,25 +1,27 @@
 """Script to manually seed/update prices from Wiki API."""
+
 import asyncio
 from sqlmodel import Session, SQLModel
 from backend.database import engine
 from backend.services.wiki_client import WikiAPIClient
-from backend import models  # Import models to register them with SQLModel.metadata
+
 
 async def seed_prices():
     # Ensure database tables are created before seeding
     SQLModel.metadata.create_all(engine)
-    
+
     client = WikiAPIClient()
     print("Connecting to Wiki API...")
-    
+
     with Session(engine) as session:
         print("1. Syncing Item Mapping...")
         await client.sync_items_to_db(session)
-        
+
         print("2. Syncing Latest Prices...")
         await client.sync_prices_to_db(session)
-        
+
     print("✅ Price Sync Complete!")
+
 
 if __name__ == "__main__":
     asyncio.run(seed_prices())

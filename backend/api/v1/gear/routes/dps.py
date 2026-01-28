@@ -1,4 +1,5 @@
 """DPS calculation endpoints."""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 
@@ -11,22 +12,19 @@ router = APIRouter()
 
 
 @router.post("/gear/dps")
-async def calculate_dps(
-    request: DPSRequest,
-    session: Session = Depends(get_session)
-):
+async def calculate_dps(request: DPSRequest, session: Session = Depends(get_session)):
     """
     Calculate DPS (Damage Per Second) for a gear loadout.
-    
+
     Args:
         request: DPS calculation request with loadout, combat style, etc.
         session: Database session
-        
+
     Returns:
         DPS information including max hit, attack speed, accuracy, etc.
     """
     service = GearService(session)
-    
+
     # Convert item IDs to Item objects
     items = {}
     for slot, item_id in request.loadout.items():
@@ -38,17 +36,14 @@ async def calculate_dps(
                 items[slot] = None
         else:
             items[slot] = None
-    
+
     try:
         result = service.calculate_dps(
             items=items,
             combat_style=request.combat_style,
             attack_type=request.attack_type,
-            player_stats=request.player_stats
+            player_stats=request.player_stats,
         )
         return result
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

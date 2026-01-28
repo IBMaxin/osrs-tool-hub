@@ -9,7 +9,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 350000,
         "recommendation": "SKIP",
         "reason": "Slow task unless killing Vorkath. Good money for lower levels but inefficient.",
-        "locations": ["Taverley Dungeon", "Myths' Guild"]
+        "locations": ["Taverley Dungeon", "Myths' Guild"],
     },
     "Blue dragons": {
         "weakness": ["Stab", "Ranged", "Dragonbane"],
@@ -19,7 +19,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 350000,
         "recommendation": "SKIP",
         "reason": "Slow task unless killing Vorkath. Good money for lower levels but inefficient.",
-        "locations": ["Taverley Dungeon", "Myths' Guild"]
+        "locations": ["Taverley Dungeon", "Myths' Guild"],
     },
     "Steel dragons": {
         "weakness": ["Magic", "Stab", "Dragonbane"],
@@ -29,7 +29,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 150000,
         "recommendation": "SKIP",
         "reason": "Very slow, high defence. Skip unless hunting visage (inefficient).",
-        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"]
+        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"],
     },
     "Steel Dragons": {
         "weakness": ["Magic", "Stab", "Dragonbane"],
@@ -39,7 +39,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 150000,
         "recommendation": "SKIP",
         "reason": "Very slow, high defence. Skip unless hunting visage (inefficient).",
-        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"]
+        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"],
     },
     "Iron dragons": {
         "weakness": ["Magic", "Stab", "Dragonbane"],
@@ -49,7 +49,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 100000,
         "recommendation": "SKIP",
         "reason": "Very slow. Skip.",
-        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"]
+        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"],
     },
     "Iron Dragons": {
         "weakness": ["Magic", "Stab", "Dragonbane"],
@@ -59,7 +59,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 100000,
         "recommendation": "SKIP",
         "reason": "Very slow. Skip.",
-        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"]
+        "locations": ["Brimhaven Dungeon", "Catacombs of Kourend"],
     },
     "Wyrms": {
         "weakness": ["Stab", "Dragonbane"],
@@ -69,7 +69,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 250000,
         "recommendation": "BLOCK",
         "reason": "Slow and annoying. Drops are okay but generally considered inefficient.",
-        "locations": ["Karuulm Slayer Dungeon"]
+        "locations": ["Karuulm Slayer Dungeon"],
     },
     "Drakes": {
         "weakness": ["Dragonbane"],
@@ -79,7 +79,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 300000,
         "recommendation": "BLOCK",
         "reason": "High defence, annoying mechanics. Block or skip.",
-        "locations": ["Karuulm Slayer Dungeon"]
+        "locations": ["Karuulm Slayer Dungeon"],
     },
     "Hydras": {
         "weakness": ["Dragonbane"],
@@ -89,7 +89,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 2000000,
         "recommendation": "DO",
         "reason": "Alchemical Hydra is one of the best money makers in the game. Always do.",
-        "locations": ["Karuulm Slayer Dungeon"]
+        "locations": ["Karuulm Slayer Dungeon"],
     },
     "Mithril dragons": {
         "weakness": ["Stab", "Dragonbane"],
@@ -99,7 +99,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 500000,
         "recommendation": "SKIP",
         "reason": "Very slow, high defence. Only do if hunting visage (rare drop).",
-        "locations": ["Ancient Cavern"]
+        "locations": ["Ancient Cavern"],
     },
     "Adamant dragons": {
         "weakness": ["Stab", "Dragonbane"],
@@ -109,7 +109,7 @@ DRAGON_TASK_DATA = {
         "profit_rate": 600000,
         "recommendation": "SKIP",
         "reason": "Slow task. Skip unless hunting visage or doing for collection log.",
-        "locations": ["Lithkren Vault"]
+        "locations": ["Lithkren Vault"],
     },
     "Rune dragons": {
         "weakness": ["Stab", "Dragonbane"],
@@ -119,6 +119,296 @@ DRAGON_TASK_DATA = {
         "profit_rate": 1500000,
         "recommendation": "DO",
         "reason": "Excellent profit from rune dragon bones and rare drops. Slow but worth it.",
-        "locations": ["Lithkren Vault"]
+        "locations": ["Lithkren Vault"],
+    },
+    "Black dragons": {
+        "weakness": ["Ranged", "Dragonbane"],
+        "items_needed": [
+            "Anti-dragon shield",
+            "Dragonfire protection (anti-dragon shield + antifire potion or dragonfire shield)",
+        ],
+        "attack_style": "Ranged (recommended) or Melee",
+        "xp_rate": 18000,
+        "profit_rate": 400000,
+        "recommendation": "SKIP",
+        "reason": "Slow task. Better alternatives exist. Only do if killing Brutal black dragons (77 Slayer) for profit or King Black Dragon for boss task.",
+        "locations": [
+            {
+                "name": "Taverley Dungeon",
+                "requirements": ["Dragon Slayer I (partial)", "70 Slayer OR Dusty key"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": True,
+                "notes": "Most popular location. Features safespot. Task-only area requires 70 Slayer or Dusty key. Easily accessible via Falador teleport.",
+                "pros": [
+                    "Safespot available",
+                    "Easy access",
+                    "Close to bank",
+                    "Baby black dragons for quick kills",
+                ],
+                "cons": ["Single combat", "Can be crowded", "Slow kills"],
+                "best_for": "Safespot ranged training",
+            },
+            {
+                "name": "Evil Chicken's Lair",
+                "requirements": [
+                    "Dragon Slayer I (partial)",
+                    "Recipe for Disaster (Freeing Sir Amik Varze)",
+                    "Raw chicken in inventory",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Rarely crowded. Accessible via fairy ring code BJR. Requires raw chicken to enter.",
+                "pros": ["Less crowded", "Easy access with fairy ring", "Good spawn rate"],
+                "cons": ["Requires quest completion", "Single combat", "Need raw chicken"],
+                "best_for": "Less crowded alternative",
+            },
+            {
+                "name": "Corsair Cove Dungeon",
+                "requirements": ["Dragon Slayer I (partial)"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Less crowded alternative. Accessible via charter ship from Rimmington.",
+                "pros": ["Less crowded", "Alternative location"],
+                "cons": ["Requires charter ship", "Single combat", "Further from bank"],
+                "best_for": "If other locations are crowded",
+            },
+            {
+                "name": "Wilderness Slayer Cave",
+                "requirements": ["Dragon Slayer I (partial)", "Wilderness slayer"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Available for Wilderness tasks. Accessible via revenant cave scrolls. Watch for PKers.",
+                "pros": ["Wilderness XP bonus", "Alternative location"],
+                "cons": ["Wilderness risk (PKers)", "Dangerous", "Single combat"],
+                "best_for": "Wilderness slayer tasks",
+            },
+            {
+                "name": "Lava Maze Dungeon",
+                "requirements": ["Dragon Slayer I (partial)"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Wilderness location. Accessible from Edgeville via amulet of glory. Watch for PKers.",
+                "pros": ["Wilderness XP bonus"],
+                "cons": ["Wilderness risk (PKers)", "Dangerous", "Single combat", "Far from bank"],
+                "best_for": "Wilderness slayer only",
+            },
+        ],
+        "alternatives": [
+            {
+                "name": "Baby black dragons",
+                "notes": "Easily accessible in Taverley Dungeon's task-only area. Quick kills but lower profit.",
+                "recommended_for": "Fast task completion",
+            },
+            {
+                "name": "Brutal black dragons",
+                "notes": "Require 77 Slayer. Most profitable variant with better drops. Located in Catacombs of Kourend.",
+                "recommended_for": "High-level players (77 Slayer) for profit",
+            },
+            {
+                "name": "King Black Dragon",
+                "notes": "Boss variant. Excellent drops (Dragon pickaxe, Draconic visage). Requires good gear and supplies.",
+                "recommended_for": "Boss slayer tasks",
+            },
+        ],
+        "strategy": "Use Ranged as black dragons are weak to it. Bring anti-dragon shield and antifire potion (or dragonfire shield) for protection. Expect around 30 kills per hour. Taverley Dungeon with safespot is most popular. Consider Brutal black dragons if you have 77 Slayer for much better profit. Generally skip unless doing Brutal black dragons or KBD.",
+    },
+    "Black Dragons": {
+        "weakness": ["Ranged", "Dragonbane"],
+        "items_needed": [
+            "Anti-dragon shield",
+            "Dragonfire protection (anti-dragon shield + antifire potion or dragonfire shield)",
+        ],
+        "attack_style": "Ranged (recommended) or Melee",
+        "xp_rate": 18000,
+        "profit_rate": 400000,
+        "recommendation": "SKIP",
+        "reason": "Slow task. Better alternatives exist. Only do if killing Brutal black dragons (77 Slayer) for profit or King Black Dragon for boss task.",
+        "locations": [
+            {
+                "name": "Taverley Dungeon",
+                "requirements": ["Dragon Slayer I (partial)", "70 Slayer OR Dusty key"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": True,
+                "notes": "Most popular location. Features safespot. Task-only area requires 70 Slayer or Dusty key. Easily accessible via Falador teleport.",
+                "pros": [
+                    "Safespot available",
+                    "Easy access",
+                    "Close to bank",
+                    "Baby black dragons for quick kills",
+                ],
+                "cons": ["Single combat", "Can be crowded", "Slow kills"],
+                "best_for": "Safespot ranged training",
+            },
+            {
+                "name": "Evil Chicken's Lair",
+                "requirements": [
+                    "Dragon Slayer I (partial)",
+                    "Recipe for Disaster (Freeing Sir Amik Varze)",
+                    "Raw chicken in inventory",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Rarely crowded. Accessible via fairy ring code BJR. Requires raw chicken to enter.",
+                "pros": ["Less crowded", "Easy access with fairy ring", "Good spawn rate"],
+                "cons": ["Requires quest completion", "Single combat", "Need raw chicken"],
+                "best_for": "Less crowded alternative",
+            },
+            {
+                "name": "Corsair Cove Dungeon",
+                "requirements": ["Dragon Slayer I (partial)"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Less crowded alternative. Accessible via charter ship from Rimmington.",
+                "pros": ["Less crowded", "Alternative location"],
+                "cons": ["Requires charter ship", "Single combat", "Further from bank"],
+                "best_for": "If other locations are crowded",
+            },
+            {
+                "name": "Wilderness Slayer Cave",
+                "requirements": ["Dragon Slayer I (partial)", "Wilderness slayer"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Available for Wilderness tasks. Accessible via revenant cave scrolls. Watch for PKers.",
+                "pros": ["Wilderness XP bonus", "Alternative location"],
+                "cons": ["Wilderness risk (PKers)", "Dangerous", "Single combat"],
+                "best_for": "Wilderness slayer tasks",
+            },
+            {
+                "name": "Lava Maze Dungeon",
+                "requirements": ["Dragon Slayer I (partial)"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Wilderness location. Accessible from Edgeville via amulet of glory. Watch for PKers.",
+                "pros": ["Wilderness XP bonus"],
+                "cons": ["Wilderness risk (PKers)", "Dangerous", "Single combat", "Far from bank"],
+                "best_for": "Wilderness slayer only",
+            },
+        ],
+        "alternatives": [
+            {
+                "name": "Baby black dragons",
+                "notes": "Easily accessible in Taverley Dungeon's task-only area. Quick kills but lower profit.",
+                "recommended_for": "Fast task completion",
+            },
+            {
+                "name": "Brutal black dragons",
+                "notes": "Require 77 Slayer. Most profitable variant with better drops. Located in Catacombs of Kourend.",
+                "recommended_for": "High-level players (77 Slayer) for profit",
+            },
+            {
+                "name": "King Black Dragon",
+                "notes": "Boss variant. Excellent drops (Dragon pickaxe, Draconic visage). Requires good gear and supplies.",
+                "recommended_for": "Boss slayer tasks",
+            },
+        ],
+        "strategy": "Use Ranged as black dragons are weak to it. Bring anti-dragon shield and antifire potion (or dragonfire shield) for protection. Expect around 30 kills per hour. Taverley Dungeon with safespot is most popular. Consider Brutal black dragons if you have 77 Slayer for much better profit. Generally skip unless doing Brutal black dragons or KBD.",
+    },
+    "Bronze dragons": {
+        "weakness": ["Magic", "Stab", "Dragonbane"],
+        "items_needed": [
+            "Anti-dragon shield",
+            "Dragonfire protection (anti-dragon shield + antifire potion or dragonfire shield)",
+        ],
+        "attack_style": "Magic (Trident/Sang) or Melee (Dragon hunter lance)",
+        "xp_rate": 12000,
+        "profit_rate": 80000,
+        "recommendation": "SKIP",
+        "reason": "Very slow, low profit. Weakest metal dragons but still inefficient. No visage drop unlike other metal dragons.",
+        "locations": [
+            {
+                "name": "Brimhaven Dungeon",
+                "requirements": [
+                    "Dragon Slayer I (partial)",
+                    "875 GP entry fee (north) OR 5,000 trading sticks (south, one-time)",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "8 total spawns - 3 in regular area, 5 in task-only section. Fastest access via house teleport or Tai Bwo Wanni teleport.",
+                "pros": ["Task-only section available", "Multiple spawns", "Easy access"],
+                "cons": [
+                    "Entry fee required",
+                    "Single combat",
+                    "Very slow kills",
+                    "No visage drop",
+                ],
+                "best_for": "If forced to do bronze dragons",
+            },
+            {
+                "name": "Catacombs of Kourend",
+                "requirements": [
+                    "Dragon Slayer I (partial)",
+                    "100% Kourend favour OR Xeric's Heart teleport",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "3 spawns. Accessible via Xeric's Heart teleport (requires 100% favour), Kourend teleport, or Xeric's Glade teleport.",
+                "pros": ["Prayer restoration from bones", "Totem pieces", "Ancient shards"],
+                "cons": ["Fewer spawns", "Requires favour", "Very slow kills", "No visage drop"],
+                "best_for": "If you need prayer restoration",
+            },
+        ],
+        "alternatives": [],
+        "strategy": "Use Magic (Trident/Sang) or Melee with Dragon hunter lance. Bring anti-dragon shield and antifire potion (or dragonfire shield). Protect from Magic doesn't work against metal dragon dragonfire. Bronze dragons are the weakest metal dragons but still very slow. They don't drop Draconic Visage like other metal dragons, making them less popular. Generally skip this task.",
+    },
+    "Bronze Dragons": {
+        "weakness": ["Magic", "Stab", "Dragonbane"],
+        "items_needed": [
+            "Anti-dragon shield",
+            "Dragonfire protection (anti-dragon shield + antifire potion or dragonfire shield)",
+        ],
+        "attack_style": "Magic (Trident/Sang) or Melee (Dragon hunter lance)",
+        "xp_rate": 12000,
+        "profit_rate": 80000,
+        "recommendation": "SKIP",
+        "reason": "Very slow, low profit. Weakest metal dragons but still inefficient. No visage drop unlike other metal dragons.",
+        "locations": [
+            {
+                "name": "Brimhaven Dungeon",
+                "requirements": [
+                    "Dragon Slayer I (partial)",
+                    "875 GP entry fee (north) OR 5,000 trading sticks (south, one-time)",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "8 total spawns - 3 in regular area, 5 in task-only section. Fastest access via house teleport or Tai Bwo Wanni teleport.",
+                "pros": ["Task-only section available", "Multiple spawns", "Easy access"],
+                "cons": [
+                    "Entry fee required",
+                    "Single combat",
+                    "Very slow kills",
+                    "No visage drop",
+                ],
+                "best_for": "If forced to do bronze dragons",
+            },
+            {
+                "name": "Catacombs of Kourend",
+                "requirements": [
+                    "Dragon Slayer I (partial)",
+                    "100% Kourend favour OR Xeric's Heart teleport",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "3 spawns. Accessible via Xeric's Heart teleport (requires 100% favour), Kourend teleport, or Xeric's Glade teleport.",
+                "pros": ["Prayer restoration from bones", "Totem pieces", "Ancient shards"],
+                "cons": ["Fewer spawns", "Requires favour", "Very slow kills", "No visage drop"],
+                "best_for": "If you need prayer restoration",
+            },
+        ],
+        "alternatives": [],
+        "strategy": "Use Magic (Trident/Sang) or Melee with Dragon hunter lance. Bring anti-dragon shield and antifire potion (or dragonfire shield). Protect from Magic doesn't work against metal dragon dragonfire. Bronze dragons are the weakest metal dragons but still very slow. They don't drop Draconic Visage like other metal dragons, making them less popular. Generally skip this task.",
     },
 }

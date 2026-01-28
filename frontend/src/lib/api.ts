@@ -86,9 +86,9 @@ export interface SlayerTask {
 export interface Location {
   name: string;
   requirements: string[];
-  multi_combat: boolean;
-  cannon: boolean;
-  safespot: boolean;
+  multi_combat: boolean | null;
+  cannon: boolean | null;
+  safespot: boolean | null;
   notes: string;
   pros: string[];
   cons: string[];
@@ -98,6 +98,7 @@ export interface Location {
 export interface Alternative {
   name: string;
   notes: string;
+  recommended_for?: string;
 }
 
 export interface TaskLocationData {

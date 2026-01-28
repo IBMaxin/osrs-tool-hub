@@ -1,4 +1,5 @@
 """Database migrations and initialization."""
+
 from sqlmodel import SQLModel
 from sqlalchemy import inspect, text
 
@@ -10,7 +11,7 @@ def migrate_tables() -> None:
     try:
         inspector = inspect(engine)
         table_names = inspector.get_table_names()
-        
+
         # 1. Item table migrations
         if "item" in table_names:
             existing_columns = [col["name"] for col in inspector.get_columns("item")]
@@ -25,7 +26,7 @@ def migrate_tables() -> None:
                 "low_price": "INTEGER",
                 "high_time": "INTEGER",
                 "low_time": "INTEGER",
-                "buy_limit": "INTEGER"
+                "buy_limit": "INTEGER",
             }
             with engine.begin() as conn:
                 for col, dtype in new_item_columns.items():
@@ -35,11 +36,13 @@ def migrate_tables() -> None:
                             print(f"✓ Added column: item.{col}")
                         except Exception as e:
                             print(f"⚠ Could not add column item.{col}: {e}")
-                
+
                 # After adding columns, sync price data from PriceSnapshot if available
                 # This ensures existing databases get populated with price data
                 try:
-                    conn.execute(text("""
+                    conn.execute(
+                        text(
+                            """
                         UPDATE item 
                         SET 
                             high_price = (SELECT high_price FROM pricesnapshot WHERE pricesnapshot.item_id = item.id),
@@ -48,7 +51,9 @@ def migrate_tables() -> None:
                             low_time = (SELECT low_time FROM pricesnapshot WHERE pricesnapshot.item_id = item.id),
                             buy_limit = item."limit"
                         WHERE EXISTS (SELECT 1 FROM pricesnapshot WHERE pricesnapshot.item_id = item.id)
-                    """))
+                    """
+                        )
+                    )
                     print("✓ Synced price data from PriceSnapshot to Item table")
                 except Exception as e:
                     print(f"⚠ Could not sync price data: {e}")
@@ -57,7 +62,7 @@ def migrate_tables() -> None:
         # Since SQLModel.metadata.create_all handles creation, we just need to verify
         # manual migrations if we were modifying existing tables.
         # For new tables (Monster, SlayerTask), create_all is sufficient.
-        
+
     except Exception as e:
         print(f"⚠ Migration check failed: {e}")
 

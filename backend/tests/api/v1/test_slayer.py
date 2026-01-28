@@ -1,5 +1,5 @@
 """Tests for slayer API endpoints."""
-import pytest
+
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
@@ -9,7 +9,7 @@ from backend.models import SlayerMaster, SlayerTask, Monster
 def test_get_slayer_masters(client: TestClient):
     """Test getting list of slayer masters."""
     response = client.get("/api/v1/slayer/masters")
-    
+
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
@@ -17,16 +17,10 @@ def test_get_slayer_masters(client: TestClient):
 def test_get_master_tasks_with_data(client: TestClient, session: Session):
     """Test getting tasks for a master when data exists."""
     # Create test data using session fixture from conftest
-    monster = Monster(
-        id=1,
-        name="Abyssal Demon",
-        combat_level=124,
-        hitpoints=150,
-        slayer_xp=150
-    )
+    monster = Monster(id=1, name="Abyssal Demon", combat_level=124, hitpoints=150, slayer_xp=150)
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -35,13 +29,13 @@ def test_get_master_tasks_with_data(client: TestClient, session: Session):
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
-    
+
     response = client.get(f"/api/v1/slayer/tasks/{SlayerMaster.DURADEL.value}")
-    
+
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)
@@ -53,16 +47,10 @@ def test_get_master_tasks_with_data(client: TestClient, session: Session):
 def test_get_task_advice_valid(client: TestClient, session: Session):
     """Test getting advice for a valid task with query parameters."""
     # Create test data
-    monster = Monster(
-        id=2,
-        name="Waterfiend",
-        combat_level=115,
-        hitpoints=120,
-        slayer_xp=128
-    )
+    monster = Monster(id=2, name="Waterfiend", combat_level=115, hitpoints=120, slayer_xp=128)
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -71,19 +59,18 @@ def test_get_task_advice_valid(client: TestClient, session: Session):
         quantity_max=170,
         weight=8,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
     task_id = task.id
-    
+
     # Call with query parameters
     response = client.get(
-        f"/api/v1/slayer/advice/{task_id}",
-        params={"slayer_level": 85, "combat_level": 110}
+        f"/api/v1/slayer/advice/{task_id}", params={"slayer_level": 85, "combat_level": 110}
     )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert "recommendation" in data
@@ -96,16 +83,10 @@ def test_get_task_advice_valid(client: TestClient, session: Session):
 def test_get_task_advice_with_defaults(client: TestClient, session: Session):
     """Test getting advice using default query parameters."""
     # Create test data
-    monster = Monster(
-        id=3,
-        name="Abyssal demon",
-        combat_level=124,
-        hitpoints=150,
-        slayer_xp=150
-    )
+    monster = Monster(id=3, name="Abyssal demon", combat_level=124, hitpoints=150, slayer_xp=150)
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -114,16 +95,16 @@ def test_get_task_advice_with_defaults(client: TestClient, session: Session):
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
     task_id = task.id
-    
+
     # Call without query parameters (should use defaults)
     response = client.get(f"/api/v1/slayer/advice/{task_id}")
-    
+
     assert response.status_code == 200
     data = response.json()
     assert "recommendation" in data
@@ -133,10 +114,9 @@ def test_get_task_advice_with_defaults(client: TestClient, session: Session):
 def test_get_task_advice_not_found(client: TestClient):
     """Test getting advice for non-existent task."""
     response = client.get(
-        "/api/v1/slayer/advice/99999",
-        params={"slayer_level": 85, "combat_level": 110}
+        "/api/v1/slayer/advice/99999", params={"slayer_level": 85, "combat_level": 110}
     )
-    
+
     assert response.status_code == 404
     assert "not found" in response.json()["detail"].lower()
 
@@ -145,14 +125,10 @@ def test_get_task_advice_invalid_stats(client: TestClient):
     """Test that advice endpoint validates stat ranges."""
     # Test slayer level too high
     response = client.get(
-        "/api/v1/slayer/advice/1",
-        params={"slayer_level": 100, "combat_level": 110}
+        "/api/v1/slayer/advice/1", params={"slayer_level": 100, "combat_level": 110}
     )
     assert response.status_code == 422  # Validation error
-    
+
     # Test combat level too low
-    response = client.get(
-        "/api/v1/slayer/advice/1",
-        params={"slayer_level": 85, "combat_level": 2}
-    )
+    response = client.get("/api/v1/slayer/advice/1", params={"slayer_level": 85, "combat_level": 2})
     assert response.status_code == 422  # Validation error

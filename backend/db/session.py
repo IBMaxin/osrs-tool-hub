@@ -1,4 +1,5 @@
 """Database session management."""
+
 from sqlmodel import Session
 
 from backend.db.engine import engine

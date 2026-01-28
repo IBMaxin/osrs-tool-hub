@@ -19,7 +19,7 @@ COMMON_TASK_DATA = {
                 "notes": "Most popular location. Top floor has many spawns.",
                 "pros": ["Close to Canifis bank", "Many spawn points", "Easy access"],
                 "cons": ["Can be crowded on peak hours"],
-                "best_for": "Melee training or casual slayer"
+                "best_for": "Melee training or casual slayer",
             },
             {
                 "name": "Catacombs of Kourend",
@@ -28,13 +28,23 @@ COMMON_TASK_DATA = {
                 "cannon": False,
                 "safespot": False,
                 "notes": "Restores prayer via bone drops. Superior encounters possible. Drops ancient shards and totem pieces.",
-                "pros": ["Prayer restoration", "Totem pieces", "Ancient shards", "Superior encounters", "Excellent for bursting/barraging"],
-                "cons": ["Requires Arceuus favour", "Further from bank", "Need to navigate dungeon"],
-                "best_for": "Bursting/barraging for maximum XP and superior encounters"
-            }
+                "pros": [
+                    "Prayer restoration",
+                    "Totem pieces",
+                    "Ancient shards",
+                    "Superior encounters",
+                    "Excellent for bursting/barraging",
+                ],
+                "cons": [
+                    "Requires Arceuus favour",
+                    "Further from bank",
+                    "Need to navigate dungeon",
+                ],
+                "best_for": "Bursting/barraging for maximum XP and superior encounters",
+            },
         ],
         "alternatives": [],
-        "strategy": "Use Arclight for +70% damage bonus against demons. For maximum XP, barrage in Catacombs. For afk melee, use Slayer Tower with guthan's or blood barrage for healing."
+        "strategy": "Use Arclight for +70% damage bonus against demons. For maximum XP, barrage in Catacombs. For afk melee, use Slayer Tower with guthan's or blood barrage for healing.",
     },
     "Dust devils": {
         "weakness": [],
@@ -52,9 +62,15 @@ COMMON_TASK_DATA = {
                 "cannon": False,
                 "safespot": False,
                 "notes": "Best location for bursting. Stack dust devils in corner for maximum efficiency.",
-                "pros": ["Prayer restoration", "Totem pieces", "Ancient shards", "Superior encounters", "Perfect for bursting"],
+                "pros": [
+                    "Prayer restoration",
+                    "Totem pieces",
+                    "Ancient shards",
+                    "Superior encounters",
+                    "Perfect for bursting",
+                ],
                 "cons": ["Requires favour", "Need to navigate to location"],
-                "best_for": "Bursting for maximum XP/hr"
+                "best_for": "Bursting for maximum XP/hr",
             },
             {
                 "name": "Smoke Dungeon",
@@ -65,11 +81,11 @@ COMMON_TASK_DATA = {
                 "notes": "Single-way combat. Can use cannon but not ideal for bursting.",
                 "pros": ["Cannon allowed", "Safespot available"],
                 "cons": ["Single combat", "Not ideal for bursting", "Requires desert treasure"],
-                "best_for": "Solo cannon slayer (not recommended)"
-            }
+                "best_for": "Solo cannon slayer (not recommended)",
+            },
         ],
         "alternatives": [],
-        "strategy": "Always burst in Catacombs. Stack 9+ dust devils in corner, use Ice Barrage. Bring Slayer Helmet (i) for magic bonus. Prayer gear recommended."
+        "strategy": "Always burst in Catacombs. Stack 9+ dust devils in corner, use Ice Barrage. Bring Slayer Helmet (i) for magic bonus. Prayer gear recommended.",
     },
     "Nechryael": {
         "weakness": ["Demonbane", "Crush"],
@@ -87,9 +103,14 @@ COMMON_TASK_DATA = {
                 "cannon": False,
                 "safespot": False,
                 "notes": "Best location. Death spawns stack nicely for bursting. Greater Nechryael possible.",
-                "pros": ["Prayer restoration", "Totem pieces", "Superior encounters (Greater Nechryael)", "Death spawns for extra XP"],
+                "pros": [
+                    "Prayer restoration",
+                    "Totem pieces",
+                    "Superior encounters (Greater Nechryael)",
+                    "Death spawns for extra XP",
+                ],
                 "cons": ["Requires favour", "Need to manage death spawns"],
-                "best_for": "Bursting for maximum XP/hr"
+                "best_for": "Bursting for maximum XP/hr",
             },
             {
                 "name": "Slayer Tower",
@@ -99,8 +120,12 @@ COMMON_TASK_DATA = {
                 "safespot": False,
                 "notes": "Alternative location but less efficient than Catacombs.",
                 "pros": ["Easy access", "No requirements"],
-                "cons": ["No prayer restoration", "Less efficient spawns", "No superior encounters"],
-                "best_for": "If Arceuus favour not obtained"
+                "cons": [
+                    "No prayer restoration",
+                    "Less efficient spawns",
+                    "No superior encounters",
+                ],
+                "best_for": "If Arceuus favour not obtained",
             },
             {
                 "name": "Iorwerth Dungeon",
@@ -111,11 +136,11 @@ COMMON_TASK_DATA = {
                 "notes": "Good spawn density. Requires high-level quest completion.",
                 "pros": ["Good spawn density", "Crystal shards from elves nearby"],
                 "cons": ["High quest requirement", "Further from bank"],
-                "best_for": "Post-quest alternative to Catacombs"
-            }
+                "best_for": "Post-quest alternative to Catacombs",
+            },
         ],
         "alternatives": [],
-        "strategy": "Burst in Catacombs for best XP. Let death spawns stack, then barrage them all. Use Arclight for melee if low on runes. Slayer Helmet (i) highly recommended."
+        "strategy": "Burst in Catacombs for best XP. Let death spawns stack, then barrage them all. Use Arclight for melee if low on runes. Slayer Helmet (i) highly recommended.",
     },
     "Gargoyles": {
         "weakness": ["Crush"],
@@ -135,17 +160,17 @@ COMMON_TASK_DATA = {
                 "notes": "Only location. Top floor near Abyssal demons. Very AFK with guthan's.",
                 "pros": ["Only one spot", "Very AFK", "Consistent profit", "Close to bank"],
                 "cons": ["Single combat", "Can be crowded"],
-                "best_for": "AFK profit making"
+                "best_for": "AFK profit making",
             }
         ],
         "alternatives": [
             {
                 "name": "Grotesque Guardians",
                 "notes": "Superior boss variant. Requires 75 Slayer. Much higher profit but not AFK.",
-                "recommended_for": "Experienced players with good gear"
+                "recommended_for": "Experienced players with good gear",
             }
         ],
-        "strategy": "Use Guthan's for AFK healing, or blood fury. Wear full Guthans and stay for entire task. Remember to bring rock hammer to finish them."
+        "strategy": "Use Guthan's for AFK healing, or blood fury. Wear full Guthans and stay for entire task. Remember to bring rock hammer to finish them.",
     },
     "Bloodveld": {
         "weakness": [],
@@ -163,9 +188,14 @@ COMMON_TASK_DATA = {
                 "cannon": False,
                 "safespot": False,
                 "notes": "Mutated Bloodvelds. Best for bursting. Prayer restoration from bones.",
-                "pros": ["Prayer restoration", "Mutated variants", "Superior encounters", "Totem pieces"],
+                "pros": [
+                    "Prayer restoration",
+                    "Mutated variants",
+                    "Superior encounters",
+                    "Totem pieces",
+                ],
                 "cons": ["Requires favour"],
-                "best_for": "Bursting for maximum XP"
+                "best_for": "Bursting for maximum XP",
             },
             {
                 "name": "Stronghold Slayer Cave",
@@ -176,7 +206,7 @@ COMMON_TASK_DATA = {
                 "notes": "Good for cannon. Close to bank via Ring of Slaying.",
                 "pros": ["Cannon allowed", "Easy access with Ring of Slaying", "No requirements"],
                 "cons": ["No prayer restoration", "Regular bloodvelds only"],
-                "best_for": "Cannon slayer training"
+                "best_for": "Cannon slayer training",
             },
             {
                 "name": "Meiyerditch Laboratories",
@@ -187,11 +217,11 @@ COMMON_TASK_DATA = {
                 "notes": "Vyrewatch Sentinels count as bloodvelds. Very high profit.",
                 "pros": ["Excellent profit", "Blood shards", "Counts for bloodveld task"],
                 "cons": ["High quest requirement", "Single combat", "Slower than bursting"],
-                "best_for": "Profit-focused players post-quest"
-            }
+                "best_for": "Profit-focused players post-quest",
+            },
         ],
         "alternatives": [],
-        "strategy": "Burst mutated bloodvelds in Catacombs for XP. Use cannon in Stronghold for casual slayer. Do Vyrewatch Sentinels if you need GP."
+        "strategy": "Burst mutated bloodvelds in Catacombs for XP. Use cannon in Stronghold for casual slayer. Do Vyrewatch Sentinels if you need GP.",
     },
     "Hellhounds": {
         "weakness": ["Slash"],
@@ -211,7 +241,7 @@ COMMON_TASK_DATA = {
                 "notes": "Best spot for cannon. Still not worth doing unless bossing.",
                 "pros": ["Cannon allowed", "Easy access"],
                 "cons": ["Zero drops", "Waste of cannonballs"],
-                "best_for": "Skip this task"
+                "best_for": "Skip this task",
             },
             {
                 "name": "Catacombs of Kourend",
@@ -222,17 +252,17 @@ COMMON_TASK_DATA = {
                 "notes": "Prayer restoration but still not worth it.",
                 "pros": ["Prayer restoration", "Totem pieces"],
                 "cons": ["No drops", "Slow"],
-                "best_for": "Skip this task"
-            }
+                "best_for": "Skip this task",
+            },
         ],
         "alternatives": [
             {
                 "name": "Cerberus",
                 "notes": "Boss variant requires 91 Slayer. Excellent drops (Primordial/Pegasian/Eternal crystals).",
-                "recommended_for": "High-level players only. Otherwise skip task."
+                "recommended_for": "High-level players only. Otherwise skip task.",
             }
         ],
-        "strategy": "Skip unless you can kill Cerberus (91 Slayer). If forced to do regular hellhounds, cannon in Stronghold for fastest completion."
+        "strategy": "Skip unless you can kill Cerberus (91 Slayer). If forced to do regular hellhounds, cannon in Stronghold for fastest completion.",
     },
     "Dagannoth": {
         "weakness": [],
@@ -252,7 +282,7 @@ COMMON_TASK_DATA = {
                 "notes": "Best location. Cannon dagannoths on bottom floor. Very fast task.",
                 "pros": ["Cannon allowed", "Safespot available", "Very fast", "Excellent XP/hr"],
                 "cons": ["Uses many cannonballs", "Requires quest"],
-                "best_for": "Fast XP with cannon"
+                "best_for": "Fast XP with cannon",
             },
             {
                 "name": "Catacombs of Kourend",
@@ -263,17 +293,17 @@ COMMON_TASK_DATA = {
                 "notes": "Alternative without cannon. Can burst but less efficient.",
                 "pros": ["Prayer restoration", "No cannonball cost"],
                 "cons": ["Slower than Lighthouse", "Spread out spawns"],
-                "best_for": "If out of cannonballs"
-            }
+                "best_for": "If out of cannonballs",
+            },
         ],
         "alternatives": [
             {
                 "name": "Dagannoth Kings",
                 "notes": "Boss trio. Excellent profit (Dragon axes, Berserker ring, Archers ring, Seers ring). Requires tribrid gear.",
-                "recommended_for": "Experienced players with tribrid setup"
+                "recommended_for": "Experienced players with tribrid setup",
             }
         ],
-        "strategy": "Cannon in Lighthouse for maximum XP. Safespot behind rocks. Bring many cannonballs. Do DKs if you have good gear and want profit over XP."
+        "strategy": "Cannon in Lighthouse for maximum XP. Safespot behind rocks. Bring many cannonballs. Do DKs if you have good gear and want profit over XP.",
     },
     "Kalphite": {
         "weakness": ["Keris"],
@@ -293,17 +323,17 @@ COMMON_TASK_DATA = {
                 "notes": "Kill Workers in main cave. Very fast with cannon. Safespot available.",
                 "pros": ["Cannon allowed", "Safespot available", "Very fast", "No requirements"],
                 "cons": ["Low profit", "Uses cannonballs"],
-                "best_for": "Fast slayer points"
+                "best_for": "Fast slayer points",
             }
         ],
         "alternatives": [
             {
                 "name": "Kalphite Queen",
                 "notes": "Boss variant. Dragon chainbody drop. Requires gear switches (ranged + melee).",
-                "recommended_for": "Players wanting boss slayer"
+                "recommended_for": "Players wanting boss slayer",
             }
         ],
-        "strategy": "Cannon Kalphite Workers for fastest task completion. Use Keris partisan if you have it for bonus damage. Safespot to minimize damage taken."
+        "strategy": "Cannon Kalphite Workers for fastest task completion. Use Keris partisan if you have it for bonus damage. Safespot to minimize damage taken.",
     },
     "Aberrant spectres": {
         "weakness": [],
@@ -323,7 +353,7 @@ COMMON_TASK_DATA = {
                 "notes": "Most common location. Good herb drops. Safespot available.",
                 "pros": ["Good herb/seed drops", "Safespot available", "Easy access"],
                 "cons": ["Single combat", "Can be crowded"],
-                "best_for": "Consistent profit from herbs"
+                "best_for": "Consistent profit from herbs",
             },
             {
                 "name": "Stronghold Slayer Cave",
@@ -334,16 +364,577 @@ COMMON_TASK_DATA = {
                 "notes": "Alternative location with Ring of Slaying teleport.",
                 "pros": ["Easy access with ring", "Less crowded"],
                 "cons": ["Single combat", "Same as Slayer Tower"],
-                "best_for": "If Slayer Tower is crowded"
-            }
+                "best_for": "If Slayer Tower is crowded",
+            },
         ],
         "alternatives": [
             {
                 "name": "Deviant spectres",
                 "notes": "Superior variant in Catacombs. Better drops.",
-                "recommended_for": "Superior slayer encounters"
+                "recommended_for": "Superior slayer encounters",
             }
         ],
-        "strategy": "Use magic or ranged. Safespot to avoid melee damage. Collect all herb drops for profit. Must wear nose peg or slayer helmet."
+        "strategy": "Use magic or ranged. Safespot to avoid melee damage. Collect all herb drops for profit. Must wear nose peg or slayer helmet.",
+    },
+    "Turoth": {
+        "weakness": ["Leaf-bladed weapons", "Broad arrows/bolts", "Magic Dart"],
+        "items_needed": [
+            "Leaf-bladed battleaxe/sword/spear/axe",
+            "Broad arrows/bolts",
+            "OR Slayer's staff (e) for Magic Dart",
+        ],
+        "attack_style": "Melee (Leaf-bladed) or Ranged (Broad bolts) or Magic (Magic Dart)",
+        "xp_rate": 20000,
+        "profit_rate": 300000,
+        "recommendation": "DO",
+        "reason": "Good profit from herbs, seeds, and alchables. Decent XP with leaf-bladed battleaxe.",
+        "locations": [
+            {
+                "name": "Fremennik Slayer Dungeon",
+                "requirements": ["55 Slayer"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": True,
+                "notes": "Only location for Turoths. Non-aggressive. Can use Protect from Melee. Agility shortcuts available (62 and 81 Agility).",
+                "pros": [
+                    "Non-aggressive",
+                    "Safespot available",
+                    "Good herb/seed drops",
+                    "Decent profit",
+                    "Agility shortcuts speed up access",
+                ],
+                "cons": [
+                    "Single combat",
+                    "Requires specific weapons (leaf-bladed or broad)",
+                    "Only one location",
+                ],
+                "best_for": "Profit-focused slayer with herb collection",
+            }
+        ],
+        "alternatives": [],
+        "strategy": "Use leaf-bladed battleaxe for best melee DPS, or broad bolts with rune crossbow for ranged. Magic Dart is viable but slower. Must use leaf-bladed weapons, broad arrows/bolts, or Magic Dart - all other damage types deal 0 damage. Collect all herbs and seeds for profit. Use Protect from Melee to avoid all damage.",
+    },
+    "Scabarites": {
+        "weakness": ["Keris", "Keris partisan"],
+        "items_needed": ["Water source (for desert heat)", "Keris or Keris partisan recommended"],
+        "attack_style": "Melee (Keris/Keris partisan)",
+        "xp_rate": 18000,
+        "profit_rate": 50000,
+        "recommendation": "SKIP",
+        "reason": "Low XP, low profit, annoying task. Only do if you need slayer points quickly.",
+        "locations": [
+            {
+                "name": "Uzer Mastaba",
+                "requirements": [
+                    "Contact! quest (partial completion)",
+                    "The Curse of Arrav quest (partial)",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Fastest and safest spot. Small scarabs have only 40 HP and low Defence. No drops but very fast kills.",
+                "pros": ["Fastest completion", "Safest location", "Low HP enemies", "Easy to kill"],
+                "cons": ["No drops", "Requires quest completion", "Single combat"],
+                "best_for": "Fast task completion for slayer points",
+            },
+            {
+                "name": "Sophanem Dungeon",
+                "requirements": ["Contact! quest (most of it)", "Icthlarin's Little Helper quest"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Safest option for lower-level players. Access via magic carpet from Pollnivneach.",
+                "pros": ["Safest location", "Good for lower levels", "Easy access"],
+                "cons": ["Requires quests", "Single combat", "Lower spawn rate"],
+                "best_for": "Lower-level players",
+            },
+            {
+                "name": "Ruins of Ullek (Scabaras Dungeon)",
+                "requirements": ["Contact! quest"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "2nd level has high numbers and close spawns. More dangerous than Sophanem. Bring water source for desert heat.",
+                "pros": ["High spawn density", "Close together", "Good for task completion"],
+                "cons": ["More dangerous", "Desert heat requires water", "Further from bank"],
+                "best_for": "Efficient task completion",
+            },
+        ],
+        "alternatives": [
+            {
+                "name": "Scarab swarms",
+                "notes": "Count towards task. Found in same locations.",
+                "recommended_for": "Task completion",
+            },
+            {
+                "name": "Locust riders",
+                "notes": "Count towards task. Found in same locations.",
+                "recommended_for": "Task completion",
+            },
+            {
+                "name": "Scarab Mages",
+                "notes": "Count towards task. Found in same locations.",
+                "recommended_for": "Task completion",
+            },
+        ],
+        "strategy": "Use Keris or Keris partisan for bonus damage. Uzer Mastaba is fastest for completion. Bring water source if going to Ruins of Ullek. This is generally a skip task unless you need points quickly.",
+    },
+    "Brine rats": {
+        "weakness": ["Rat bone weapons (Bone mace/Bone shortbow/Bone staff)"],
+        "items_needed": [
+            "Spade (to enter cavern)",
+            "Rat bone weapons recommended (adds +10 max hit)",
+        ],
+        "attack_style": "Melee (Cannon) or Melee (Bone mace) or Ranged (Bone shortbow) or Magic (Bone staff)",
+        "xp_rate": 15000,
+        "profit_rate": 100000,
+        "recommendation": "SKIP",
+        "reason": "Low XP, low profit. Only notable for medium clues and rare brine sabre drop. Generally inefficient.",
+        "locations": [
+            {
+                "name": "Brine Rat Cavern (Sven's cave)",
+                "requirements": ["47 Slayer", "Olaf's Quest (partial completion)"],
+                "multi_combat": False,
+                "cannon": True,
+                "safespot": False,
+                "notes": "Only location for Brine rats. Access by digging south of windswept tree with spade. Falls through and gets stunned briefly. Dwarf multicannons allowed.",
+                "pros": [
+                    "Cannon allowed",
+                    "Medium clue drops",
+                    "Rare brine sabre drop",
+                    "Rat bone weapons add +10 max hit",
+                ],
+                "cons": [
+                    "Low XP",
+                    "Low profit",
+                    "Only one location",
+                    "Requires quest",
+                    "Single combat",
+                ],
+                "best_for": "Medium clue hunting or brine sabre collection",
+            }
+        ],
+        "alternatives": [],
+        "strategy": "Use rat bone weapons (Bone mace for melee, Bone shortbow for ranged, Bone staff for magic) for +10 max hit bonus. These weapons only work against rats. Cannon is allowed and speeds up task. Bring spade to enter cavern. Best accessed via Fairy ring code DKS (requires Fairytale II) or Eagle transport to Rellekka. Generally skip unless hunting medium clues or brine sabre.",
+    },
+    "Ankou": {
+        "weakness": ["Salve amulet (undead)"],
+        "items_needed": [],
+        "attack_style": "Melee (Cannon)",
+        "xp_rate": 30000,
+        "profit_rate": 200000,
+        "recommendation": "DO",
+        "reason": "Fast task with good death and blood rune drops. Decent profit and XP with cannon.",
+        "locations": [
+            {
+                "name": "Catacombs of Kourend",
+                "requirements": ["20% Arceuus favour"],
+                "multi_combat": True,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Recommended location. 10 Ankou spawns. Multicombat area allows AFK time. Access via POH portal, Kharedst's memoirs, or fairy ring CIS.",
+                "pros": [
+                    "Multicombat",
+                    "Prayer restoration from bones",
+                    "Totem pieces",
+                    "Ancient shards",
+                    "AFK friendly",
+                ],
+                "cons": ["Requires Arceuus favour", "No cannon"],
+                "best_for": "AFK slayer with prayer restoration",
+            },
+            {
+                "name": "Stronghold Slayer Cave",
+                "requirements": [],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "8 Ankou spawns (levels 75, 82, 86). Fast access via Slayer Ring or spirit tree from Grand Exchange.",
+                "pros": ["Easy access with Slayer Ring", "No requirements", "Close to bank"],
+                "cons": ["Single combat", "Lower spawn count", "No cannon"],
+                "best_for": "Quick task completion",
+            },
+            {
+                "name": "Sepulchre of Death (Stronghold of Security)",
+                "requirements": [],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Largest concentration with 32 Ankou spawns. Located in Barbarian Village.",
+                "pros": ["Highest spawn count", "No requirements", "Easy access"],
+                "cons": ["Single combat", "No cannon", "Further from bank"],
+                "best_for": "Maximum spawn density",
+            },
+            {
+                "name": "Wilderness Slayer Cave",
+                "requirements": [],
+                "multi_combat": True,
+                "cannon": False,
+                "safespot": False,
+                "notes": "16 level 98 Ankou spawns in multicombat. Access via Ferox Enclave teleport then run east. Watch for PKers (many below level 30 Wilderness).",
+                "pros": ["Multicombat", "High level Ankous", "Good spawn count"],
+                "cons": ["Wilderness risk (PKers)", "No cannon", "Dangerous"],
+                "best_for": "Risk-tolerant players",
+            },
+            {
+                "name": "The Forgotten Cemetery",
+                "requirements": [],
+                "multi_combat": False,
+                "cannon": True,
+                "safespot": False,
+                "notes": "Wilderness location with normal Ankous in singles area. Cannon can be placed but watch for PKers.",
+                "pros": ["Cannon allowed", "Wilderness XP bonus"],
+                "cons": ["Wilderness risk (PKers)", "Single combat", "Dangerous"],
+                "best_for": "Cannon slayer in Wilderness",
+            },
+        ],
+        "alternatives": [],
+        "strategy": "Use Protect from Melee to negate all damage. Ankous are undead so Salve amulet works but doesn't stack with Slayer helmet. Melee is cheapest. Catacombs is best for AFK with prayer restoration. Stronghold Slayer Cave for quick access. Use cannon in Forgotten Cemetery if doing Wilderness slayer.",
+    },
+    "Trolls": {
+        "weakness": ["Crush", "Stab"],
+        "items_needed": ["Neitiznot shield (for Ice Trolls)", "Dwarf multicannon"],
+        "attack_style": "Melee (Cannon) - Crush or Stab recommended",
+        "xp_rate": 40000,
+        "profit_rate": 150000,
+        "recommendation": "DO",
+        "reason": "Excellent cannon task with Ice Trolls. High XP rates and decent profit from rune items and granite shields.",
+        "locations": [
+            {
+                "name": "Jatizso (Ice Trolls)",
+                "requirements": ["Fremennik Isles quest", "Dwarf Cannon quest", "60 Combat"],
+                "multi_combat": True,
+                "cannon": True,
+                "safespot": False,
+                "notes": "Best location. Cannon Ice Trolls on Jatizso island (not in caves - caves don't allow cannon). Multi-combat zone. Fastest access via Enchanted Lyre (after Elite Fremennik Diary).",
+                "pros": [
+                    "Cannon allowed",
+                    "Multicombat",
+                    "High XP rates",
+                    "Decent profit",
+                    "Rune items and granite shield drops",
+                ],
+                "cons": [
+                    "Requires Fremennik Isles quest",
+                    "Requires cannon quest",
+                    "Uses cannonballs",
+                ],
+                "best_for": "Fast XP with cannon",
+            },
+            {
+                "name": "Death Plateau",
+                "requirements": ["60 Combat"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "15 level 69 Mountain Trolls. Access via Games Necklace to Burthorpe, then walk northwest. Use Protect from Ranged while traveling.",
+                "pros": ["Easy access", "No quest requirements", "Close to teleport"],
+                "cons": ["Single combat", "No cannon", "Lower spawn count"],
+                "best_for": "If Fremennik Isles not completed",
+            },
+            {
+                "name": "Mount Quidamortem",
+                "requirements": ["60 Combat", "Xeric's talisman"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Alternative mountain troll location. Accessible with Xeric's talisman.",
+                "pros": ["Alternative location", "Xeric's talisman access"],
+                "cons": ["Single combat", "No cannon", "Further from bank"],
+                "best_for": "Alternative if other locations unavailable",
+            },
+        ],
+        "alternatives": [
+            {
+                "name": "Ice Troll King",
+                "notes": "Boss variant in Ice Troll Caves. Requires good gear.",
+                "recommended_for": "Boss slayer tasks",
+            }
+        ],
+        "strategy": "Use crush or stab weapons (Ice Trolls are slightly slash-resistant). Cannon Ice Trolls on Jatizso island for best XP rates. Wear Neitiznot shield to reduce ranged max hits. Ice Troll Caves don't allow cannons due to dank air - cannon on the island instead. Expect high XP rates and decent profit from rune items and granite shields.",
+    },
+    "Waterfiends": {
+        "weakness": ["Crush", "Earth magic (100% weakness)"],
+        "items_needed": [
+            "Crush weapon (abyssal bludgeon, Sarachnis cudgel, leaf-bladed battleaxe, dragon mace)",
+            "Magic defence armor (Dragonhide, Karil's, Eclipse Moon)",
+        ],
+        "attack_style": "Melee (Crush) or Magic (Earth spells) or Ranged",
+        "xp_rate": 25000,
+        "profit_rate": 200000,
+        "recommendation": "DO",
+        "reason": "Reasonable task with good charm drops (crimson charms for summoning). Decent XP and profit with crush weapons.",
+        "locations": [
+            {
+                "name": "Ancient Cavern",
+                "requirements": ["75 Combat", "Must enter Ancient Cavern once before assignment"],
+                "multi_combat": True,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Most common location. Access via whirlpool at Baxtorian Falls. Multi-combat area. Waterfiends attack with Magic and magical Ranged (both roll against Magic Defence).",
+                "pros": [
+                    "Most common location",
+                    "Multicombat",
+                    "Good spawn density",
+                    "Crimson charm drops",
+                    "Water orbs and bones",
+                ],
+                "cons": [
+                    "Requires entering cavern first",
+                    "No cannon",
+                    "Magic attacks can't be fully protected",
+                ],
+                "best_for": "Charm farming and slayer XP",
+            },
+            {
+                "name": "Kraken Cove",
+                "requirements": ["75 Combat"],
+                "multi_combat": True,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Alternative location. Less common than Ancient Cavern.",
+                "pros": ["Alternative location", "Multicombat"],
+                "cons": ["Less common", "No cannon"],
+                "best_for": "Alternative if Ancient Cavern unavailable",
+            },
+            {
+                "name": "Iorwerth Dungeon",
+                "requirements": ["75 Combat", "Song of the Elves quest"],
+                "multi_combat": True,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Requires high-level quest completion. Good spawn density.",
+                "pros": ["Good spawn density", "Crystal shards nearby", "Multicombat"],
+                "cons": ["High quest requirement", "No cannon"],
+                "best_for": "Post-quest alternative",
+            },
+        ],
+        "alternatives": [],
+        "strategy": "Use crush weapons (abyssal bludgeon, Sarachnis cudgel, leaf-bladed battleaxe, or dragon mace) due to waterfiends' low crush defence. Alternatively use earth spells (100% weakness) or ranged. Wear Magic Defence armor (Dragonhide, Karil's, or Eclipse Moon). Use Protect from Missiles if taking heavy damage, or Mystic Might for magic bonus. Bring high-healing food (sharks or anglerfish). Waterfiends drop crimson charms (valuable for summoning), water orbs, and bones.",
+    },
+    "Elves": {
+        "weakness": ["Ranged", "Stab"],
+        "items_needed": [
+            "Dwarf multicannon (for Iorwerth Dungeon)",
+            "Song of the Elves quest completion (highly recommended)",
+        ],
+        "attack_style": "Melee (Cannon) or Ranged or Melee (Stab)",
+        "xp_rate": 30000,
+        "profit_rate": 500000,
+        "recommendation": "SKIP",
+        "reason": "BLOCK until Song of the Elves is completed. After quest, Iorwerth Dungeon becomes excellent with cannon, Enhanced crystal teleport seeds (~1.9M), and crystal shards. Without quest, all locations are terrible.",
+        "locations": [
+            {
+                "name": "Iorwerth Dungeon",
+                "requirements": [
+                    "70 Combat",
+                    "Regicide quest",
+                    "Song of the Elves quest (REQUIRED)",
+                ],
+                "multi_combat": False,
+                "cannon": True,
+                "safespot": False,
+                "notes": "BEST location after Song of the Elves. Found in Prifddinas' south-west district. 13 Iorwerth Warriors (level 108). Cannon can be effectively used. No cluttered terrain. Drops Enhanced crystal teleport seeds (worth ~1.9M) and 3-5 crystal shards per kill.",
+                "pros": [
+                    "Cannon allowed",
+                    "Excellent profit (Enhanced crystal teleport seeds)",
+                    "Crystal shards (3-5 per kill)",
+                    "Good spawn density",
+                    "No terrain obstacles",
+                ],
+                "cons": [
+                    "Requires Song of the Elves quest",
+                    "High quest requirement",
+                    "Single combat",
+                ],
+                "best_for": "Post-quest cannon slayer with excellent profit",
+            },
+            {
+                "name": "Iorwerth Camp",
+                "requirements": ["70 Combat", "Regicide quest"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "6 archers and 6 warriors. Cannon placement hindered by tents, barrels, and crates. Terrible location.",
+                "pros": ["No Song of the Elves required"],
+                "cons": [
+                    "Cannon ineffective (obstacles)",
+                    "Few spawns",
+                    "Far from bank",
+                    "Poor drops",
+                    "Cluttered terrain",
+                ],
+                "best_for": "NOT RECOMMENDED - Block this task instead",
+            },
+            {
+                "name": "Lletya",
+                "requirements": ["70 Combat", "Regicide quest"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Only 1 archer and 2 warriors. Very few spawns.",
+                "pros": ["No Song of the Elves required"],
+                "cons": ["Very few spawns", "Far from bank", "No cannon", "Terrible location"],
+                "best_for": "NOT RECOMMENDED - Block this task instead",
+            },
+            {
+                "name": "Prifddinas",
+                "requirements": ["70 Combat", "Regicide quest", "Song of the Elves quest"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Scattered elves throughout the city. Not efficient.",
+                "pros": ["In Prifddinas"],
+                "cons": [
+                    "Scattered spawns",
+                    "No cannon",
+                    "Inefficient",
+                    "Requires Song of the Elves anyway",
+                ],
+                "best_for": "NOT RECOMMENDED - Use Iorwerth Dungeon instead",
+            },
+        ],
+        "alternatives": [],
+        "strategy": "BLOCK this task until you complete Song of the Elves quest. After quest, use cannon in Iorwerth Dungeon for excellent XP and profit. Elves are weakest to ranged and stab. Use overhead prayers, cannon, and high-tier gear. Iorwerth Warriors drop Enhanced crystal teleport seeds (worth ~1.9M) and 3-5 crystal shards per kill. Without Song of the Elves, all locations are terrible - block the task.",
+    },
+    "Mutated zygomites": {
+        "weakness": ["Magic defence"],
+        "items_needed": [
+            "Fungicide spray (MANDATORY - cannot kill without it)",
+            "Fungicide for refills (300 coins from Slayer Master, 10 coins per refill)",
+        ],
+        "attack_style": "Melee (recommended) or Ranged",
+        "xp_rate": 20000,
+        "profit_rate": 150000,
+        "recommendation": "DO",
+        "reason": "Good herb and seed drops (especially for Ironmen). Low defence and HP make them quick to kill. Decent profit from herbs.",
+        "locations": [
+            {
+                "name": "Zanaris (East of Furnace)",
+                "requirements": ["57 Slayer", "Lost City quest"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": True,
+                "notes": "Level 74 Mutated Zygomites. Pick up fungi to initiate combat. Can safespot using pillars. Fungicide spray required to finish every kill (10 charges per spray).",
+                "pros": [
+                    "Low defence and HP",
+                    "Good herb drops (ranarr, tarromin, snapdragon)",
+                    "Seed drops",
+                    "Safespot available",
+                    "Quick kills",
+                ],
+                "cons": [
+                    "Requires fungicide spray (mandatory)",
+                    "Spray needs recharging after 10 kills",
+                    "Inventory management overhead",
+                ],
+                "best_for": "Herb farming and seed collection (especially Ironmen)",
+            },
+            {
+                "name": "Zanaris (Near Cosmic Altar)",
+                "requirements": ["57 Slayer", "Lost City quest"],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": True,
+                "notes": "Level 86 Mutated Zygomites. Can safespot using pillars near Cosmic Altar. Fungicide spray required to finish every kill.",
+                "pros": [
+                    "Higher level variant",
+                    "Safespot available",
+                    "Good herb drops",
+                    "Near Cosmic Altar",
+                ],
+                "cons": [
+                    "Requires fungicide spray (mandatory)",
+                    "Spray needs recharging",
+                    "Inventory management",
+                ],
+                "best_for": "Herb farming with safespot",
+            },
+        ],
+        "alternatives": [],
+        "strategy": "Pick up fungi to initiate combat, attack the Zygomite, and once HP reaches zero, use fungicide spray to finish the kill. Wear dragonhide or high magic defence armor (they use magic-based attacks). Fungicide spray has 10 charges and can be refilled with Fungicide (300 coins from Slayer Master, 10 coins per refill). Zygomites commonly drop fungicide refills. Unlock 'Shroom Sprayer' (110 Slayer Points) to automatically apply fungicide. Safespot using pillars for safe kills.",
+    },
+    "Fossil Island wyverns": {
+        "weakness": ["Stab", "Dragonbane"],
+        "items_needed": [
+            "Elemental Shield, Mind Shield, Dragonfire Shield, Dragonfire Ward, OR Ancient Wyvern Shield (MANDATORY - anti-dragon shield does NOT work)"
+        ],
+        "attack_style": "Melee (Stab) or Ranged",
+        "xp_rate": 25000,
+        "profit_rate": 300000,
+        "recommendation": "DO",
+        "reason": "Decent Prayer XP from wyvern bones, valuable drops (fossils, seaweed spores), chance at rare Wyvern Visage. Spitting Wyverns are fastest to kill.",
+        "locations": [
+            {
+                "name": "Wyvern Cave (Task-only)",
+                "requirements": [
+                    "66 Slayer (Spitting/Taloned/Long-tailed) OR 82 Slayer (Ancient)",
+                    "60 Combat",
+                    "Bone Voyage quest",
+                    "Elemental Workshop I quest",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Task-only cave accessed via trapdoor in Mushroom Forest. Spitting Wyverns (Level 139) are fastest to kill - use ranged attacks and weaker icy breath. All wyverns use icy breath that requires specific shields (NOT anti-dragon shield).",
+                "pros": [
+                    "Task-only area",
+                    "Spitting Wyverns fastest",
+                    "Decent Prayer XP from bones",
+                    "Fossils and seaweed spores",
+                    "Chance at Wyvern Visage",
+                ],
+                "cons": [
+                    "Requires specific shields (Elemental/Mind/Dragonfire/Ancient Wyvern)",
+                    "Icy breath attacks",
+                    "Cannot use anti-dragon shield",
+                    "Ancient Wyvern Shield needed for complete freeze immunity",
+                ],
+                "best_for": "Prayer training and fossil collection",
+            },
+            {
+                "name": "Wyvern Cave (Regular)",
+                "requirements": [
+                    "66 Slayer (Spitting/Taloned/Long-tailed) OR 82 Slayer (Ancient)",
+                    "60 Combat",
+                    "Bone Voyage quest",
+                    "Elemental Workshop I quest",
+                ],
+                "multi_combat": False,
+                "cannon": False,
+                "safespot": False,
+                "notes": "Regular cave south of Museum Camp. Same wyvern variants available. Spitting Wyverns recommended for quick completion.",
+                "pros": ["Alternative entrance", "Same wyverns available"],
+                "cons": [
+                    "May be more crowded",
+                    "Same shield requirements",
+                    "Same icy breath mechanics",
+                ],
+                "best_for": "If task-only area unavailable",
+            },
+        ],
+        "alternatives": [
+            {
+                "name": "Spitting Wyvern",
+                "notes": "Level 139, requires 66 Slayer. Fastest to kill. Uses ranged attacks and weaker icy breath. Recommended for quick task completion.",
+                "recommended_for": "Fast task completion",
+            },
+            {
+                "name": "Taloned Wyvern",
+                "notes": "Level 147, requires 66 Slayer. Uses typeless magic attacks, melee, and icy breath.",
+                "recommended_for": "Alternative if Spitting unavailable",
+            },
+            {
+                "name": "Long-tailed Wyvern",
+                "notes": "Level 152, requires 66 Slayer. Similar to Taloned but slightly stronger.",
+                "recommended_for": "Alternative if Spitting unavailable",
+            },
+            {
+                "name": "Ancient Wyvern",
+                "notes": "Level 210, requires 82 Slayer. Highest defence and hitpoints. Best drops but slowest kills.",
+                "recommended_for": "High-level players (82 Slayer) for best rewards",
+            },
+        ],
+        "strategy": "Kill Spitting Wyverns for fastest completion - they use ranged attacks (can be prayed against) and weaker icy breath. Bring Elemental Shield, Mind Shield, Dragonfire Shield, Dragonfire Ward, or Ancient Wyvern Shield (anti-dragon shield does NOT work). Only Ancient Wyvern Shield provides complete freeze immunity. Protect from Magic doesn't work against icy breath. Collect wyvern bones for Prayer XP, fossils, and seaweed spores. Chance at rare Wyvern Visage drop.",
     },
 }

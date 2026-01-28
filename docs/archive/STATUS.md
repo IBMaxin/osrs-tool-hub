@@ -186,7 +186,23 @@
 - ✅ **Fixed**: SQL syntax error with `limit` reserved keyword in `backend/db/migrations.py`
 - ✅ **Solution**: Quoted column name as `item."limit"` to avoid SQLite reserved keyword conflict
 
+### Slayer Data Expansion (2026-01-27)
+- ✅ **Added**: 11 new slayer tasks with complete location data
+  - Turoth, Scabarites, Brine rats, Ankou, Black dragons, Bronze dragons
+  - Trolls, Waterfiends, Elves, Mutated zygomites, Fossil Island wyverns
+- ✅ **Fixed**: Type safety issues in frontend (any[] → SlayerTask[], any → TaskAdvice)
+- ✅ **Updated**: Location and Alternative interfaces to support new data format
+- ✅ **Progress**: Nieve tasks now 46.5% complete (20/43 tasks with full data)
+
+### Flipping Service Fixes (2026-01-27)
+- ✅ **Fixed**: Potential profit calculation bug - Now uses MIN(limit, volume) instead of just limit
+- ✅ **Fixed**: Missing sell price validation - Added check for sell_price <= 0
+- ✅ **Fixed**: Inconsistent calculation between methods - Both now use same logic
+- ✅ **Added**: Comprehensive test coverage for all fixes
+- **Impact**: Prevents incorrect profit estimates and invalid flip opportunities
+
 ---
 
 *Last Updated: 2026-01-27*
 *Test Status: 100% passing - 65 backend tests, 17 frontend tests*
+*Recent: 11 slayer tasks added, type safety fixed, flipping bugs fixed*

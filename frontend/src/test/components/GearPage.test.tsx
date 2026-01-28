@@ -3,8 +3,8 @@
  * Tests gear progression display and wiki table
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '../utils/testUtils'
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen } from '../utils/testUtils'
 import { Gear } from '../../features/gear/Gear'
 
 // Mock the gear components

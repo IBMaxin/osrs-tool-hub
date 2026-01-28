@@ -1,4 +1,5 @@
 """Database engine configuration."""
+
 from sqlmodel import create_engine
 
 from backend.config import settings

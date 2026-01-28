@@ -1,4 +1,5 @@
 """Gear suggestions and alternatives endpoints."""
+
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlmodel import Session
@@ -16,7 +17,7 @@ async def get_gear_suggestions(
     slot: str,
     style: str = Query("melee", description="Combat style"),
     defence_level: int = Query(99, ge=1, le=99, description="Defence level"),
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     """
     Get gear suggestions for a specific slot and combat style.
@@ -33,7 +34,7 @@ async def get_gear_suggestions(
     # Validate inputs
     slot = validate_slot(slot)
     validate_combat_style(style)
-    
+
     service = GearService(session)
     return service.suggest_gear(slot, style, defence_level=defence_level)
 
@@ -51,11 +52,11 @@ async def get_alternatives(
     prayer: Optional[int] = Query(None, ge=1, le=99, description="Prayer level"),
     attack_type: Optional[str] = Query(None, description="For melee: stab, slash, crush"),
     limit: int = Query(10, ge=1, le=100, description="Maximum number of alternatives to return"),
-    session: Session = Depends(get_session)
+    session: Session = Depends(get_session),
 ):
     """
     Get alternative items for a specific slot.
-    
+
     Args:
         slot: Equipment slot
         combat_style: Combat style
@@ -69,16 +70,16 @@ async def get_alternatives(
         attack_type: For melee, attack type (stab, slash, crush)
         limit: Maximum number of alternatives to return
         session: Database session
-        
+
     Returns:
         List of alternative items sorted by score
     """
     # Validate inputs
     slot = validate_slot(slot)
     validate_combat_style(combat_style)
-    
+
     service = GearService(session)
-    
+
     stats = None
     if any([attack, strength, defence, ranged, magic, prayer]):
         stats = {
@@ -87,9 +88,9 @@ async def get_alternatives(
             "defence": defence or 1,
             "ranged": ranged or 1,
             "magic": magic or 1,
-            "prayer": prayer or 1
+            "prayer": prayer or 1,
         }
-    
+
     try:
         result = service.get_alternatives(
             slot=slot,
@@ -97,11 +98,8 @@ async def get_alternatives(
             budget=budget,
             stats=stats,
             attack_type=attack_type,
-            limit=limit
+            limit=limit,
         )
         return result
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

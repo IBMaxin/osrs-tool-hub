@@ -1,4 +1,5 @@
 """Router configuration and mounting."""
+
 from fastapi import FastAPI
 
 from backend.api.v1 import flips, gear, slayer
@@ -12,7 +13,7 @@ from sqlmodel import Session
 def include_routers(app: FastAPI) -> None:
     """
     Include all API routers in the application.
-    
+
     Args:
         app: FastAPI application instance
     """
@@ -28,30 +29,27 @@ def include_routers(app: FastAPI) -> None:
         min_roi: float = Query(..., description="Minimum ROI percentage", ge=0.0),
         min_volume: int = Query(..., description="Minimum volume requirement", ge=0),
         exclude_members: bool = Query(False, description="Exclude members-only items"),
-        session: Session = Depends(get_session)
+        session: Session = Depends(get_session),
     ) -> List[FlipOpportunity]:
         """
         GE Tracker-style flip scanner endpoint.
-        
+
         Finds the best flip opportunities based on budget, ROI, and volume filters.
         All calculations are performed in the database layer for optimal performance.
-        
+
         Args:
             budget: Maximum budget in GP (required)
             min_roi: Minimum ROI percentage (required)
             min_volume: Minimum volume requirement (required)
             exclude_members: If True, exclude members-only items
             session: Database session
-            
+
         Returns:
             List of FlipOpportunity models sorted by potential profit
         """
         service = FlippingService(session)
         return service.find_best_flips(
-            budget=budget,
-            min_roi=min_roi,
-            min_volume=min_volume,
-            exclude_members=exclude_members
+            budget=budget, min_roi=min_roi, min_volume=min_volume, exclude_members=exclude_members
         )
 
     # Root and health endpoints
@@ -70,9 +68,10 @@ def include_routers(app: FastAPI) -> None:
     async def sync_stats(session: Session = Depends(get_session)):
         """
         Sync item stats from OSRSBox.
-        
+
         This is a heavy operation (20MB JSON), so it might take 10-20 seconds.
         """
         from backend.services.item_stats import import_item_stats
+
         await import_item_stats(session)
         return {"status": "Stats updated"}

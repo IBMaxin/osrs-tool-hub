@@ -1,4 +1,5 @@
 """Gear API route modules."""
+
 from fastapi import APIRouter
 
 from .gear_sets import router as gear_sets_router

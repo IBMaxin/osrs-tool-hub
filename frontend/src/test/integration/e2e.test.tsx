@@ -4,9 +4,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '../utils/testUtils'
+import { render, screen } from '../utils/testUtils'
 import App from '../../App'
-import { FlippingApi, SlayerApi } from '../../lib/api'
 
 // Mock all APIs
 vi.mock('../../lib/api', () => ({

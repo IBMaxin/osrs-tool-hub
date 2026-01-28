@@ -1,9 +1,11 @@
 """Enum models for the application."""
+
 from enum import Enum
 
 
 class SlayerMaster(str, Enum):
     """Slayer master enumeration."""
+
     TURAEL = "Turael"
     SPRIA = "Spria"
     MAZCHNA = "Mazchna"
@@ -16,6 +18,7 @@ class SlayerMaster(str, Enum):
 
 class AttackStyle(str, Enum):
     """Attack style enumeration."""
+
     STAB = "stab"
     SLASH = "slash"
     CRUSH = "crush"

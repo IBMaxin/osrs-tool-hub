@@ -28,9 +28,9 @@ import {
 interface Location {
   name: string;
   requirements: string[];
-  multi_combat: boolean;
-  cannon: boolean;
-  safespot: boolean;
+  multi_combat: boolean | null;
+  cannon: boolean | null;
+  safespot: boolean | null;
   notes: string;
   pros: string[];
   cons: string[];
@@ -40,6 +40,7 @@ interface Location {
 interface Alternative {
   name: string;
   notes: string;
+  recommended_for?: string;
 }
 
 interface LocationSectionProps {
@@ -297,6 +298,11 @@ export function LocationSection({
                       <Text size="xs" c="dimmed" mt={4}>
                         {alt.notes}
                       </Text>
+                      {alt.recommended_for && (
+                        <Badge size="xs" color="osrsOrange" variant="light" mt={4}>
+                          Recommended for: {alt.recommended_for}
+                        </Badge>
+                      )}
                     </Card>
                   ))}
                 </Stack>

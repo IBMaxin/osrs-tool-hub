@@ -1,5 +1,5 @@
 """Integration tests for slayer location API endpoint."""
-import pytest
+
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
@@ -23,11 +23,11 @@ def test_get_task_location_success(client: TestClient, session: Session):
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -36,18 +36,18 @@ def test_get_task_location_success(client: TestClient, session: Session):
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
-    
+
     # Verify response structure
     assert "task_id" in data
     assert "monster_name" in data
@@ -60,7 +60,7 @@ def test_get_task_location_success(client: TestClient, session: Session):
     assert "items_needed" in data
     assert "attack_style" in data
     assert "has_detailed_data" in data
-    
+
     # Verify data types
     assert isinstance(data["task_id"], int)
     assert isinstance(data["monster_name"], str)
@@ -70,7 +70,7 @@ def test_get_task_location_success(client: TestClient, session: Session):
     assert isinstance(data["weakness"], list)
     assert isinstance(data["items_needed"], list)
     assert isinstance(data["has_detailed_data"], bool)
-    
+
     # Verify specific data
     assert data["task_id"] == task.id
     assert data["monster_name"] == "Abyssal demon"
@@ -95,11 +95,11 @@ def test_get_task_location_with_locations(client: TestClient, session: Session):
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -108,22 +108,22 @@ def test_get_task_location_with_locations(client: TestClient, session: Session):
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
     locations = data["locations"]
-    
+
     # Should have at least one location
     assert len(locations) > 0
-    
+
     # Verify location structure
     first_location = locations[0]
     assert "name" in first_location
@@ -135,7 +135,7 @@ def test_get_task_location_with_locations(client: TestClient, session: Session):
     assert "pros" in first_location
     assert "cons" in first_location
     assert "best_for" in first_location
-    
+
     # Verify data types in location
     assert isinstance(first_location["name"], str)
     assert isinstance(first_location["requirements"], list)
@@ -151,9 +151,9 @@ def test_get_task_location_with_locations(client: TestClient, session: Session):
 def test_get_task_location_not_found(client: TestClient):
     """Test 404 response for non-existent task."""
     response = client.get("/api/v1/slayer/location/99999")
-    
+
     assert response.status_code == 404
-    
+
     data = response.json()
     assert "detail" in data
     assert data["detail"] == "Task not found"
@@ -162,7 +162,7 @@ def test_get_task_location_not_found(client: TestClient):
 def test_get_task_location_invalid_id(client: TestClient):
     """Test 422 response for invalid task ID format."""
     response = client.get("/api/v1/slayer/location/invalid")
-    
+
     # FastAPI returns 422 for validation errors
     assert response.status_code == 422
 
@@ -184,11 +184,11 @@ def test_get_task_location_response_headers(client: TestClient, session: Session
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -197,16 +197,16 @@ def test_get_task_location_response_headers(client: TestClient, session: Session
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     # Verify content type
     assert "application/json" in response.headers["content-type"]
 
@@ -228,11 +228,11 @@ def test_get_task_location_with_strategy(client: TestClient, session: Session):
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -241,18 +241,18 @@ def test_get_task_location_with_strategy(client: TestClient, session: Session):
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
-    
+
     # Abyssal demons should have strategy data
     assert len(data["strategy"]) > 0
     assert "Arclight" in data["strategy"]
@@ -275,11 +275,11 @@ def test_get_task_location_with_weaknesses(client: TestClient, session: Session)
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -288,18 +288,18 @@ def test_get_task_location_with_weaknesses(client: TestClient, session: Session)
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
-    
+
     # Abyssal demons weak to Slash and Demonbane
     assert "Slash" in data["weakness"]
     assert "Demonbane" in data["weakness"]
@@ -322,11 +322,11 @@ def test_get_task_location_multiple_locations(client: TestClient, session: Sessi
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -335,22 +335,22 @@ def test_get_task_location_multiple_locations(client: TestClient, session: Sessi
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
     locations = data["locations"]
-    
+
     # Abyssal demons should have 2 locations
     assert len(locations) == 2
-    
+
     location_names = [loc["name"] for loc in locations]
     assert "Slayer Tower" in location_names
     assert "Catacombs of Kourend" in location_names
@@ -373,11 +373,11 @@ def test_get_task_location_with_requirements(client: TestClient, session: Sessio
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -386,25 +386,22 @@ def test_get_task_location_with_requirements(client: TestClient, session: Sessio
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
     locations = data["locations"]
-    
+
     # Find Catacombs location
-    catacombs = next(
-        (loc for loc in locations if loc["name"] == "Catacombs of Kourend"),
-        None
-    )
-    
+    catacombs = next((loc for loc in locations if loc["name"] == "Catacombs of Kourend"), None)
+
     assert catacombs is not None
     assert "20% Arceuus favour" in catacombs["requirements"]
 
@@ -426,11 +423,11 @@ def test_get_task_location_pros_and_cons(client: TestClient, session: Session):
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -439,19 +436,19 @@ def test_get_task_location_pros_and_cons(client: TestClient, session: Session):
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
     locations = data["locations"]
-    
+
     # All locations should have pros and cons
     for location in locations:
         assert "pros" in location
@@ -477,11 +474,11 @@ def test_get_task_location_with_alternatives(client: TestClient, session: Sessio
         defence_crush=50,
         defence_magic=50,
         defence_ranged=50,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     # Create Gargoyle task
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
@@ -491,21 +488,21 @@ def test_get_task_location_with_alternatives(client: TestClient, session: Sessio
         quantity_max=170,
         weight=7,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
-    
+
     # Should have alternatives
     assert len(data["alternatives"]) > 0
-    
+
     # Verify alternative structure
     alternative = data["alternatives"][0]
     assert "name" in alternative
@@ -530,11 +527,11 @@ def test_get_task_location_with_items_needed(client: TestClient, session: Sessio
         defence_crush=50,
         defence_magic=50,
         defence_ranged=50,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     # Create Gargoyle task
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
@@ -544,18 +541,18 @@ def test_get_task_location_with_items_needed(client: TestClient, session: Sessio
         quantity_max=170,
         weight=7,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
-    
+
     # Gargoyles require rock hammer
     assert "Rock hammer" in data["items_needed"]
 
@@ -577,11 +574,11 @@ def test_get_task_location_detailed_data_flag(client: TestClient, session: Sessi
         defence_crush=20,
         defence_magic=20,
         defence_ranged=20,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -590,18 +587,18 @@ def test_get_task_location_detailed_data_flag(client: TestClient, session: Sessi
         quantity_max=185,
         weight=12,
         is_skippable=True,
-        is_blockable=True
+        is_blockable=True,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
-    
+
     # Abyssal demons has detailed location data
     assert data["has_detailed_data"] is True
 
@@ -623,11 +620,11 @@ def test_get_task_location_no_detailed_data(client: TestClient, session: Session
         defence_crush=10,
         defence_magic=10,
         defence_ranged=10,
-        is_slayer_monster=True
+        is_slayer_monster=True,
     )
     session.add(monster)
     session.commit()
-    
+
     # Create task
     task = SlayerTask(
         master=SlayerMaster.TURAEL,
@@ -637,18 +634,18 @@ def test_get_task_location_no_detailed_data(client: TestClient, session: Session
         quantity_max=20,
         weight=5,
         is_skippable=True,
-        is_blockable=False
+        is_blockable=False,
     )
     session.add(task)
     session.commit()
     session.refresh(task)
-    
+
     response = client.get(f"/api/v1/slayer/location/{task.id}")
-    
+
     assert response.status_code == 200
-    
+
     data = response.json()
-    
+
     # Should have no detailed data
     assert data["has_detailed_data"] is False
     assert data["locations"] == []

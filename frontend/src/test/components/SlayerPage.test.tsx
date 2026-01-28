@@ -6,7 +6,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '../utils/testUtils'
 import { SlayerPage } from '../../features/slayer/SlayerPage'
-import { SlayerApi } from '../../lib/api'
+import { SlayerApi, type SlayerTask } from '../../lib/api'
 
 // Mock the API
 vi.mock('../../lib/api', () => ({
@@ -52,7 +52,7 @@ describe('SlayerPage', () => {
   })
 
   it('loads tasks when master is selected', async () => {
-    vi.mocked(SlayerApi.getTasks).mockResolvedValue(mockTasks)
+    vi.mocked(SlayerApi.getTasks).mockResolvedValue(mockTasks as unknown as SlayerTask[])
     
     render(<SlayerPage />)
     

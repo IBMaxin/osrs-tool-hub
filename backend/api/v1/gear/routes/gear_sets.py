@@ -1,4 +1,5 @@
 """Gear set CRUD endpoints."""
+
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
@@ -11,9 +12,7 @@ from backend.api.v1.gear.mappers import map_gear_set_to_response
 router = APIRouter()
 
 
-@router.post(
-    "/gear", response_model=GearSetResponse, status_code=status.HTTP_201_CREATED
-)
+@router.post("/gear", response_model=GearSetResponse, status_code=status.HTTP_201_CREATED)
 async def create_gear_set(
     gear_data: GearSetCreate, session: Session = Depends(get_session)
 ) -> GearSetResponse:
@@ -28,9 +27,7 @@ async def create_gear_set(
         Created gear set
     """
     service = GearService(session)
-    gear_set = await service.create_gear_set(
-        gear_data.name, gear_data.items, gear_data.description
-    )
+    gear_set = await service.create_gear_set(gear_data.name, gear_data.items, gear_data.description)
 
     return GearSetResponse(**map_gear_set_to_response(gear_set))
 
@@ -70,17 +67,13 @@ async def get_gear_set(
     gear_set = service.get_gear_set_by_id(gear_set_id)
 
     if not gear_set:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Gear set not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Gear set not found")
 
     return GearSetResponse(**map_gear_set_to_response(gear_set))
 
 
 @router.delete("/gear/{gear_set_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_gear_set(
-    gear_set_id: int, session: Session = Depends(get_session)
-) -> None:
+async def delete_gear_set(gear_set_id: int, session: Session = Depends(get_session)) -> None:
     """
     Delete a gear set.
 
@@ -92,6 +85,4 @@ async def delete_gear_set(
     deleted = service.delete_gear_set(gear_set_id)
 
     if not deleted:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Gear set not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Gear set not found")

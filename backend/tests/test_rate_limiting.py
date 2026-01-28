@@ -1,4 +1,5 @@
 """Tests for API rate limiting."""
+
 import pytest
 from fastapi.testclient import TestClient
 from backend.main import app
@@ -22,7 +23,7 @@ def test_rate_limiting_allows_requests_within_limit(client):
 def test_rate_limiting_headers_present(client):
     """Test that rate limit headers are present in responses."""
     response = client.get("/api/v1/slayer/masters")
-    
+
     # Rate limit headers should be present (if rate limiting is enabled)
     if settings.rate_limit_enabled:
         # Check for rate limit headers (X-RateLimit-*)
@@ -33,8 +34,8 @@ def test_rate_limiting_headers_present(client):
 def test_rate_limiting_configurable(client):
     """Test that rate limiting can be configured."""
     # Verify rate limiting is enabled by default
-    assert hasattr(settings, 'rate_limit_enabled')
-    assert hasattr(settings, 'default_rate_limit')
-    
+    assert hasattr(settings, "rate_limit_enabled")
+    assert hasattr(settings, "default_rate_limit")
+
     # Default should be reasonable (100/minute)
     assert "100" in settings.default_rate_limit or "minute" in settings.default_rate_limit

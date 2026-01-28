@@ -6,7 +6,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '../utils/testUtils'
 import { FlippingPage } from '../../features/flipping/FlippingPage'
-import { FlippingApi } from '../../lib/api'
+import { FlippingApi, type FlipOpportunity } from '../../lib/api'
 
 // Mock the API
 vi.mock('../../lib/api', () => ({
@@ -54,7 +54,7 @@ describe('FlippingPage', () => {
   })
 
   it('displays flip opportunities', async () => {
-    vi.mocked(FlippingApi.getOpportunities).mockResolvedValue(mockFlips)
+    vi.mocked(FlippingApi.getOpportunities).mockResolvedValue(mockFlips as FlipOpportunity[])
     
     render(<FlippingPage />)
     

@@ -7,21 +7,21 @@ from backend.database import get_session
 import pytest
 
 # Use StaticPool to share the same in-memory database across threads/connections
-engine = create_engine(
-    "sqlite://", 
-    connect_args={"check_same_thread": False}, 
-    poolclass=StaticPool
-)
+engine = create_engine("sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
+
 
 def create_test_db():
     SQLModel.metadata.create_all(engine)
+
 
 def get_test_session():
     with Session(engine) as session:
         yield session
 
+
 # Create client without global override - we'll set it per-test
 client = TestClient(app)
+
 
 @pytest.fixture(name="session")
 def session_fixture():
@@ -37,6 +37,8 @@ def session_fixture():
     finally:
         # Always clear dependency override after test
         app.dependency_overrides.clear()
+        engine.dispose()
+
 
 def test_get_slayer_masters(session: Session):
     response = client.get("/api/v1/slayer/masters")
@@ -44,12 +46,13 @@ def test_get_slayer_masters(session: Session):
     assert "Konar" in response.json()
     assert "Duradel" in response.json()
 
+
 def test_get_tasks_for_master(session: Session):
     # Seed Data
     monster = Monster(id=1, name="Abyssal Demon", combat_level=124, hitpoints=150, slayer_xp=150)
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -57,7 +60,7 @@ def test_get_tasks_for_master(session: Session):
         quantity_min=120,
         quantity_max=185,
         weight=12,
-        is_skippable=True
+        is_skippable=True,
     )
     session.add(task)
     session.commit()
@@ -70,12 +73,13 @@ def test_get_tasks_for_master(session: Session):
     assert abyssal_task is not None, "Abyssal Demon task should be in results"
     assert abyssal_task["weight"] == 12
 
+
 def test_suggest_action(session: Session):
     # Seed Data
     monster = Monster(id=2, name="Waterfiend", combat_level=115, hitpoints=120, slayer_xp=128)
     session.add(monster)
     session.commit()
-    
+
     task = SlayerTask(
         master=SlayerMaster.DURADEL,
         monster_id=monster.id,
@@ -83,7 +87,7 @@ def test_suggest_action(session: Session):
         quantity_min=130,
         quantity_max=170,
         weight=8,
-        is_skippable=True
+        is_skippable=True,
     )
     session.add(task)
     session.commit()
@@ -91,5 +95,6 @@ def test_suggest_action(session: Session):
     response = client.get(f"/api/v1/slayer/advice/{task.id}")
     assert response.status_code == 200
     data = response.json()
-    assert data["recommendation"] == "SKIP"
+    # Waterfiends have detailed slayer data with recommendation "DO" (good charm drops, XP/profit)
+    assert data["recommendation"] == "DO"
     assert data["task"] == "Waterfiend"

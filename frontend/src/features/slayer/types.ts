@@ -2,6 +2,8 @@
  * Types specific to the slayer feature.
  */
 
+import type { SlayerTask, TaskAdvice } from '../../lib/api';
+
 export interface UseSlayerMastersReturn {
   masters: string[] | undefined;
   isLoading: boolean;
@@ -12,7 +14,7 @@ export interface UseSlayerTasksOptions {
 }
 
 export interface UseSlayerTasksReturn {
-  tasks: any[] | undefined;
+  tasks: SlayerTask[] | undefined;
   isLoading: boolean;
   error: Error | null;
 }
@@ -23,6 +25,6 @@ export interface UseSlayerAdviceOptions {
 }
 
 export interface UseSlayerAdviceReturn {
-  advice: any | undefined;
+  advice: TaskAdvice | undefined;
   isLoading: boolean;
 }

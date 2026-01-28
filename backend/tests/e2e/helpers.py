@@ -1,4 +1,5 @@
 """Shared utilities and helpers for E2E tests."""
+
 from typing import Dict, Any, Optional
 from fastapi.testclient import TestClient
 from sqlmodel import Session
@@ -31,7 +32,7 @@ def create_test_item(
     high_price: int,
     low_price: int,
     members: bool = True,
-    **kwargs
+    **kwargs,
 ) -> Item:
     """Create a test item in the database."""
     item = Item(
@@ -59,7 +60,7 @@ def create_test_price_snapshot(
     low_price: int,
     high_volume: int = 1000,
     low_volume: int = 1000,
-    **kwargs
+    **kwargs,
 ) -> PriceSnapshot:
     """Create a test price snapshot in the database."""
     snapshot = PriceSnapshot(
@@ -83,11 +84,11 @@ def create_test_monster(
     combat_level: int,
     hitpoints: int,
     slayer_xp: float,
-    **kwargs
+    **kwargs,
 ) -> Monster:
     """Create a test monster in the database."""
     from backend.models import Monster
-    
+
     monster = Monster(
         id=monster_id,
         name=name,
@@ -112,7 +113,7 @@ def create_test_slayer_task(
     quantity_min: int,
     quantity_max: int,
     weight: int,
-    **kwargs
+    **kwargs,
 ) -> SlayerTask:
     """Create a test slayer task in the database."""
     task = SlayerTask(

@@ -14,7 +14,7 @@ GEAR_PRESETS = {
             "legs": ["Obsidian platelegs", "Rune platelegs"],
             "hands": ["Combat bracelet"],
             "feet": ["Rune boots", "Climbing boots"],
-            "ring": ["Ring of wealth", "Explorer's ring 2"]
+            "ring": ["Ring of wealth", "Explorer's ring 2"],
         },
         "mid": {
             # ~Lv 75 stats, ~20m budget
@@ -27,7 +27,7 @@ GEAR_PRESETS = {
             "legs": ["Bandos tassets", "Obsidian platelegs"],
             "hands": ["Ferocious gloves", "Barrows gloves"],
             "feet": ["Primordial boots", "Dragon boots"],
-            "ring": ["Berserker ring (i)"]
+            "ring": ["Berserker ring (i)"],
         },
         "high": {
             # Max stats, ~500m+ budget
@@ -40,8 +40,8 @@ GEAR_PRESETS = {
             "legs": ["Torva platelegs"],
             "hands": ["Ferocious gloves"],
             "feet": ["Primordial boots"],
-            "ring": ["Ultor ring", "Bellator ring"]
-        }
+            "ring": ["Ultor ring", "Bellator ring"],
+        },
     },
     "ranged": {
         "low": {
@@ -56,7 +56,7 @@ GEAR_PRESETS = {
             "legs": ["Black d'hide chaps"],
             "hands": ["Black d'hide vambraces"],
             "feet": ["Snakeskin boots"],
-            "ring": ["Explorer's ring 2"]
+            "ring": ["Explorer's ring 2"],
         },
         "mid": {
             # ~Lv 75-80, Blowpipe era
@@ -70,7 +70,7 @@ GEAR_PRESETS = {
             "legs": ["Blessed chaps"],
             "hands": ["Barrows gloves"],
             "feet": ["God d'hide boots"],
-            "ring": ["Archers ring (i)"]
+            "ring": ["Archers ring (i)"],
         },
         "high": {
             # BowFa / Masori
@@ -84,8 +84,8 @@ GEAR_PRESETS = {
             "legs": ["Crystal legs"],
             "hands": ["Barrows gloves", "Zaryte vambraces"],
             "feet": ["Pegasian boots"],
-            "ring": ["Venator ring", "Archers ring (i)"]
-        }
+            "ring": ["Venator ring", "Archers ring (i)"],
+        },
     },
     "magic": {
         "low": {
@@ -98,7 +98,7 @@ GEAR_PRESETS = {
             "legs": ["Mystic robe bottom"],
             "hands": ["Mystic gloves"],
             "feet": ["Mystic boots"],
-            "ring": ["Seers ring"]
+            "ring": ["Seers ring"],
         },
         "mid": {
             "head": ["Ahrim's hood"],
@@ -110,7 +110,7 @@ GEAR_PRESETS = {
             "legs": ["Ahrim's robeskirt"],
             "hands": ["Tormented bracelet"],
             "feet": ["Eternal boots", "Infinity boots"],
-            "ring": ["Seers ring (i)"]
+            "ring": ["Seers ring (i)"],
         },
         "high": {
             "head": ["Ancestral hat"],
@@ -122,7 +122,7 @@ GEAR_PRESETS = {
             "legs": ["Ancestral robe bottom"],
             "hands": ["Tormented bracelet"],
             "feet": ["Eternal boots"],
-            "ring": ["Magus ring"]
-        }
-    }
+            "ring": ["Magus ring"],
+        },
+    },
 }

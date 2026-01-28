@@ -1,4 +1,5 @@
 """Pydantic schemas for gear API requests and responses."""
+
 from typing import List, Optional
 from pydantic import BaseModel, field_validator, Field
 
@@ -9,16 +10,16 @@ class GearSetCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=200, description="Gear set name")
     items: dict[int, int] = Field(..., description="Item ID to quantity mapping")
     description: Optional[str] = Field(None, max_length=1000, description="Optional description")
-    
-    @field_validator('name')
+
+    @field_validator("name")
     @classmethod
     def validate_name(cls, v: str) -> str:
         """Validate gear set name."""
         if not v or not v.strip():
             raise ValueError("Name cannot be empty")
         return v.strip()
-    
-    @field_validator('items')
+
+    @field_validator("items")
     @classmethod
     def validate_items(cls, v: dict[int, int]) -> dict[int, int]:
         """Validate items dictionary."""
@@ -55,15 +56,22 @@ class GearSetResponse(BaseModel):
 
 class BestLoadoutRequest(BaseModel):
     """Request model for best loadout calculation."""
+
     combat_style: str = Field(..., description="Combat style: melee, ranged, or magic")
     budget: int = Field(..., ge=0, le=2_147_483_647, description="Budget in GP")
-    stats: dict[str, int] = Field(..., description="Player stats: attack, strength, defence, ranged, magic, prayer")
+    stats: dict[str, int] = Field(
+        ..., description="Player stats: attack, strength, defence, ranged, magic, prayer"
+    )
     attack_type: Optional[str] = Field(None, description="For melee: stab, slash, or crush")
     quests_completed: Optional[List[str]] = Field(None, description="List of completed quests")
-    achievements_completed: Optional[List[str]] = Field(None, description="List of completed achievements")
-    exclude_slots: Optional[List[str]] = Field(None, description="Slots to exclude from calculation")
-    
-    @field_validator('combat_style')
+    achievements_completed: Optional[List[str]] = Field(
+        None, description="List of completed achievements"
+    )
+    exclude_slots: Optional[List[str]] = Field(
+        None, description="Slots to exclude from calculation"
+    )
+
+    @field_validator("combat_style")
     @classmethod
     def validate_combat_style(cls, v: str) -> str:
         """Validate combat style."""
@@ -71,20 +79,22 @@ class BestLoadoutRequest(BaseModel):
         if v.lower() not in valid_styles:
             raise ValueError(f"Combat style must be one of: {', '.join(valid_styles)}")
         return v.lower()
-    
-    @field_validator('stats')
+
+    @field_validator("stats")
     @classmethod
     def validate_stats(cls, v: dict[str, int]) -> dict[str, int]:
         """Validate player stats."""
         valid_stats = ["attack", "strength", "defence", "ranged", "magic", "prayer"]
         for stat_name, stat_value in v.items():
             if stat_name.lower() not in valid_stats:
-                raise ValueError(f"Invalid stat: {stat_name}. Must be one of: {', '.join(valid_stats)}")
+                raise ValueError(
+                    f"Invalid stat: {stat_name}. Must be one of: {', '.join(valid_stats)}"
+                )
             if stat_value < 1 or stat_value > 99:
                 raise ValueError(f"Stat {stat_name} must be between 1 and 99")
         return {k.lower(): v for k, v in v.items()}
-    
-    @field_validator('attack_type')
+
+    @field_validator("attack_type")
     @classmethod
     def validate_attack_type(cls, v: Optional[str]) -> Optional[str]:
         """Validate attack type."""
@@ -98,6 +108,7 @@ class BestLoadoutRequest(BaseModel):
 
 class UpgradePathRequest(BaseModel):
     """Request model for upgrade path calculation."""
+
     current_loadout: dict[str, Optional[int]]  # slot -> item_id
     combat_style: str
     budget: int
@@ -109,6 +120,7 @@ class UpgradePathRequest(BaseModel):
 
 class DPSRequest(BaseModel):
     """Request model for DPS calculation."""
+
     loadout: dict[str, Optional[int]]  # slot -> item_id
     combat_style: str
     attack_type: Optional[str] = None

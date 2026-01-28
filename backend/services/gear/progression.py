@@ -1,19 +1,16 @@
 """Wiki progression and preset loadout utilities."""
-from typing import Dict, Optional
+
+from typing import Dict
 from sqlmodel import Session, select
 
-from backend.models import Item, PriceSnapshot
+from backend.models import PriceSnapshot
 from backend.services.gear_presets import GEAR_PRESETS
 from backend.services.wiki_data import WIKI_PROGRESSION
 from backend.services.gear.utils import find_item_by_name
 from backend.services.gear.pricing import get_item_price
 
 
-def get_preset_loadout(
-    session: Session,
-    combat_style: str,
-    tier: str
-) -> Dict:
+def get_preset_loadout(session: Session, combat_style: str, tier: str) -> Dict:
     """
     Get a full loadout for a specific combat style and tier.
 
@@ -27,10 +24,14 @@ def get_preset_loadout(
     """
     # Validate inputs
     if combat_style not in GEAR_PRESETS:
-        raise ValueError(f"Invalid combat style: {combat_style}. Must be one of {list(GEAR_PRESETS.keys())}")
+        raise ValueError(
+            f"Invalid combat style: {combat_style}. Must be one of {list(GEAR_PRESETS.keys())}"
+        )
 
     if tier not in GEAR_PRESETS[combat_style]:
-        raise ValueError(f"Invalid tier: {tier}. Must be one of {list(GEAR_PRESETS[combat_style].keys())}")
+        raise ValueError(
+            f"Invalid tier: {tier}. Must be one of {list(GEAR_PRESETS[combat_style].keys())}"
+        )
 
     preset = GEAR_PRESETS[combat_style][tier]
     loadout = {
@@ -38,7 +39,7 @@ def get_preset_loadout(
         "tier": tier,
         "slots": {},
         "total_cost": 0,
-        "missing_items": []
+        "missing_items": [],
     }
 
     # Process each slot
@@ -78,38 +79,35 @@ def get_preset_loadout(
                     "ranged": item.ranged_req,
                     "magic": item.magic_req,
                     "prayer": item.prayer_req,
-                    "slayer": item.slayer_req
+                    "slayer": item.slayer_req,
                 },
                 "offensive_stats": {
                     "attack_stab": item.attack_stab,
                     "attack_slash": item.attack_slash,
                     "attack_crush": item.attack_crush,
                     "attack_magic": item.attack_magic,
-                    "attack_ranged": item.attack_ranged
+                    "attack_ranged": item.attack_ranged,
                 },
                 "strength_bonuses": {
                     "melee_strength": item.melee_strength,
                     "ranged_strength": item.ranged_strength,
                     "magic_damage": item.magic_damage,
-                    "prayer_bonus": item.prayer_bonus
+                    "prayer_bonus": item.prayer_bonus,
                 },
                 "defensive_stats": {
                     "defence_stab": item.defence_stab,
                     "defence_slash": item.defence_slash,
                     "defence_crush": item.defence_crush,
                     "defence_magic": item.defence_magic,
-                    "defence_ranged": item.defence_ranged
-                }
+                    "defence_ranged": item.defence_ranged,
+                },
             }
 
             loadout["slots"][slot] = item_data
         else:
             # Item not found in database
             loadout["slots"][slot] = None
-            loadout["missing_items"].append({
-                "slot": slot,
-                "names": item_names
-            })
+            loadout["missing_items"].append({"slot": slot, "names": item_names})
 
     return loadout
 
@@ -165,6 +163,7 @@ def get_wiki_progression(session: Session, style: str) -> dict:
         Dictionary with enriched progression data for all slots
     """
     import logging
+
     logger = logging.getLogger(__name__)
 
     data = WIKI_PROGRESSION.get(style, {})
@@ -187,7 +186,9 @@ def get_wiki_progression(session: Session, style: str) -> dict:
             items_data = []
             tier_items = tier_group.get("items", [])
             if not isinstance(tier_items, list):
-                logger.warning(f"Invalid items list for slot {slot}, tier {tier_group.get('tier', 'unknown')}")
+                logger.warning(
+                    f"Invalid items list for slot {slot}, tier {tier_group.get('tier', 'unknown')}"
+                )
                 continue
 
             for item_name in tier_items:
@@ -204,71 +205,78 @@ def get_wiki_progression(session: Session, style: str) -> dict:
                         price = get_item_price(session, item)
 
                         # Generate wiki URL (handle None name)
-                        item_name_clean = item.name or item_name  # Fallback to original name if None
+                        item_name_clean = (
+                            item.name or item_name
+                        )  # Fallback to original name if None
                         wiki_name = item_name_clean.replace(" ", "_").replace("'", "%27")
                         wiki_url = f"https://oldschool.runescape.wiki/w/{wiki_name}"
 
-                        items_data.append({
-                            "id": item.id,
-                            "name": item_name_clean,
-                            "icon": item.icon_url,
-                            "price": price,
-                            "wiki_url": wiki_url,
-                            "requirements": {
-                                "attack": item.attack_req or 1,
-                                "strength": item.strength_req or 1,
-                                "defence": item.defence_req or 1,
-                                "ranged": item.ranged_req or 1,
-                                "magic": item.magic_req or 1,
-                                "prayer": item.prayer_req or 1,
-                                "quest": item.quest_req,
-                                "achievement": item.achievement_req
-                            },
-                            "stats": {
-                                "melee_strength": item.melee_strength or 0,
-                                "ranged_strength": item.ranged_strength or 0,
-                                "magic_damage": item.magic_damage or 0,
-                                "prayer_bonus": item.prayer_bonus or 0,
-                                "attack_stab": item.attack_stab or 0,
-                                "attack_slash": item.attack_slash or 0,
-                                "attack_crush": item.attack_crush or 0,
-                                "attack_magic": item.attack_magic or 0,
-                                "attack_ranged": item.attack_ranged or 0
+                        items_data.append(
+                            {
+                                "id": item.id,
+                                "name": item_name_clean,
+                                "icon": item.icon_url,
+                                "price": price,
+                                "wiki_url": wiki_url,
+                                "requirements": {
+                                    "attack": item.attack_req or 1,
+                                    "strength": item.strength_req or 1,
+                                    "defence": item.defence_req or 1,
+                                    "ranged": item.ranged_req or 1,
+                                    "magic": item.magic_req or 1,
+                                    "prayer": item.prayer_req or 1,
+                                    "quest": item.quest_req,
+                                    "achievement": item.achievement_req,
+                                },
+                                "stats": {
+                                    "melee_strength": item.melee_strength or 0,
+                                    "ranged_strength": item.ranged_strength or 0,
+                                    "magic_damage": item.magic_damage or 0,
+                                    "prayer_bonus": item.prayer_bonus or 0,
+                                    "attack_stab": item.attack_stab or 0,
+                                    "attack_slash": item.attack_slash or 0,
+                                    "attack_crush": item.attack_crush or 0,
+                                    "attack_magic": item.attack_magic or 0,
+                                    "attack_ranged": item.attack_ranged or 0,
+                                },
                             }
-                        })
+                        )
                     else:
                         # Fallback if item not in DB (generate icon URL manually)
                         safe_name = item_name.replace(" ", "_").replace("'", "%27")
                         wiki_name = item_name.replace(" ", "_").replace("'", "%27")
-                        items_data.append({
+                        items_data.append(
+                            {
+                                "id": None,
+                                "name": item_name,
+                                "icon": f"https://oldschool.runescape.wiki/images/{safe_name}_detail.png?0",
+                                "price": None,
+                                "wiki_url": f"https://oldschool.runescape.wiki/w/{wiki_name}",
+                                "requirements": None,
+                                "stats": None,
+                                "not_found": True,
+                            }
+                        )
+                except Exception as e:
+                    logger.error(
+                        f"Error processing item '{item_name}' in slot {slot}: {e}", exc_info=True
+                    )
+                    # Add fallback entry
+                    items_data.append(
+                        {
                             "id": None,
                             "name": item_name,
-                            "icon": f"https://oldschool.runescape.wiki/images/{safe_name}_detail.png?0",
+                            "icon": f"https://oldschool.runescape.wiki/images/{item_name.replace(' ', '_')}_detail.png?0",
                             "price": None,
-                            "wiki_url": f"https://oldschool.runescape.wiki/w/{wiki_name}",
+                            "wiki_url": f"https://oldschool.runescape.wiki/w/{item_name.replace(' ', '_')}",
                             "requirements": None,
                             "stats": None,
-                            "not_found": True
-                        })
-                except Exception as e:
-                    logger.error(f"Error processing item '{item_name}' in slot {slot}: {e}", exc_info=True)
-                    # Add fallback entry
-                    items_data.append({
-                        "id": None,
-                        "name": item_name,
-                        "icon": f"https://oldschool.runescape.wiki/images/{item_name.replace(' ', '_')}_detail.png?0",
-                        "price": None,
-                        "wiki_url": f"https://oldschool.runescape.wiki/w/{item_name.replace(' ', '_')}",
-                        "requirements": None,
-                        "stats": None,
-                        "not_found": True,
-                        "error": str(e)
-                    })
+                            "not_found": True,
+                            "error": str(e),
+                        }
+                    )
 
-            enriched_tiers.append({
-                "tier": tier_group.get("tier", "unknown"),
-                "items": items_data
-            })
+            enriched_tiers.append({"tier": tier_group.get("tier", "unknown"), "items": items_data})
         enriched_data[slot] = enriched_tiers
 
     return enriched_data

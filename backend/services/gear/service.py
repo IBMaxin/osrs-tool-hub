@@ -1,4 +1,5 @@
 """Main GearService class - orchestrates gear operations."""
+
 import json
 from typing import Optional, List, Dict, Set
 from sqlmodel import Session, select
@@ -104,7 +105,7 @@ class GearService:
         slot: str,
         combat_style: str = "melee",
         budget_per_slot: int = 10_000_000,
-        defence_level: int = 99
+        defence_level: int = 99,
     ) -> List[Dict]:
         """
         Suggest items for a specific slot based on style and budget.
@@ -120,16 +121,14 @@ class GearService:
         """
         return suggest_gear(self.session, slot, combat_style, budget_per_slot, defence_level)
 
-    def get_preset_loadout(
-        self, combat_style: str, tier: str
-    ) -> Dict:
+    def get_preset_loadout(self, combat_style: str, tier: str) -> Dict:
         """
         Get a full loadout for a specific combat style and tier.
-        
+
         Args:
             combat_style: Combat style (melee, ranged, magic)
             tier: Tier level (low, mid, high)
-            
+
         Returns:
             Dictionary with loadout information including items, stats, and total cost
         """
@@ -139,11 +138,11 @@ class GearService:
         """
         Get a progression loadout for a specific combat style and tier.
         Simplified version that returns basic item information.
-        
+
         Args:
             style: Combat style (melee, ranged, magic)
             tier: Tier level (low, mid, high)
-            
+
         Returns:
             Dictionary with tier, style, and loadout information
         """
@@ -154,17 +153,17 @@ class GearService:
         items: Dict[str, Optional[Item]],
         combat_style: str,
         attack_type: Optional[str] = None,
-        player_stats: Optional[Dict[str, int]] = None
+        player_stats: Optional[Dict[str, int]] = None,
     ) -> Dict:
         """
         Calculate DPS (Damage Per Second) for a gear loadout.
-        
+
         Args:
             items: Dict of slot -> Item (e.g., {"weapon": Item(...), "head": Item(...)})
             combat_style: Combat style (melee, ranged, magic)
             attack_type: For melee, attack type (stab, slash, crush)
             player_stats: Player combat stats (attack, strength, ranged, magic)
-            
+
         Returns:
             Dict with DPS information
         """
@@ -178,11 +177,11 @@ class GearService:
         attack_type: Optional[str] = None,
         quests_completed: Optional[Set[str]] = None,
         achievements_completed: Optional[Set[str]] = None,
-        exclude_slots: Optional[List[str]] = None
+        exclude_slots: Optional[List[str]] = None,
     ) -> Dict:
         """
         Find the best loadout a player can afford/wear based on stats and budget.
-        
+
         Args:
             combat_style: Combat style (melee, ranged, magic)
             budget: Total budget in GP
@@ -191,7 +190,7 @@ class GearService:
             quests_completed: Set of completed quest names
             achievements_completed: Set of completed achievement names
             exclude_slots: List of slots to exclude (e.g., ["shield"] for 2H weapons)
-            
+
         Returns:
             Dict with best loadout, total cost, and DPS
         """
@@ -203,7 +202,7 @@ class GearService:
             attack_type,
             quests_completed,
             achievements_completed,
-            exclude_slots
+            exclude_slots,
         )
 
     def get_upgrade_path(
@@ -214,11 +213,11 @@ class GearService:
         stats: Dict[str, int],
         attack_type: Optional[str] = None,
         quests_completed: Optional[Set[str]] = None,
-        achievements_completed: Optional[Set[str]] = None
+        achievements_completed: Optional[Set[str]] = None,
     ) -> Dict:
         """
         Find the next upgrade path with cost analysis.
-        
+
         Args:
             current_loadout: Dict of slot -> item_id for current gear
             combat_style: Combat style (melee, ranged, magic)
@@ -227,7 +226,7 @@ class GearService:
             attack_type: For melee, attack type (stab, slash, crush)
             quests_completed: Set of completed quest names
             achievements_completed: Set of completed achievement names
-            
+
         Returns:
             Dict with upgrade recommendations per slot
         """
@@ -239,7 +238,7 @@ class GearService:
             stats,
             attack_type,
             quests_completed,
-            achievements_completed
+            achievements_completed,
         )
 
     def get_alternatives(
@@ -251,11 +250,11 @@ class GearService:
         attack_type: Optional[str] = None,
         quests_completed: Optional[Set[str]] = None,
         achievements_completed: Optional[Set[str]] = None,
-        limit: int = 10
+        limit: int = 10,
     ) -> List[Dict]:
         """
         Get alternative items for a specific slot.
-        
+
         Args:
             slot: Equipment slot
             combat_style: Combat style (melee, ranged, magic)
@@ -265,7 +264,7 @@ class GearService:
             quests_completed: Set of completed quest names
             achievements_completed: Set of completed achievement names
             limit: Maximum number of alternatives to return
-            
+
         Returns:
             List of alternative items sorted by score
         """
@@ -278,16 +277,16 @@ class GearService:
             attack_type,
             quests_completed,
             achievements_completed,
-            limit
+            limit,
         )
 
     def get_wiki_progression(self, style: str) -> dict:
         """
         Returns the exact Wiki table structure, enriched with Price/Icon data.
-        
+
         Args:
             style: Combat style (melee, ranged, magic)
-            
+
         Returns:
             Dictionary with enriched progression data for all slots
         """

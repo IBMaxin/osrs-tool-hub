@@ -1,12 +1,14 @@
 """Flipping service for calculating profit margins."""
+
 from typing import Dict, List, Optional
-from sqlmodel import Session, select, col, text
-from sqlalchemy import func, case
+from sqlmodel import Session, select, text
+from sqlalchemy import func
 from pydantic import BaseModel
 from backend.models import Item, PriceSnapshot
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 def calculate_tax(sell_price: int) -> int:
     """
@@ -25,6 +27,7 @@ def calculate_tax(sell_price: int) -> int:
 
 class FlipOpportunity(BaseModel):
     """Pydantic model for flip opportunity results."""
+
     item_id: int
     name: str
     buy_price: int
@@ -33,6 +36,7 @@ class FlipOpportunity(BaseModel):
     roi: float
     volume: int
     wiki_url: Optional[str] = None
+
 
 class FlippingService:
     def __init__(self, session: Session):
@@ -43,16 +47,14 @@ class FlippingService:
         max_budget: Optional[int] = None,
         min_roi: float = 1.0,
         min_volume: int = 10,
-        limit: int = 50
+        limit: int = 50,
     ) -> List[Dict]:
         """
         Find profitable flips based on filters.
         Optimized to perform heavy filtering in SQL where possible.
         """
         # Start query
-        query = select(Item, PriceSnapshot).join(
-            PriceSnapshot, Item.id == PriceSnapshot.item_id
-        )
+        query = select(Item, PriceSnapshot).join(PriceSnapshot, Item.id == PriceSnapshot.item_id)
 
         # Filter: Must have valid prices
         query = query.where(PriceSnapshot.high_price.is_not(None))
@@ -66,7 +68,9 @@ class FlippingService:
         # Only apply volume filter if min_volume > 0 and volume data exists
         # Since volume data may not be available, we skip this filter if min_volume is 0
         if min_volume > 0:
-            total_volume = func.coalesce(PriceSnapshot.high_volume, 0) + func.coalesce(PriceSnapshot.low_volume, 0)
+            total_volume = func.coalesce(PriceSnapshot.high_volume, 0) + func.coalesce(
+                PriceSnapshot.low_volume, 0
+            )
             query = query.where(total_volume >= min_volume)
 
         results = self.session.exec(query).all()
@@ -76,8 +80,8 @@ class FlippingService:
             buy_price = price.low_price
             sell_price = price.high_price
 
-            # Skip invalid prices (e.g. 0)
-            if not buy_price or not sell_price or buy_price <= 0:
+            # Skip invalid prices (e.g. 0 or negative)
+            if not buy_price or not sell_price or buy_price <= 0 or sell_price <= 0:
                 continue
 
             # Calculate Tax
@@ -86,43 +90,42 @@ class FlippingService:
             margin = post_tax_revenue - buy_price
 
             # Calculate ROI
-            roi = (margin / buy_price * 100)
+            roi = margin / buy_price * 100
 
             if roi < min_roi:
                 continue
 
-            # Potential Profit
+            # Potential Profit - use MIN(limit, volume) since you can't flip more than available volume
             item_limit = item.limit or 0
-            potential_profit = margin * item_limit if item_limit > 0 else 0
+            available_volume = (price.high_volume or 0) + (price.low_volume or 0)
+            flippable_quantity = (
+                min(item_limit, available_volume) if item_limit > 0 and available_volume > 0 else 0
+            )
+            potential_profit = margin * flippable_quantity
 
-            opportunities.append({
-                "item_id": item.id,
-                "item_name": item.name,
-                "icon_url": item.icon_url,
-                "buy_price": buy_price,
-                "sell_price": sell_price,
-                "limit": item_limit,
-                "volume": (price.high_volume or 0) + (price.low_volume or 0),
-                "margin": margin,
-                "tax": tax,
-                "roi": round(roi, 2),
-                "potential_profit": potential_profit
-            })
+            opportunities.append(
+                {
+                    "item_id": item.id,
+                    "item_name": item.name,
+                    "icon_url": item.icon_url,
+                    "buy_price": buy_price,
+                    "sell_price": sell_price,
+                    "limit": item_limit,
+                    "volume": (price.high_volume or 0) + (price.low_volume or 0),
+                    "margin": margin,
+                    "tax": tax,
+                    "roi": round(roi, 2),
+                    "potential_profit": potential_profit,
+                }
+            )
 
         # Sort by Potential Profit descending
-        opportunities.sort(
-            key=lambda x: x["potential_profit"] or 0,
-            reverse=True
-        )
+        opportunities.sort(key=lambda x: x["potential_profit"] or 0, reverse=True)
 
         return opportunities[:limit]
 
     def find_best_flips(
-        self,
-        budget: int,
-        min_roi: float,
-        min_volume: int,
-        exclude_members: bool = False
+        self, budget: int, min_roi: float, min_volume: int, exclude_members: bool = False
     ) -> List[FlipOpportunity]:
         """
         Find best flip opportunities using optimized SQL query.
@@ -153,7 +156,7 @@ class FlippingService:
             "i.low_price IS NOT NULL",
             "i.low_price > 0",
             "i.high_price > 0",
-            "i.low_price <= :budget"
+            "i.low_price <= :budget",
         ]
 
         # Add members filter if needed
@@ -165,7 +168,8 @@ class FlippingService:
         # Use MIN instead of LEAST for SQLite compatibility
         # Note: "limit" is a reserved keyword in SQLite, so we need to escape it with quotes
         # Tax calculation: 2% of sell price, capped at 5M, exempt for items under 50gp
-        sql_query = text(f"""
+        sql_query = text(
+            f"""
             SELECT
                 i.id as item_id,
                 i.name,
@@ -209,15 +213,12 @@ class FlippingService:
                     ELSE (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0))
                 END DESC
             LIMIT 100
-        """)
+        """
+        )
 
         # Execute query with parameters using bindparams
         result = self.session.exec(
-            sql_query.bindparams(
-                budget=budget,
-                min_roi=min_roi,
-                min_volume=min_volume
-            )
+            sql_query.bindparams(budget=budget, min_roi=min_roi, min_volume=min_volume)
         )
 
         opportunities = []
@@ -225,7 +226,6 @@ class FlippingService:
             margin_post_tax = float(row.margin_post_tax) if row.margin_post_tax else 0.0
             roi = float(row.roi) if row.roi else 0.0
             volume = int(row.volume) if row.volume else 0
-            buy_limit = int(row.buy_limit) if row.buy_limit else 0
 
             opportunities.append(
                 FlipOpportunity(
@@ -236,7 +236,7 @@ class FlippingService:
                     margin=round(margin_post_tax, 2),
                     roi=round(roi, 2),
                     volume=volume,
-                    wiki_url=str(row.wiki_url) if row.wiki_url else None
+                    wiki_url=str(row.wiki_url) if row.wiki_url else None,
                 )
             )
 

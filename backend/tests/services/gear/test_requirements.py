@@ -1,5 +1,5 @@
 """Tests for gear requirements checking."""
-import pytest
+
 from backend.models import Item
 from backend.services.gear.requirements import meets_requirements
 
@@ -14,18 +14,11 @@ def test_meets_requirements_all_stats_pass():
         defence_req=1,
         ranged_req=1,
         magic_req=1,
-        prayer_req=1
+        prayer_req=1,
     )
-    
-    stats = {
-        "attack": 70,
-        "strength": 70,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 70, "strength": 70, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     assert meets_requirements(item, stats) is True
 
 
@@ -39,18 +32,11 @@ def test_meets_requirements_attack_too_low():
         defence_req=1,
         ranged_req=1,
         magic_req=1,
-        prayer_req=1
+        prayer_req=1,
     )
-    
-    stats = {
-        "attack": 69,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 69, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     assert meets_requirements(item, stats) is False
 
 
@@ -64,18 +50,11 @@ def test_meets_requirements_strength_too_low():
         defence_req=1,
         ranged_req=1,
         magic_req=1,
-        prayer_req=1
+        prayer_req=1,
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 69,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 69, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     assert meets_requirements(item, stats) is False
 
 
@@ -89,18 +68,11 @@ def test_meets_requirements_defence_too_low():
         defence_req=70,
         ranged_req=1,
         magic_req=1,
-        prayer_req=1
+        prayer_req=1,
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 69,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 69, "ranged": 1, "magic": 1, "prayer": 1}
+
     assert meets_requirements(item, stats) is False
 
 
@@ -114,18 +86,11 @@ def test_meets_requirements_ranged_too_low():
         defence_req=1,
         ranged_req=70,
         magic_req=1,
-        prayer_req=1
+        prayer_req=1,
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 69,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 69, "magic": 1, "prayer": 1}
+
     assert meets_requirements(item, stats) is False
 
 
@@ -139,18 +104,11 @@ def test_meets_requirements_magic_too_low():
         defence_req=1,
         ranged_req=1,
         magic_req=70,
-        prayer_req=1
+        prayer_req=1,
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 69,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 69, "prayer": 1}
+
     assert meets_requirements(item, stats) is False
 
 
@@ -164,18 +122,11 @@ def test_meets_requirements_prayer_too_low():
         defence_req=1,
         ranged_req=1,
         magic_req=1,
-        prayer_req=70
+        prayer_req=70,
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 69
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 69}
+
     assert meets_requirements(item, stats) is False
 
 
@@ -189,15 +140,12 @@ def test_meets_requirements_missing_stat_defaults_to_1():
         defence_req=1,
         ranged_req=1,
         magic_req=1,
-        prayer_req=1
+        prayer_req=1,
     )
-    
+
     # Missing some stats - should default to 1
-    stats = {
-        "attack": 1,
-        "strength": 1
-    }
-    
+    stats = {"attack": 1, "strength": 1}
+
     assert meets_requirements(item, stats) is True
 
 
@@ -212,20 +160,13 @@ def test_meets_requirements_quest_required_and_completed():
         ranged_req=1,
         magic_req=1,
         prayer_req=1,
-        quest_req="Recipe for Disaster"
+        quest_req="Recipe for Disaster",
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     quests_completed = {"Recipe for Disaster"}
-    
+
     assert meets_requirements(item, stats, quests_completed=quests_completed) is True
 
 
@@ -240,20 +181,13 @@ def test_meets_requirements_quest_required_but_not_completed():
         ranged_req=1,
         magic_req=1,
         prayer_req=1,
-        quest_req="Recipe for Disaster"
+        quest_req="Recipe for Disaster",
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     quests_completed = set()  # Empty set
-    
+
     assert meets_requirements(item, stats, quests_completed=quests_completed) is False
 
 
@@ -268,18 +202,11 @@ def test_meets_requirements_quest_required_but_quests_none():
         ranged_req=1,
         magic_req=1,
         prayer_req=1,
-        quest_req="Recipe for Disaster"
+        quest_req="Recipe for Disaster",
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     assert meets_requirements(item, stats, quests_completed=None) is False
 
 
@@ -294,20 +221,13 @@ def test_meets_requirements_achievement_required_and_completed():
         ranged_req=1,
         magic_req=1,
         prayer_req=1,
-        achievement_req="Fight Caves"
+        achievement_req="Fight Caves",
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     achievements_completed = {"Fight Caves"}
-    
+
     assert meets_requirements(item, stats, achievements_completed=achievements_completed) is True
 
 
@@ -322,20 +242,13 @@ def test_meets_requirements_achievement_required_but_not_completed():
         ranged_req=1,
         magic_req=1,
         prayer_req=1,
-        achievement_req="Fight Caves"
+        achievement_req="Fight Caves",
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     achievements_completed = set()  # Empty set
-    
+
     assert meets_requirements(item, stats, achievements_completed=achievements_completed) is False
 
 
@@ -350,18 +263,11 @@ def test_meets_requirements_achievement_required_but_achievements_none():
         ranged_req=1,
         magic_req=1,
         prayer_req=1,
-        achievement_req="Fight Caves"
+        achievement_req="Fight Caves",
     )
-    
-    stats = {
-        "attack": 1,
-        "strength": 1,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 1, "strength": 1, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     assert meets_requirements(item, stats, achievements_completed=None) is False
 
 
@@ -377,19 +283,20 @@ def test_meets_requirements_all_requirements_met():
         magic_req=1,
         prayer_req=1,
         quest_req="Recipe for Disaster",
-        achievement_req="Fight Caves"
+        achievement_req="Fight Caves",
     )
-    
-    stats = {
-        "attack": 70,
-        "strength": 70,
-        "defence": 1,
-        "ranged": 1,
-        "magic": 1,
-        "prayer": 1
-    }
-    
+
+    stats = {"attack": 70, "strength": 70, "defence": 1, "ranged": 1, "magic": 1, "prayer": 1}
+
     quests_completed = {"Recipe for Disaster"}
     achievements_completed = {"Fight Caves"}
-    
-    assert meets_requirements(item, stats, quests_completed=quests_completed, achievements_completed=achievements_completed) is True
+
+    assert (
+        meets_requirements(
+            item,
+            stats,
+            quests_completed=quests_completed,
+            achievements_completed=achievements_completed,
+        )
+        is True
+    )

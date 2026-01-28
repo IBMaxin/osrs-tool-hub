@@ -1,4 +1,5 @@
 """Shared test fixtures and configuration for E2E tests."""
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
@@ -7,7 +8,7 @@ from typing import Generator
 
 from backend.main import app
 from backend.db.session import get_session
-from backend.models import Item, PriceSnapshot, Monster, SlayerTask, GearSet, SlayerMaster, Flip
+from backend.models import Item, PriceSnapshot, Monster, SlayerTask, SlayerMaster
 
 
 # Create in-memory SQLite database for testing
@@ -27,7 +28,7 @@ def get_test_session() -> Generator[Session, None, None]:
 @pytest.fixture(scope="function", autouse=True)
 def setup_test_db():
     """Create and drop test database tables for each test.
-    
+
     This fixture:
     1. Overrides the app's get_session dependency to use test database
     2. Creates all tables
@@ -37,21 +38,22 @@ def setup_test_db():
     """
     # Override dependency BEFORE creating tables
     app.dependency_overrides[get_session] = get_test_session
-    
+
     # Create all tables
     SQLModel.metadata.create_all(test_engine)
-    
+
     yield
-    
+
     # Cleanup
     SQLModel.metadata.drop_all(test_engine)
     app.dependency_overrides.clear()
+    # Note: Don't dispose test_engine here as it's module-level and reused
 
 
 @pytest.fixture(scope="function")
 def session() -> Generator[Session, None, None]:
     """Provide a test database session.
-    
+
     This fixture is for tests that need direct database access.
     The setup_test_db fixture (autouse=True) ensures tables exist.
     """
@@ -62,7 +64,7 @@ def session() -> Generator[Session, None, None]:
 @pytest.fixture(scope="function")
 def client() -> TestClient:
     """Provide a test client for API requests.
-    
+
     The client will use the test database via dependency override
     set up in setup_test_db fixture.
     """
@@ -84,7 +86,7 @@ def sample_items(session: Session) -> list[Item]:
             high_time=1700000000,
             low_time=1700000000,
             buy_limit=70,
-            icon_url="https://oldschool.runescape.wiki/images/Abyssal_whip_detail.png"
+            icon_url="https://oldschool.runescape.wiki/images/Abyssal_whip_detail.png",
         ),
         Item(
             id=314,

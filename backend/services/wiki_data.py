@@ -1,4 +1,5 @@
 """Wiki progression data loader and accessors."""
+
 import json
 from pathlib import Path
 
@@ -9,7 +10,7 @@ _DATA_DIR = Path(__file__).parent.parent / "data" / "wiki_progression"
 def _load_progression_data() -> dict:
     """
     Load progression data from JSON files.
-    
+
     Returns:
         Dictionary with progression data for all combat styles
     """
@@ -31,10 +32,10 @@ WIKI_PROGRESSION = _load_progression_data()
 def get_progression_data(combat_style: str) -> dict:
     """
     Get progression data for a combat style.
-    
+
     Args:
         combat_style: Combat style (melee, ranged, magic)
-        
+
     Returns:
         Dictionary with progression data for the combat style
     """
@@ -44,11 +45,11 @@ def get_progression_data(combat_style: str) -> dict:
 def get_slot_progression(combat_style: str, slot: str) -> list:
     """
     Get progression data for a specific slot.
-    
+
     Args:
         combat_style: Combat style (melee, ranged, magic)
         slot: Equipment slot (head, cape, neck, etc.)
-        
+
     Returns:
         List of tier groups for the slot
     """
@@ -59,10 +60,10 @@ def get_slot_progression(combat_style: str, slot: str) -> list:
 def get_all_slots(combat_style: str) -> list:
     """
     Get all available slots for a combat style.
-    
+
     Args:
         combat_style: Combat style (melee, ranged, magic)
-        
+
     Returns:
         List of slot names
     """

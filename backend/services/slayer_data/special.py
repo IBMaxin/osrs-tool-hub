@@ -9,7 +9,7 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 800000,
         "recommendation": "DO",
         "reason": "Very AFK boss, good profit. Cave krakens are fast points.",
-        "locations": ["Kraken Cove"]
+        "locations": ["Kraken Cove"],
     },
     "Cave kraken": {
         "weakness": ["Magic"],
@@ -19,7 +19,7 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 200000,
         "recommendation": "DO",
         "reason": "Fast points task, decent XP. Good for slayer points farming.",
-        "locations": ["Kraken Cove"]
+        "locations": ["Kraken Cove"],
     },
     "Fire giants": {
         "weakness": ["Crush"],
@@ -29,7 +29,7 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 100000,
         "recommendation": "DO",
         "reason": "Good cannon task for lower levels. Decent XP and some profit.",
-        "locations": ["Catacombs of Kourend", "Waterfall Dungeon"]
+        "locations": ["Catacombs of Kourend", "Waterfall Dungeon"],
     },
     "Dark Beasts": {
         "weakness": [],
@@ -39,7 +39,7 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 150000,
         "recommendation": "DO",
         "reason": "Very quick points task. Extend if you want AFK, otherwise just do for points.",
-        "locations": ["Mourner Tunnels"]
+        "locations": ["Mourner Tunnels"],
     },
     "Dark beasts": {
         "weakness": [],
@@ -49,7 +49,7 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 150000,
         "recommendation": "DO",
         "reason": "Very quick points task. Extend if you want AFK, otherwise just do for points.",
-        "locations": ["Mourner Tunnels"]
+        "locations": ["Mourner Tunnels"],
     },
     "Suqah": {
         "weakness": [],
@@ -59,7 +59,7 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 0,
         "recommendation": "DO",
         "reason": "One of the fastest XP tasks in the game with cannon. No loot.",
-        "locations": ["Lunar Isle"]
+        "locations": ["Lunar Isle"],
     },
     "TzHaar": {
         "weakness": [],
@@ -69,7 +69,7 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 0,
         "recommendation": "SKIP",
         "reason": "Skip unless choosing Jad (Fight Caves) or Zuk (Inferno) for massive XP drop.",
-        "locations": ["Mor Ul Rek"]
+        "locations": ["Mor Ul Rek"],
     },
     "Spiritual Creatures": {
         "weakness": [],
@@ -79,6 +79,6 @@ SPECIAL_TASK_DATA = {
         "profit_rate": 100000,
         "recommendation": "BLOCK",
         "reason": "Generally slow and annoying. Mages drop D boots but rare.",
-        "locations": ["God Wars Dungeon"]
+        "locations": ["God Wars Dungeon"],
     },
 }

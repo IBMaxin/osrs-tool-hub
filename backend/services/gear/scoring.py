@@ -1,22 +1,19 @@
 """Item scoring utilities for combat styles."""
+
 from typing import Optional
 
 from backend.models import Item
 
 
-def score_item_for_style(
-    item: Item, 
-    combat_style: str, 
-    attack_type: Optional[str] = None
-) -> float:
+def score_item_for_style(item: Item, combat_style: str, attack_type: Optional[str] = None) -> float:
     """
     Score an item for a specific combat style.
-    
+
     Args:
         item: Item to score
         combat_style: Combat style (melee, ranged, magic)
         attack_type: For melee, specify attack type (stab, slash, crush)
-        
+
     Returns:
         Score value (higher is better)
     """
