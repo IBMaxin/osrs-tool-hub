@@ -1,23 +1,25 @@
 import { useState } from 'react';
-import { Container, Title, Text, Stack } from '@mantine/core';
+import { Container, Title, Text, Stack, Tabs } from '@mantine/core';
+import { IconList, IconDatabase } from '@tabler/icons-react';
 import { MasterSelector } from './components/MasterSelector';
 import { TaskGrid } from './components/TaskGrid';
+import { MonsterDatabase } from './components/MonsterDatabase';
 import { AdviceModal } from './components/AdviceModal';
 import { useSlayerMasters } from './hooks/useSlayerMasters';
 import { useSlayerTasks } from './hooks/useSlayerTasks';
 import { useSlayerAdvice } from './hooks/useSlayerAdvice';
 
 export function SlayerPage() {
+  const [activeTab, setActiveTab] = useState<string | null>('tasks');
   const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
   const [adviceModalOpen, setAdviceModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
 
-  // Use custom hooks for data fetching
   const { masters, isLoading: mastersLoading } = useSlayerMasters();
   const { tasks, isLoading: tasksLoading, error: tasksError } = useSlayerTasks({ selectedMaster });
   const { advice, isLoading: adviceLoading } = useSlayerAdvice({
     selectedTaskId,
-    enabled: adviceModalOpen
+    enabled: adviceModalOpen,
   });
 
   const handleGetAdvice = (taskId: number) => {
@@ -27,9 +29,7 @@ export function SlayerPage() {
 
   const handleMasterChange = (master: string) => {
     setSelectedMaster(null);
-    setTimeout(() => {
-      setSelectedMaster(master);
-    }, 0);
+    setTimeout(() => setSelectedMaster(master), 0);
   };
 
   const handleCloseAdvice = () => {
@@ -37,8 +37,8 @@ export function SlayerPage() {
     setSelectedTaskId(null);
   };
 
-  const selectedTask = tasks?.find(t => t.task_id === selectedTaskId);
-  const taskName = selectedTask?.monster_name || 'Unknown Task';
+  const selectedTask = tasks?.find((t) => t.task_id === selectedTaskId);
+  const taskName = advice?.task ?? selectedTask?.monster_name ?? 'Unknown Task';
 
   return (
     <Container size="xl" py="xl">
@@ -47,23 +47,41 @@ export function SlayerPage() {
           <Title order={2} mb={4}>Slayer Task Helper</Title>
           <Text c="dimmed" size="sm">Choose your master and browse available tasks</Text>
         </div>
-        
-        <MasterSelector
-          masters={masters}
-          isLoading={mastersLoading}
-          selectedMaster={selectedMaster}
-          onMasterChange={handleMasterChange}
-        />
 
-        {selectedMaster && (
-          <TaskGrid
-            tasks={tasks}
-            isLoading={tasksLoading}
-            error={tasksError}
-            selectedMaster={selectedMaster}
-            onGetAdvice={handleGetAdvice}
-          />
-        )}
+        <Tabs value={activeTab} onChange={setActiveTab}>
+          <Tabs.List>
+            <Tabs.Tab value="tasks" leftSection={<IconList size={16} />}>
+              Task Helper
+            </Tabs.Tab>
+            <Tabs.Tab value="database" leftSection={<IconDatabase size={16} />}>
+              Monster Database
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="tasks" pt="md">
+            <Stack gap="lg">
+              <MasterSelector
+                masters={masters}
+                isLoading={mastersLoading}
+                selectedMaster={selectedMaster}
+                onMasterChange={handleMasterChange}
+              />
+              {selectedMaster && (
+                <TaskGrid
+                  tasks={tasks}
+                  isLoading={tasksLoading}
+                  error={tasksError}
+                  selectedMaster={selectedMaster}
+                  onGetAdvice={handleGetAdvice}
+                />
+              )}
+            </Stack>
+          </Tabs.Panel>
+
+          <Tabs.Panel value="database" pt="md">
+            <MonsterDatabase onGetAdvice={handleGetAdvice} />
+          </Tabs.Panel>
+        </Tabs>
       </Stack>
 
       <AdviceModal
