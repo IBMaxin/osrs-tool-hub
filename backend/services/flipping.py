@@ -29,12 +29,16 @@ class FlipOpportunity(BaseModel):
     """Pydantic model for flip opportunity results."""
 
     item_id: int
-    name: str
+    item_name: str
     buy_price: int
     sell_price: int
     margin: float
     roi: float
     volume: int
+    potential_profit: Optional[float] = None
+    limit: Optional[int] = None
+    tax: Optional[int] = None
+    icon_url: Optional[str] = None
     wiki_url: Optional[str] = None
 
 

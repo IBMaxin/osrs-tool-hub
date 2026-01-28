@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlmodel import Session
+from typing import List
 
 from backend.db.session import get_session
 from backend.services.slayer import SlayerService
@@ -10,7 +11,7 @@ from backend.config import settings
 router = APIRouter(prefix="/slayer", tags=["Slayer"])
 
 
-@router.get("/masters")
+@router.get("/masters", response_model=List[str])
 @limiter.limit(settings.default_rate_limit)
 def get_slayer_masters(request: Request, session: Session = Depends(get_session)):
     """Get list of Slayer Masters."""

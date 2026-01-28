@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, Request
 from sqlmodel import Session
 from backend.database import get_session
-from backend.services.flipping import FlippingService
+from backend.services.flipping import FlippingService, FlipOpportunity
 from backend.app.middleware import limiter
 from backend.config import settings
 from backend.api.v1.validators import BudgetQuery, ROIQuery, VolumeQuery
-from typing import Optional
+from typing import List, Optional
 
 router = APIRouter(prefix="/flips", tags=["Flipping"])
 
 
-@router.get("/opportunities")
+@router.get("/opportunities", response_model=List[FlipOpportunity])
 @limiter.limit(settings.default_rate_limit)
 def get_flips(
     request: Request,

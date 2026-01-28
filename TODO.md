@@ -2,7 +2,7 @@
 
 **Last Updated**: 2026-01-28  
 **Status**: Active Development  
-**Test Coverage**: 91% (239 tests passing) ✅
+**Test Coverage**: 91% (248 tests passing) ✅
 
 ---
 
@@ -68,6 +68,34 @@
 ### Linting & Formatting (Backend)
 - [x] Ruff: all checks passing (unused imports, etc. fixed)
 - [x] Black: backend formatted (94 files); `black --check` passes
+
+### Engineering Reliability Pass (2026-01-28)
+- [x] **Backend Interface Lockdown**
+  - [x] Created consistent error response schema (`ErrorResponse` + `ErrorDetail` models)
+  - [x] Added global exception handler for all HTTPExceptions
+  - [x] Added `response_model` to all key endpoints (`/api/v1/flips/opportunities`, `/api/v1/slayer/masters`)
+  - [x] Updated `FlipOpportunity` model to match service output (added optional fields)
+- [x] **Frontend Typed API Strategy**
+  - [x] Added `ErrorResponse` and `ErrorDetail` TypeScript types
+  - [x] Enhanced API client with `ApiError` class for structured error handling
+  - [x] Updated axios interceptor to handle `ErrorResponse` schema
+- [x] **Backend Contract Tests**
+  - [x] Created `test_flips_contract.py` (4 tests: golden path + validation errors)
+  - [x] Created `test_gear_contract.py` (3 tests: golden path + validation + service errors)
+  - [x] All contract tests verify response models match actual responses
+  - [x] All contract tests verify error responses match `ErrorResponse` schema
+- [x] **E2E Smoke Test**
+  - [x] Created `test_smoke.py` with critical path and error path tests
+  - [x] Tests verify endpoint returns 200 + valid schema
+  - [x] Tests verify validation errors return proper status codes
+- [x] **Version Pinning & CI**
+  - [x] Pinned Python version to `^3.13` in `pyproject.toml`
+  - [x] Pinned Node version to `20` via `.nvmrc` and `package.json` engines
+  - [x] Updated CI workflow to use Python 3.13
+  - [x] Added Poetry dependency caching to CI
+  - [x] Added npm dependency caching to CI
+- [x] **Test Results**: All 9 new tests passing ✅
+- [x] **Linting**: Ruff + Black checks passing ✅
 
 ---
 
@@ -321,7 +349,9 @@
   - [ ] Error handling tests
 
 #### Integration Test Coverage
-- [ ] Expand E2E test coverage
+- [x] E2E smoke test added (`test_smoke.py`) ✅
+- [x] Contract tests for flips and gear endpoints ✅
+- [ ] Expand E2E test coverage (more endpoints)
 - [ ] Test critical user flows
 - [ ] Test error scenarios
 
@@ -362,8 +392,8 @@
 - [ ] Remove legacy format support after migration
 
 #### Standardize Error Handling
-- [ ] Consistent error response format
-- [ ] Custom exception classes
+- [x] Consistent error response format ✅ (ErrorResponse schema implemented)
+- [ ] Custom exception classes (HTTPException handler covers most cases)
 - [ ] Error logging standardization
 
 #### Improve Type Safety
@@ -374,6 +404,8 @@
 ### CI/CD Enhancements
 - [ ] Add coverage reporting to CI pipeline
 - [x] Linting (backend): Ruff + Black pass locally; CI runs both
+- [x] Version pinning: Python 3.13 and Node 20 pinned ✅
+- [x] CI caching: Poetry and npm dependency caching added ✅
 - [ ] Frontend: ESLint skipped (no config); re-enable when config added
 - [ ] Add security scanning
 - [ ] Run tests on PR
@@ -385,7 +417,8 @@
 
 ### API Documentation
 - [ ] Enhance OpenAPI/Swagger docs (add request/response examples, error codes)
-- [ ] Document error handling (standard error response format, error code reference)
+- [x] Document error handling (standard error response format implemented: `ErrorResponse` schema) ✅
+- [ ] Error code reference documentation (HTTP_XXX codes)
 - [ ] Rate limiting documentation (rate limits, headers, best practices)
 
 ### Developer Documentation
