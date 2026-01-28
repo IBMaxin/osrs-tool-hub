@@ -57,12 +57,17 @@
 - [x] All 239 tests passing (100% pass rate)
 - [x] Fixed ResizeObserver mock for frontend tests
 - [x] Fixed integration test JSON key serialization
+- [x] Fixed test_suggest_action (Waterfiends use slayer data "DO")
 
 ### Configuration & Security
 - [x] Removed hardcoded credentials from User-Agent
 - [x] Made CORS origins configurable via .env
 - [x] Created comprehensive .env.example
 - [x] Improved .gitignore
+
+### Linting & Formatting (Backend)
+- [x] Ruff: all checks passing (unused imports, etc. fixed)
+- [x] Black: backend formatted (94 files); `black --check` passes
 
 ---
 
@@ -341,6 +346,9 @@
 
 ### Code Quality
 
+#### Frontend Linting (ESLint)
+- [ ] **Skipped for now**: no `.eslintrc`; `npm run lint` will fail. Re-add config and address issues to re-enable.
+
 #### Frontend Performance
 **File**: `frontend/src/features/slayer/hooks/useSlayerTasks.ts`
 - [ ] Fix caching: change `staleTime: 0` to reasonable value (e.g., 5 minutes)
@@ -365,7 +373,8 @@
 
 ### CI/CD Enhancements
 - [ ] Add coverage reporting to CI pipeline
-- [ ] Add linting checks
+- [x] Linting (backend): Ruff + Black pass locally; CI runs both
+- [ ] Frontend: ESLint skipped (no config); re-enable when config added
 - [ ] Add security scanning
 - [ ] Run tests on PR
 - [ ] Test coverage gates
