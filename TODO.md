@@ -2,7 +2,7 @@
 
 **Last Updated**: 2026-01-28  
 **Status**: Active Development  
-**Test Coverage**: 91%+ (460+ tests passing) ✅
+**Test Coverage**: 91%+ (478 backend + 25 frontend tests passing) ✅
 
 ---
 
@@ -40,6 +40,11 @@
 - [x] 4 API endpoints fully functional
 - [x] Frontend components (SlayerPage, MasterSelector, TaskGrid, TaskCard, AdviceModal, LocationSection)
 - [x] Custom hooks (useSlayerMasters, useSlayerTasks, useSlayerAdvice)
+- [x] Monster Database view (2026-01-28)
+  - [x] New tab "Monster Database" on SlayerPage with Tabs
+  - [x] MonsterDatabase component: search (300ms debounce), category filters (Dragons, Demons, Undead, Kalphite), sort (combat level, Slayer XP, name), TaskCard grid
+  - [x] useMonsterSearch hook (useSlayerTasks + local filter/sort), slayerFilters utils
+  - [x] Tests: MonsterDatabase.test.tsx (7 tests, search/category/sort/empty/onGetAdvice), fake timers for sort tests, scrollIntoView polyfill in setup
 - [x] Type safety fixes (removed all `any` types)
 - [x] Added 11 new slayer tasks with complete data:
   - Turoth, Scabarites, Brine rats, Ankou, Black dragons, Bronze dragons, Trolls, Waterfiends, Elves, Mutated zygomites, Fossil Island wyverns
@@ -97,6 +102,7 @@
 - [x] Black: backend formatted (94 files); `black --check` passes
 - [x] Fixed undefined names in loadouts.py (added missing imports for is_ironman_compatible, meets_content_requirements)
 - [x] Fixed boolean comparisons in watchlist.py (changed == True to .is_(True) for SQLAlchemy)
+- [x] Fixed F841 unused vars (2026-01-28): migrations.py, progression.py, test_trade.py, test_watchlist.py
 
 ### Engineering Reliability Pass (2026-01-28)
 - [x] **Backend Interface Lockdown**
