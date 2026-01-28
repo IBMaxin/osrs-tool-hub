@@ -65,8 +65,11 @@
 - [x] Updated slayer API tests for new parameters
 - [x] All 239 tests passing (100% pass rate)
 - [x] Fixed ResizeObserver mock for frontend tests
+- [x] Added scrollIntoView polyfill in frontend test setup (Mantine Combobox/jsdom) (2026-01-28)
 - [x] Fixed integration test JSON key serialization
 - [x] Fixed test_suggest_action (Waterfiends use slayer data "DO")
+- [x] Tests updated for API alignment: scheduler expects 2 jobs (price + watchlist), upgrade path uses upgrades_by_slot
+- [x] Test coverage files for DPS, item stats, wiki client services
 - [x] Added comprehensive test coverage for low-coverage modules (2026-01-28)
   - [x] Added 102 new unit tests across 7 test files
   - [x] Improved coverage for pricing, progression, loadouts, wiki_data, utils, validators, and gear_sets modules
@@ -96,6 +99,7 @@
 - [x] Made CORS origins configurable via .env
 - [x] Created comprehensive .env.example
 - [x] Improved .gitignore
+- [x] Updated .cursorrules (2026-01-28): project structure, stack, API design, testing, OSRS conventions
 
 ### Linting & Formatting (Backend)
 - [x] Ruff: all checks passing (unused imports, etc. fixed)
