@@ -12,6 +12,11 @@ afterEach(() => {
   cleanup()
 })
 
+// JSDOM has no scrollIntoView; Mantine Combobox calls it on list items
+if (typeof Element !== 'undefined' && !Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = vi.fn()
+}
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
