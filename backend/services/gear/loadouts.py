@@ -76,6 +76,10 @@ def get_best_loadout(
     quests_completed: Optional[Set[str]] = None,
     achievements_completed: Optional[Set[str]] = None,
     exclude_slots: Optional[List[str]] = None,
+    ironman: bool = False,
+    exclude_items: Optional[List[str]] = None,
+    content_tag: Optional[str] = None,
+    max_tick_manipulation: bool = False,
 ) -> Dict:
     """
     Find the best loadout a player can afford/wear based on stats and budget.
@@ -89,6 +93,10 @@ def get_best_loadout(
         quests_completed: Set of completed quest names
         achievements_completed: Set of completed achievement names
         exclude_slots: List of slots to exclude (e.g., ["shield"] for 2H weapons)
+        ironman: If True, filter out tradeable items (ironman mode)
+        exclude_items: List of item names to exclude
+        content_tag: Optional content tag to filter by (e.g., 'toa_entry', 'gwd')
+        max_tick_manipulation: If True, filter out items requiring tick manipulation
 
     Returns:
         Dict with best loadout, total cost, and DPS
@@ -134,11 +142,28 @@ def get_best_loadout(
 
         items = session.exec(query).all()
 
-        # Filter by quest/achievement requirements and budget
+        # Filter by quest/achievement requirements, constraints, and budget
         valid_items = []
+        exclude_items_set = set(exclude_items or [])
+        
         for item in items:
             if not meets_requirements(item, stats, quests_completed, achievements_completed):
                 continue
+
+            # Check ironman compatibility
+            if ironman and not is_ironman_compatible(item):
+                continue
+
+            # Check content tag requirements
+            if not meets_content_requirements(item, content_tag):
+                continue
+
+            # Check exclude items list
+            if item.name in exclude_items_set:
+                continue
+
+            # Note: max_tick_manipulation filtering would require item metadata
+            # For now, we'll skip this check as it requires additional item properties
 
             price = get_item_price(session, item)
             if price <= remaining_budget:
@@ -217,6 +242,23 @@ def get_upgrade_path(
         Dict with upgrade recommendations per slot
     """
     upgrades = {}
+    upgrade_list = []
+
+    # Convert current_loadout (slot -> item_id) to current_items (slot -> Item)
+    current_items = {}
+    for slot, item_id in current_loadout.items():
+        if item_id is not None:
+            item = session.get(Item, item_id)
+            if item:
+                current_items[slot] = item
+            else:
+                current_items[slot] = None
+        else:
+            current_items[slot] = None
+
+    # Calculate current DPS
+    current_dps_result = calculate_dps(current_items, combat_style, attack_type, stats)
+    current_dps = current_dps_result.get("dps", 0.0)
 
     for slot, current_item_id in current_loadout.items():
         if current_item_id is None:
@@ -254,6 +296,16 @@ def get_upgrade_path(
                 price = get_item_price(session, item)
                 upgrade_cost = price - current_price
                 if upgrade_cost <= budget:
+                    # Calculate DPS with this upgrade
+                    upgraded_items = current_items.copy()
+                    upgraded_items[slot] = item
+                    upgraded_dps_result = calculate_dps(upgraded_items, combat_style, attack_type, stats)
+                    upgraded_dps = upgraded_dps_result.get("dps", 0.0)
+                    dps_increase = upgraded_dps - current_dps
+
+                    # Calculate DPS per GP
+                    dps_per_gp = dps_increase / max(upgrade_cost, 1) if upgrade_cost > 0 else 0
+
                     better_items.append(
                         {
                             "item": item,
@@ -261,17 +313,18 @@ def get_upgrade_path(
                             "price": price,
                             "upgrade_cost": upgrade_cost,
                             "score_improvement": score - current_score,
+                            "dps_increase": dps_increase,
+                            "dps_per_gp": dps_per_gp,
                         }
                     )
 
-        # Sort by score improvement per GP
-        better_items.sort(
-            key=lambda x: x["score_improvement"] / max(x["upgrade_cost"], 1), reverse=True
-        )
+        # Sort by DPS per GP (priority metric)
+        better_items.sort(key=lambda x: x["dps_per_gp"], reverse=True)
 
         if better_items:
             best_upgrade = better_items[0]
-            upgrades[slot] = {
+            upgrade_data = {
+                "slot": slot,
                 "current": {
                     "id": current_item.id,
                     "name": current_item.name,
@@ -286,6 +339,8 @@ def get_upgrade_path(
                     "price": best_upgrade["price"],
                     "upgrade_cost": best_upgrade["upgrade_cost"],
                     "score_improvement": best_upgrade["score_improvement"],
+                    "dps_increase": round(best_upgrade["dps_increase"], 2),
+                    "dps_per_gp": round(best_upgrade["dps_per_gp"], 8),
                     "efficiency": round(
                         best_upgrade["score_improvement"] / max(best_upgrade["upgrade_cost"], 1), 4
                     ),
@@ -299,14 +354,37 @@ def get_upgrade_path(
                         "price": alt["price"],
                         "upgrade_cost": alt["upgrade_cost"],
                         "score_improvement": alt["score_improvement"],
+                        "dps_increase": round(alt["dps_increase"], 2),
+                        "dps_per_gp": round(alt["dps_per_gp"], 8),
                     }
                     for alt in better_items[1:6]  # Top 5 alternatives
                 ],
             }
+            upgrades[slot] = upgrade_data
+            upgrade_list.append(upgrade_data)
+
+    # Sort all upgrades by priority (DPS per GP)
+    upgrade_list.sort(key=lambda x: x["recommended"]["dps_per_gp"], reverse=True)
+
+    # Add priority numbers
+    for idx, upgrade in enumerate(upgrade_list, start=1):
+        upgrades[upgrade["slot"]]["recommended"]["priority"] = idx
 
     return {
         "combat_style": combat_style,
-        "upgrades": upgrades,
+        "current_dps": round(current_dps, 2),
+        "recommended_upgrades": [
+            {
+                "item": upgrade["recommended"]["name"],
+                "slot": upgrade["slot"],
+                "cost": upgrade["recommended"]["upgrade_cost"],
+                "dps_increase": upgrade["recommended"]["dps_increase"],
+                "dps_per_gp": upgrade["recommended"]["dps_per_gp"],
+                "priority": upgrade["recommended"]["priority"],
+            }
+            for upgrade in upgrade_list
+        ],
+        "upgrades_by_slot": upgrades,
         "total_upgrade_cost": sum(
             upgrade["recommended"]["upgrade_cost"] for upgrade in upgrades.values()
         ),

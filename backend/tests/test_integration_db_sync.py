@@ -171,7 +171,7 @@ class TestFlippingServiceIntegration:
         assert len(results) > 0
 
         # Verify whip is in results
-        whip_result = next((r for r in results if r.name == "Abyssal whip"), None)
+        whip_result = next((r for r in results if r.item_name == "Abyssal whip"), None)
         assert whip_result is not None
         assert whip_result.buy_price == 1400000
         assert whip_result.sell_price == 1500000

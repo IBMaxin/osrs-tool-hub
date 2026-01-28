@@ -1,6 +1,6 @@
 """DPS (Damage Per Second) calculation utilities."""
 
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from backend.models import Item
 
@@ -114,3 +114,69 @@ def calculate_dps(
             "player_stats": player_stats,
         },
     }
+
+
+def compare_dps(
+    loadouts: List[Dict[str, Dict[str, Optional[Item]]]],
+    combat_style: str,
+    attack_type: Optional[str] = None,
+    player_stats: Optional[Dict[str, int]] = None,
+    target_monster: Optional[Dict] = None,
+) -> List[Dict]:
+    """
+    Compare DPS for multiple loadouts side-by-side.
+
+    Args:
+        loadouts: List of loadout dictionaries, each with:
+            - "name": Loadout name/identifier
+            - "loadout": Dict of slot -> Item (e.g., {"weapon": Item(...), "head": Item(...)})
+        combat_style: Combat style (melee, ranged, magic)
+        attack_type: For melee, attack type (stab, slash, crush)
+        player_stats: Player combat stats (attack, strength, ranged, magic)
+        target_monster: Optional monster stats for more accurate calculations
+
+    Returns:
+        List of DPS results, each containing:
+            - "loadout_id": Index of loadout in input list
+            - "loadout_name": Name of the loadout
+            - "dps": Calculated DPS
+            - "max_hit": Maximum hit
+            - "accuracy": Accuracy percentage
+            - "attack_speed": Attack speed in ticks
+            - All other fields from calculate_dps()
+    """
+    results = []
+
+    for idx, loadout_data in enumerate(loadouts):
+        loadout_name = loadout_data.get("name", f"Loadout {idx + 1}")
+        loadout = loadout_data.get("loadout", {})
+
+        # Calculate DPS for this loadout
+        dps_result = calculate_dps(
+            items=loadout,
+            combat_style=combat_style,
+            attack_type=attack_type,
+            player_stats=player_stats,
+        )
+
+        # Add loadout identification
+        result = {
+            "loadout_id": idx,
+            "loadout_name": loadout_name,
+            **dps_result,
+        }
+
+        results.append(result)
+
+    # Calculate marginal gains (DPS increase compared to baseline)
+    if len(results) > 1:
+        baseline_dps = results[0]["dps"]
+        for result in results[1:]:
+            dps_increase = result["dps"] - baseline_dps
+            dps_increase_percent = (
+                (dps_increase / baseline_dps * 100) if baseline_dps > 0 else 0
+            )
+            result["dps_increase"] = round(dps_increase, 2)
+            result["dps_increase_percent"] = round(dps_increase_percent, 2)
+
+    return results

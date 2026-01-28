@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI
 
-from backend.api.v1 import flips, gear, slayer
+from backend.api.v1 import flips, gear, slayer, trades, watchlist
 from backend.services.flipping import FlippingService, FlipOpportunity
 from fastapi import Depends, Query
 from typing import List
@@ -21,6 +21,8 @@ def include_routers(app: FastAPI) -> None:
     app.include_router(flips.router, prefix="/api/v1")
     app.include_router(gear.router, prefix="/api/v1")
     app.include_router(slayer.router, prefix="/api/v1")
+    app.include_router(trades.router, prefix="/api/v1")
+    app.include_router(watchlist.router, prefix="/api/v1")
 
     # GE Tracker-style flip scanner endpoint
     @app.get("/api/v1/flipping/scanner", response_model=List[FlipOpportunity], tags=["Flipping"])

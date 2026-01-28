@@ -32,7 +32,7 @@ class TestFlippingScannerEndpoint(BaseE2ETest):
         if len(data) > 0:
             first_result = data[0]
             assert "item_id" in first_result
-            assert "name" in first_result
+            assert "item_name" in first_result
             assert "buy_price" in first_result
             assert "sell_price" in first_result
             assert "margin" in first_result

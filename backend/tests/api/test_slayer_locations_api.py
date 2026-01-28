@@ -155,8 +155,8 @@ def test_get_task_location_not_found(client: TestClient):
     assert response.status_code == 404
 
     data = response.json()
-    assert "detail" in data
-    assert data["detail"] == "Task not found"
+    assert "error" in data
+    assert "Task not found" in data["error"].get("message", "")
 
 
 def test_get_task_location_invalid_id(client: TestClient):

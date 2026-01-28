@@ -1,10 +1,13 @@
 """Gear progression endpoints."""
 
+from typing import Optional, List, Dict
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
+from pydantic import BaseModel, Field
 
 from backend.db.session import get_session
 from backend.services.gear import GearService
+from backend.services.gear.progression import get_global_upgrade_path
 from backend.api.v1.gear.mappers import (
     transform_progression_data,
     transform_slot_progression_data,
@@ -119,3 +122,56 @@ async def get_progression_loadout(style: str, tier: str, session: Session = Depe
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=result["error"])
 
     return result
+
+
+class GlobalProgressionRequest(BaseModel):
+    """Request model for global cross-style progression."""
+
+    current_gear: Dict[str, Dict[str, Optional[int]]] = Field(
+        ..., description="Dict of style -> loadout (slot -> item_id)"
+    )
+    bank_value: int = Field(..., ge=0, le=2_147_483_647, description="Total bank value in GP")
+    stats: Dict[str, int] = Field(
+        ..., description="Player stats: attack, strength, defence, ranged, magic, prayer"
+    )
+    unlocked_content: Optional[List[str]] = Field(
+        None, description="List of unlocked content (e.g., ['ToA', 'GWD'])"
+    )
+    attack_type: Optional[str] = Field(None, description="For melee: stab, slash, or crush")
+    quests_completed: Optional[List[str]] = Field(None, description="List of completed quests")
+    achievements_completed: Optional[List[str]] = Field(
+        None, description="List of completed achievements"
+    )
+
+
+@router.post("/gear/global-upgrade-path")
+async def get_global_progression(
+    request: GlobalProgressionRequest, session: Session = Depends(get_session)
+):
+    """
+    Calculate cross-style account progression with prioritized upgrade path.
+
+    Args:
+        request: Global progression request with current gear, bank value, stats, etc.
+        session: Database session
+
+    Returns:
+        Prioritized upgrade path across all styles (melee, ranged, magic)
+    """
+    quests = set(request.quests_completed) if request.quests_completed else None
+    achievements = set(request.achievements_completed) if request.achievements_completed else None
+
+    try:
+        result = get_global_upgrade_path(
+            session=session,
+            current_gear=request.current_gear,
+            bank_value=request.bank_value,
+            stats=request.stats,
+            unlocked_content=request.unlocked_content,
+            attack_type=request.attack_type,
+            quests_completed=quests,
+            achievements_completed=achievements,
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

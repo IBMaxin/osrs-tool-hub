@@ -72,12 +72,12 @@ class TestFullFlippingWorkflow:
         assert len(data) >= 2
 
         # Verify both items are in results
-        item_names = [r["name"] for r in data]
+        item_names = [r["item_name"] for r in data]
         assert "Abyssal whip" in item_names
         assert "Saradomin godsword" in item_names
 
         # Verify calculations are correct
-        whip_result = next(r for r in data if r["name"] == "Abyssal whip")
+        whip_result = next(r for r in data if r["item_name"] == "Abyssal whip")
         assert whip_result["buy_price"] == 1400000
         assert whip_result["sell_price"] == 1500000
         assert whip_result["roi"] > 0

@@ -141,7 +141,9 @@ def test_calculate_dps_handles_service_errors():
 
         # Should return 400 Bad Request
         assert response.status_code == 400
+        data = response.json()
+        assert "error" in data
         assert (
-            "error" in response.json()["detail"].lower()
-            or "Calculation error" in response.json()["detail"]
+            "error" in data["error"].get("message", "").lower()
+            or "Calculation error" in data["error"].get("message", "")
         )

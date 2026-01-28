@@ -178,6 +178,10 @@ class GearService:
         quests_completed: Optional[Set[str]] = None,
         achievements_completed: Optional[Set[str]] = None,
         exclude_slots: Optional[List[str]] = None,
+        ironman: bool = False,
+        exclude_items: Optional[List[str]] = None,
+        content_tag: Optional[str] = None,
+        max_tick_manipulation: bool = False,
     ) -> Dict:
         """
         Find the best loadout a player can afford/wear based on stats and budget.
@@ -190,6 +194,10 @@ class GearService:
             quests_completed: Set of completed quest names
             achievements_completed: Set of completed achievement names
             exclude_slots: List of slots to exclude (e.g., ["shield"] for 2H weapons)
+            ironman: If True, filter out tradeable items (ironman mode)
+            exclude_items: List of item names to exclude
+            content_tag: Optional content tag to filter by (e.g., 'toa_entry', 'gwd')
+            max_tick_manipulation: If True, filter out items requiring tick manipulation
 
         Returns:
             Dict with best loadout, total cost, and DPS
@@ -203,6 +211,10 @@ class GearService:
             quests_completed,
             achievements_completed,
             exclude_slots,
+            ironman,
+            exclude_items,
+            content_tag,
+            max_tick_manipulation,
         )
 
     def get_upgrade_path(

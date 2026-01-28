@@ -133,9 +133,10 @@ class TestSlayerAdviceEndpoint:
 
         assert response.status_code == 404
         data = response.json()
+        assert "error" in data
         assert (
-            "error" in data.get("detail", "").lower()
-            or "not found" in data.get("detail", "").lower()
+            "error" in data["error"].get("message", "").lower()
+            or "not found" in data["error"].get("message", "").lower()
         )
 
     def test_get_advice_returns_valid_recommendation(

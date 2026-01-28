@@ -16,6 +16,12 @@ from backend.models.gear import GearSet
 # Re-export flipping models
 from backend.models.flipping import Flip
 
+# Re-export trade models
+from backend.models.trade import Trade
+
+# Re-export watchlist models
+from backend.models.watchlist import WatchlistItem, WatchlistAlert
+
 # Re-export slayer models
 from backend.models.slayer import Monster, SlayerTask
 
@@ -30,6 +36,11 @@ __all__ = [
     "GearSet",
     # Flipping
     "Flip",
+    # Trade
+    "Trade",
+    # Watchlist
+    "WatchlistItem",
+    "WatchlistAlert",
     # Slayer
     "Monster",
     "SlayerTask",

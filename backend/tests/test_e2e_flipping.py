@@ -134,7 +134,7 @@ class TestFlippingScannerEndpoint:
         if len(data) > 0:
             first_result = data[0]
             assert "item_id" in first_result
-            assert "name" in first_result
+            assert "item_name" in first_result
             assert "buy_price" in first_result
             assert "sell_price" in first_result
             assert "margin" in first_result
@@ -258,7 +258,7 @@ class TestFlippingScannerEndpoint:
         data = response.json()
 
         # Find Abyssal whip in results
-        whip_result = next((r for r in data if r["name"] == "Abyssal whip"), None)
+        whip_result = next((r for r in data if r["item_name"] == "Abyssal whip"), None)
         if whip_result:
             # Margin should be: (high_price - tax) - low_price
             # Tax = 1500000 * 0.02 = 30000
@@ -282,7 +282,7 @@ class TestFlippingScannerEndpoint:
         data = response.json()
 
         # Find Abyssal whip in results
-        whip_result = next((r for r in data if r["name"] == "Abyssal whip"), None)
+        whip_result = next((r for r in data if r["item_name"] == "Abyssal whip"), None)
         if whip_result:
             # ROI should be: margin / buy_price * 100
             expected_roi = (whip_result["margin"] / whip_result["buy_price"]) * 100

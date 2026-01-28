@@ -1,0 +1,28 @@
+{
+  "name": "Tombs of Amascut",
+  "monster_id": null,
+  "defence_stats": {
+    "defence_level": 200,
+    "magic_level": 200,
+    "ranged_level": 200,
+    "defence_stab": 100,
+    "defence_slash": 100,
+    "defence_crush": 100,
+    "defence_magic": 100,
+    "defence_ranged": 100
+  },
+  "recommended_styles": ["ranged", "magic", "melee"],
+  "special_mechanics": [
+    "Multiple bosses",
+    "Invocation system",
+    "Path-specific mechanics"
+  ],
+  "weaknesses": {
+    "versatile": true
+  },
+  "content_tags": ["raid", "toa"],
+  "entry_level": {
+    "combat": 90,
+    "recommended_gear_tier": "mid"
+  }
+}

@@ -54,7 +54,9 @@ def test_get_preset_loadout_invalid_tier():
 
         # Should return 400 Bad Request
         assert response.status_code == 400
-        assert "Invalid tier" in response.json()["detail"]
+        data = response.json()
+        assert "error" in data
+        assert "Invalid tier" in data["error"].get("message", "")
 
 
 def test_get_best_loadout_valid():
@@ -119,9 +121,11 @@ def test_get_best_loadout_handles_errors():
 
         # Should return 400 Bad Request
         assert response.status_code == 400
+        data = response.json()
+        assert "error" in data
         assert (
-            "error" in response.json()["detail"].lower()
-            or "Service error" in response.json()["detail"]
+            "error" in data["error"].get("message", "").lower()
+            or "Service error" in data["error"].get("message", "")
         )
 
 
@@ -176,7 +180,9 @@ def test_get_upgrade_path_handles_errors():
 
         # Should return 400 Bad Request
         assert response.status_code == 400
+        data = response.json()
+        assert "error" in data
         assert (
-            "error" in response.json()["detail"].lower()
-            or "Service error" in response.json()["detail"]
+            "error" in data["error"].get("message", "").lower()
+            or "Service error" in data["error"].get("message", "")
         )

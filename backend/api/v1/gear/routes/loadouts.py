@@ -58,6 +58,10 @@ async def get_best_loadout(request: BestLoadoutRequest, session: Session = Depen
             quests_completed=quests,
             achievements_completed=achievements,
             exclude_slots=request.exclude_slots,
+            ironman=request.ironman,
+            exclude_items=request.exclude_items,
+            content_tag=request.content_tag,
+            max_tick_manipulation=request.max_tick_manipulation,
         )
         return result
     except Exception as e:

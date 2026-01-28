@@ -26,6 +26,7 @@ interface ResultsTableProps {
   sortDirection: SortDirection; // Used by parent component for sorting logic
   onSort: (field: SortField) => void;
   SortIcon: ({ field }: { field: SortField }) => JSX.Element;
+  userId?: string;
 }
 
 export function ResultsTable({
@@ -35,7 +36,8 @@ export function ResultsTable({
   sortField,
   sortDirection: _sortDirection,
   onSort,
-  SortIcon
+  SortIcon,
+  userId
 }: ResultsTableProps) {
   if (error) {
     return (
@@ -83,10 +85,10 @@ export function ResultsTable({
           </Group>
           <Table.ScrollContainer minWidth={900}>
             <Table striped highlightOnHover verticalSpacing="md">
-              <ResultsTableHeader sortField={sortField} onSort={onSort} SortIcon={SortIcon} />
+              <ResultsTableHeader sortField={sortField} onSort={onSort} SortIcon={SortIcon} showLogTrade={!!userId} />
               <Table.Tbody>
                 {flips.map((flip) => (
-                  <ResultsTableRow key={flip.item_id} flip={flip} />
+                  <ResultsTableRow key={flip.item_id} flip={flip} userId={userId} />
                 ))}
               </Table.Tbody>
             </Table>

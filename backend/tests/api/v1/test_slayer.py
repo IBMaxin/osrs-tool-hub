@@ -118,7 +118,9 @@ def test_get_task_advice_not_found(client: TestClient):
     )
 
     assert response.status_code == 404
-    assert "not found" in response.json()["detail"].lower()
+    data = response.json()
+    assert "error" in data
+    assert "not found" in data["error"].get("message", "").lower()
 
 
 def test_get_task_advice_invalid_stats(client: TestClient):

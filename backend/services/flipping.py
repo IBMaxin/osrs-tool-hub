@@ -234,7 +234,7 @@ class FlippingService:
             opportunities.append(
                 FlipOpportunity(
                     item_id=int(row.item_id),
-                    name=str(row.name),
+                    item_name=str(row.name),
                     buy_price=int(row.buy_price),
                     sell_price=int(row.sell_price),
                     margin=round(margin_post_tax, 2),

@@ -240,3 +240,182 @@ export const FlippingApi = {
     return response.data;
   }
 };
+
+// Trade types
+export interface Trade {
+  id: number;
+  user_id: string;
+  item_id: number;
+  item_name: string;
+  buy_price: number;
+  sell_price: number | null;
+  quantity: number;
+  profit: number;
+  status: 'bought' | 'sold' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TradeCreateRequest {
+  user_id: string;
+  item_id: number;
+  buy_price: number;
+  quantity: number;
+  sell_price?: number | null;
+  status?: 'bought' | 'sold' | 'cancelled';
+}
+
+export interface TradeStats {
+  total_profit: number;
+  total_trades: number;
+  sold_trades: number;
+  profit_per_hour: number;
+  best_items: Array<{
+    item_name: string;
+    profit: number;
+  }>;
+  profit_by_item: Record<string, number>;
+}
+
+export interface TradeFilters {
+  status?: 'bought' | 'sold' | 'cancelled';
+  item_id?: number;
+  start_date?: string;
+  end_date?: string;
+  limit?: number;
+}
+
+export const TradeApi = {
+  createTrade: async (trade: TradeCreateRequest): Promise<Trade> => {
+    const response = await api.post<Trade>('/trades', trade);
+    return response.data;
+  },
+  
+  getTrades: async (userId: string, filters: TradeFilters = {}): Promise<Trade[]> => {
+    const params = new URLSearchParams();
+    params.append('user_id', userId);
+    if (filters.status) params.append('status', filters.status);
+    if (filters.item_id) params.append('item_id', filters.item_id.toString());
+    if (filters.start_date) params.append('start_date', filters.start_date);
+    if (filters.end_date) params.append('end_date', filters.end_date);
+    if (filters.limit) params.append('limit', filters.limit.toString());
+    
+    const response = await api.get<Trade[]>('/trades', { params });
+    return response.data;
+  },
+  
+  getStats: async (userId: string, days?: number): Promise<TradeStats> => {
+    const params = new URLSearchParams();
+    params.append('user_id', userId);
+    if (days) params.append('days', days.toString());
+    
+    const response = await api.get<TradeStats>('/trades/stats', { params });
+    return response.data;
+  }
+};
+
+// Watchlist types
+export interface WatchlistItem {
+  id: number;
+  user_id: string;
+  item_id: number;
+  item_name: string;
+  alert_type: 'price_below' | 'price_above' | 'margin_above';
+  threshold: number;
+  is_active: boolean;
+  created_at: string;
+  last_triggered_at: string | null;
+}
+
+export interface WatchlistAlert {
+  id: number;
+  watchlist_item_id: number;
+  triggered_at: string;
+  current_value: number;
+  threshold_value: number;
+  message: string;
+}
+
+export interface WatchlistCreateRequest {
+  user_id: string;
+  item_id: number;
+  alert_type: 'price_below' | 'price_above' | 'margin_above';
+  threshold: number;
+}
+
+export const WatchlistApi = {
+  addToWatchlist: async (watchlist: WatchlistCreateRequest): Promise<WatchlistItem> => {
+    const response = await api.post<WatchlistItem>('/watchlist', watchlist);
+    return response.data;
+  },
+  
+  getWatchlist: async (userId: string, includeInactive: boolean = false): Promise<WatchlistItem[]> => {
+    const params = new URLSearchParams();
+    params.append('user_id', userId);
+    if (includeInactive) params.append('include_inactive', 'true');
+    
+    const response = await api.get<WatchlistItem[]>('/watchlist', { params });
+    return response.data;
+  },
+  
+  removeFromWatchlist: async (watchlistItemId: number, userId: string): Promise<void> => {
+    const params = new URLSearchParams();
+    params.append('user_id', userId);
+    
+    await api.delete(`/watchlist/${watchlistItemId}`, { params });
+  },
+  
+  getAlerts: async (userId: string, limit: number = 50): Promise<WatchlistAlert[]> => {
+    const params = new URLSearchParams();
+    params.append('user_id', userId);
+    params.append('limit', limit.toString());
+    
+    const response = await api.get<WatchlistAlert[]>('/watchlist/alerts', { params });
+    return response.data;
+  }
+};
+
+// DPS Lab types
+export interface LoadoutInput {
+  name: string;
+  loadout: Record<string, number | null>;
+}
+
+export interface DPSComparisonRequest {
+  loadouts: LoadoutInput[];
+  combat_style: 'melee' | 'ranged' | 'magic';
+  attack_type?: 'stab' | 'slash' | 'crush';
+  player_stats?: {
+    attack?: number;
+    strength?: number;
+    ranged?: number;
+    magic?: number;
+  };
+  target_monster?: Record<string, any>;
+}
+
+export interface DPSComparisonResult {
+  loadout_id: number;
+  loadout_name: string;
+  dps: number;
+  max_hit: number;
+  attack_speed: number;
+  attack_speed_seconds: number;
+  accuracy: number;
+  total_attack_bonus: number;
+  total_strength_bonus: number;
+  dps_increase?: number;
+  dps_increase_percent?: number;
+  details: Record<string, any>;
+}
+
+export interface DPSComparisonResponse {
+  results: DPSComparisonResult[];
+}
+
+export const GearApi = {
+  compareDPS: async (request: DPSComparisonRequest): Promise<DPSComparisonResponse> => {
+    const response = await api.post<DPSComparisonResponse>('/gear/compare-dps', request);
+    return response.data;
+  }
+};

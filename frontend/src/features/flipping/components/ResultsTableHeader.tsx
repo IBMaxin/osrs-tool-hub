@@ -6,12 +6,14 @@ interface ResultsTableHeaderProps {
   sortField: SortField; // Passed to SortIcon component
   onSort: (field: SortField) => void;
   SortIcon: ({ field }: { field: SortField }) => JSX.Element;
+  showLogTrade?: boolean;
 }
 
 export function ResultsTableHeader({
   sortField: _sortField,
   onSort,
-  SortIcon
+  SortIcon,
+  showLogTrade = false
 }: ResultsTableHeaderProps) {
   return (
     <Table.Thead>
@@ -43,6 +45,7 @@ export function ResultsTableHeader({
           </Group>
         </Table.Th>
         <Table.Th style={{ textAlign: 'center' }}>Volume</Table.Th>
+        {showLogTrade && <Table.Th style={{ textAlign: 'center' }}>Actions</Table.Th>}
       </Table.Tr>
     </Table.Thead>
   );

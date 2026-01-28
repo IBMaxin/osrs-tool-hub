@@ -1,0 +1,27 @@
+{
+  "name": "Zulrah",
+  "monster_id": 2042,
+  "defence_stats": {
+    "defence_level": 300,
+    "magic_level": 300,
+    "ranged_level": 300,
+    "defence_stab": 100,
+    "defence_slash": 100,
+    "defence_crush": 100,
+    "defence_magic": 100,
+    "defence_ranged": 100
+  },
+  "recommended_styles": ["ranged", "magic"],
+  "special_mechanics": [
+    "Phase rotation (ranged/magic/melee)",
+    "Venom clouds",
+    "Snakelings",
+    "Toxic fumes"
+  ],
+  "weaknesses": {
+    "ranged": true,
+    "magic": true,
+    "venom_immunity": true
+  },
+  "content_tags": ["snake", "boss"]
+}

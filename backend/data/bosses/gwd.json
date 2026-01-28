@@ -1,0 +1,29 @@
+{
+  "name": "God Wars Dungeon",
+  "monster_id": null,
+  "defence_stats": {
+    "defence_level": 250,
+    "magic_level": 250,
+    "ranged_level": 250,
+    "defence_stab": 100,
+    "defence_slash": 100,
+    "defence_crush": 100,
+    "defence_magic": 100,
+    "defence_ranged": 100
+  },
+  "recommended_styles": ["melee", "ranged"],
+  "special_mechanics": [
+    "Multiple bosses (Bandos, Armadyl, Zamorak, Saradomin)",
+    "Minions",
+    "Prayer switching"
+  ],
+  "weaknesses": {
+    "melee": true,
+    "ranged": true
+  },
+  "content_tags": ["gwd", "boss"],
+  "entry_level": {
+    "combat": 70,
+    "recommended_gear_tier": "mid"
+  }
+}

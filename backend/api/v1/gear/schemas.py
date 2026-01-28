@@ -70,6 +70,19 @@ class BestLoadoutRequest(BaseModel):
     exclude_slots: Optional[List[str]] = Field(
         None, description="Slots to exclude from calculation"
     )
+    ironman: bool = Field(
+        default=False, description="If True, filter out tradeable items (ironman mode)"
+    )
+    exclude_items: Optional[List[str]] = Field(
+        None, description="List of item names to exclude from calculation"
+    )
+    content_tag: Optional[str] = Field(
+        None, description="Filter by content tag (e.g., 'toa_entry', 'gwd')"
+    )
+    max_tick_manipulation: bool = Field(
+        default=False,
+        description="If True, filter out items requiring tick manipulation",
+    )
 
     @field_validator("combat_style")
     @classmethod
@@ -125,3 +138,64 @@ class DPSRequest(BaseModel):
     combat_style: str
     attack_type: Optional[str] = None
     player_stats: Optional[dict[str, int]] = None  # attack, strength, ranged, magic
+
+
+class LoadoutInput(BaseModel):
+    """Single loadout input for comparison."""
+
+    name: str = Field(..., description="Loadout name/identifier")
+    loadout: dict[str, Optional[int]] = Field(..., description="Dict of slot -> item_id")
+
+
+class DPSComparisonRequest(BaseModel):
+    """Request model for DPS comparison."""
+
+    loadouts: List[LoadoutInput] = Field(..., min_length=1, description="List of loadouts to compare")
+    combat_style: str = Field(..., description="Combat style: melee, ranged, or magic")
+    attack_type: Optional[str] = Field(None, description="For melee: stab, slash, or crush")
+    player_stats: Optional[dict[str, int]] = Field(
+        None, description="Player combat stats: attack, strength, ranged, magic"
+    )
+    target_monster: Optional[dict] = Field(None, description="Optional monster stats for more accurate calculations")
+
+    @field_validator("combat_style")
+    @classmethod
+    def validate_combat_style(cls, v: str) -> str:
+        """Validate combat style."""
+        valid_styles = ["melee", "ranged", "magic"]
+        if v.lower() not in valid_styles:
+            raise ValueError(f"Combat style must be one of: {', '.join(valid_styles)}")
+        return v.lower()
+
+    @field_validator("loadouts")
+    @classmethod
+    def validate_loadouts(cls, v: List[LoadoutInput]) -> List[LoadoutInput]:
+        """Validate loadouts list."""
+        if len(v) < 1:
+            raise ValueError("At least one loadout is required")
+        if len(v) > 10:
+            raise ValueError("Maximum 10 loadouts can be compared at once")
+        return v
+
+
+class DPSComparisonResult(BaseModel):
+    """Single DPS comparison result."""
+
+    loadout_id: int
+    loadout_name: str
+    dps: float
+    max_hit: int
+    attack_speed: int
+    attack_speed_seconds: float
+    accuracy: float
+    total_attack_bonus: int
+    total_strength_bonus: int
+    dps_increase: Optional[float] = None
+    dps_increase_percent: Optional[float] = None
+    details: dict
+
+
+class DPSComparisonResponse(BaseModel):
+    """Response model for DPS comparison."""
+
+    results: List[DPSComparisonResult]

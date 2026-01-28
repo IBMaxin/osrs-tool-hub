@@ -1,0 +1,26 @@
+{
+  "name": "Vorkath",
+  "monster_id": 8061,
+  "defence_stats": {
+    "defence_level": 214,
+    "magic_level": 150,
+    "ranged_level": 150,
+    "defence_stab": 100,
+    "defence_slash": 100,
+    "defence_crush": 100,
+    "defence_magic": 100,
+    "defence_ranged": 100
+  },
+  "recommended_styles": ["ranged"],
+  "special_mechanics": [
+    "Dragonfire attacks",
+    "Venom pool",
+    "Zombified spawn",
+    "Acid attack"
+  ],
+  "weaknesses": {
+    "ranged": true,
+    "dragonfire_protection": true
+  },
+  "content_tags": ["dragon", "boss"]
+}

@@ -58,7 +58,28 @@ def migrate_tables() -> None:
                 except Exception as e:
                     print(f"⚠ Could not sync price data: {e}")
 
-        # 2. Monster/Slayer Table checks
+        # 2. Trade table migration
+        if "trade" not in table_names:
+            # Trade table will be created by SQLModel.metadata.create_all
+            # This is just a placeholder for future column additions
+            print("✓ Trade table will be created by SQLModel")
+        else:
+            existing_trade_columns = [col["name"] for col in inspector.get_columns("trade")]
+            # Future column additions would go here
+            print("✓ Trade table exists")
+
+        # 3. Watchlist table migrations
+        if "watchlistitem" not in table_names:
+            print("✓ WatchlistItem table will be created by SQLModel")
+        else:
+            print("✓ WatchlistItem table exists")
+
+        if "watchlistalert" not in table_names:
+            print("✓ WatchlistAlert table will be created by SQLModel")
+        else:
+            print("✓ WatchlistAlert table exists")
+
+        # 3. Monster/Slayer Table checks
         # Since SQLModel.metadata.create_all handles creation, we just need to verify
         # manual migrations if we were modifying existing tables.
         # For new tables (Monster, SlayerTask), create_all is sufficient.
