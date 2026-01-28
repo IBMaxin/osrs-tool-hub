@@ -2,12 +2,28 @@
 
 **Last Updated**: 2026-01-28  
 **Status**: Active Development  
-**Test Coverage**: 96.7% overall (577 backend tests passing) ✅  
+**Test Coverage**: 96.7% overall (639+ backend tests passing) ✅  
 **Coverage Target**: 70%+ (✅ Exceeded - All production files above 70%)
+**E2E Tests**: 101 tests ✅ | **Integration Tests**: 27 tests ✅
 
 ---
 
 ## ✅ Completed Items (Archive)
+
+### Test Coverage Expansion (2026-01-28)
+- [x] Expanded E2E test coverage with 45 new tests
+  - [x] Trades endpoints: 15 tests (POST, GET, GET /stats)
+  - [x] Watchlist endpoints: 14 tests (POST, GET, DELETE, GET /alerts)
+  - [x] Boss endpoints: 7 tests (GET /bosses, POST /bis/{boss_name})
+  - [x] Items endpoint: 5 tests (GET /items/{item_id})
+  - [x] Slayer gear endpoint: 6 tests (POST /slayer-gear)
+- [x] Added 17 new integration tests
+  - [x] Trade + Watchlist service integration (6 tests)
+  - [x] Gear + Slayer service integration (6 tests)
+  - [x] Complete multi-step workflows (5 tests)
+- [x] All tests follow existing patterns and include error scenarios
+- [x] Updated test documentation (README.md files)
+- [x] Total: 101 E2E tests + 27 integration tests = 128 comprehensive tests
 
 ### Backend Infrastructure
 - [x] Real-time price integration via OSRS Wiki API (5-minute updates)
@@ -582,13 +598,27 @@
 #### Integration Test Coverage
 - [x] E2E smoke test added (`test_smoke.py`) ✅
 - [x] Contract tests for flips and gear endpoints ✅
-- [x] Expand E2E test coverage (more endpoints) ✅
-- [x] Test critical user flows ✅
-- [x] Test error scenarios ✅
-- [x] Trade + Watchlist service integration tests ✅
-- [x] Gear + Slayer service integration tests ✅
-- [x] Complete multi-step workflow tests ✅
-- [x] Cross-feature data consistency tests ✅
+- [x] Expand E2E test coverage (more endpoints) ✅ (2026-01-28)
+  - [x] Added 45 new E2E tests for trades, watchlist, boss, items, and slayer gear endpoints
+  - [x] All tests include success paths and comprehensive error scenarios
+  - [x] Total E2E tests: 101 (up from 56)
+- [x] Test critical user flows ✅ (2026-01-28)
+  - [x] Complete flipping workflow (discover → track → profit)
+  - [x] Complete gear progression workflow
+  - [x] Complete slayer task workflow
+- [x] Test error scenarios ✅ (2026-01-28)
+  - [x] Validation errors (400, 422)
+  - [x] Not found errors (404)
+  - [x] Business logic errors
+- [x] Trade + Watchlist service integration tests ✅ (2026-01-28)
+  - [x] 6 tests covering service interactions and data isolation
+- [x] Gear + Slayer service integration tests ✅ (2026-01-28)
+  - [x] 6 tests covering gear suggestions for slayer tasks and boss BiS
+- [x] Complete multi-step workflow tests ✅ (2026-01-28)
+  - [x] 5 tests covering end-to-end user journeys
+- [x] Cross-feature data consistency tests ✅ (2026-01-28)
+  - [x] 2 tests ensuring data integrity across features
+  - [x] Total integration tests: 27 (up from 11)
 
 ### Database Improvements
 
