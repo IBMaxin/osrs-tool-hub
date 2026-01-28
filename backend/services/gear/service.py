@@ -18,6 +18,7 @@ from backend.services.gear.progression import (
     get_wiki_progression,
 )
 from backend.services.gear.dps import calculate_dps
+from backend.services.gear.slayer_integration import suggest_slayer_gear
 
 
 class GearService:
@@ -303,3 +304,40 @@ class GearService:
             Dictionary with enriched progression data for all slots
         """
         return get_wiki_progression(self.session, style)
+
+    def suggest_slayer_gear(
+        self,
+        task_id: int,
+        stats: Dict[str, int],
+        budget: int = 100_000_000,
+        combat_style: Optional[str] = None,
+        quests_completed: Optional[Set[str]] = None,
+        achievements_completed: Optional[Set[str]] = None,
+        ironman: bool = False,
+    ) -> Dict:
+        """
+        Suggest optimal gear for a slayer task based on user levels.
+        Returns multiple tier suggestions similar to wiki progression guides.
+
+        Args:
+            task_id: The slayer task ID
+            stats: Dict with stat levels (attack, strength, defence, ranged, magic, prayer)
+            budget: Total budget in GP (default: 100M)
+            combat_style: Optional combat style override
+            quests_completed: Set of completed quest names
+            achievements_completed: Set of completed achievement names
+            ironman: If True, filter out tradeable items (ironman mode)
+
+        Returns:
+            Dict with optimal loadouts for multiple tiers, task info, and reasoning
+        """
+        return suggest_slayer_gear(
+            self.session,
+            task_id,
+            stats,
+            budget,
+            combat_style,
+            quests_completed,
+            achievements_completed,
+            ironman,
+        )

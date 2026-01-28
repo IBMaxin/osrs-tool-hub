@@ -33,7 +33,7 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
     <Card
       ref={cardRef}
       w={280}
-      p="md"
+      p="lg"
       withBorder
       radius="md"
       style={{
@@ -43,16 +43,19 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
         opacity: 0,
         transform: 'translateY(10px)',
         cursor: 'pointer',
+        backgroundColor: 'var(--mantine-color-dark-7)',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-4px)';
         e.currentTarget.style.boxShadow = 'var(--mantine-shadow-md)';
         e.currentTarget.style.borderLeftColor = `var(--mantine-color-${categoryColor}-7)`;
+        e.currentTarget.style.backgroundColor = 'var(--mantine-color-dark-6)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = 'var(--mantine-shadow-sm)';
         e.currentTarget.style.borderLeftColor = `var(--mantine-color-${categoryColor}-6)`;
+        e.currentTarget.style.backgroundColor = 'var(--mantine-color-dark-7)';
       }}
       tabIndex={0}
       onKeyDown={(e) => {
@@ -62,9 +65,9 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
         }
       }}
     >
-      <Stack gap="md" align="center">
+      <Stack gap="lg" align="center">
         {/* Top Section: Monster Icon with Combat Level Badge */}
-        <Box pos="relative">
+        <Box pos="relative" mb={4}>
           {!imageError ? (
             <Image
               src={imageUrl}
@@ -74,8 +77,8 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
               fit="contain"
               radius="md"
               style={{ 
-                border: '2px solid var(--mantine-color-gray-3)',
-                backgroundColor: 'var(--mantine-color-gray-1)'
+                border: '2px solid var(--mantine-color-gray-4)',
+                backgroundColor: 'var(--mantine-color-dark-8)'
               }}
               onError={() => {
                 // Try base version if detail fails
@@ -94,8 +97,8 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
             <Avatar
               size={96}
               radius="md"
-              bg="gray.1"
-              style={{ border: '2px solid var(--mantine-color-gray-3)' }}
+              bg="dark.8"
+              style={{ border: '2px solid var(--mantine-color-gray-4)' }}
             >
               <IconSword size={48} />
             </Avatar>
@@ -107,33 +110,34 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
             pos="absolute"
             bottom={-8}
             left="50%"
-            style={{ transform: 'translateX(-50%)' }}
+            style={{ transform: 'translateX(-50%)', fontWeight: 600 }}
           >
             Lvl {task.combat_level}
           </Badge>
         </Box>
 
         {/* Middle Section: Monster Name and Amount */}
-        <Stack gap={4} align="center" style={{ flex: 1, width: '100%' }}>
-          <Text fw={700} size="lg" ta="center" lineClamp={2}>
+        <Stack gap={6} align="center" style={{ flex: 1, width: '100%' }}>
+          <Text fw={700} size="lg" ta="center" lineClamp={2} c="gray.0" lh={1.3}>
             {task.monster_name}
           </Text>
-          <Text size="sm" c="dimmed" ta="center">
+          <Text size="sm" c="dimmed" ta="center" fw={500}>
             {task.amount} {task.category}
           </Text>
         </Stack>
 
         {/* Bottom Row: Weight Badge and Get Advice Button */}
-        <Group justify="space-between" w="100%" mt="auto">
+        <Group justify="space-between" w="100%" mt="md">
           <Badge
             size="sm"
             color={hasHighWeight ? 'blue' : 'gray'}
             variant="light"
+            style={{ fontWeight: 600 }}
           >
             Weight: {task.weight}
           </Badge>
           <Button
-            size="xs"
+            size="sm"
             variant="filled"
             color="yellow"
             onClick={() => onGetAdvice(task.task_id)}
@@ -151,14 +155,14 @@ export function TaskCard({ task, onGetAdvice, index = 0 }: TaskCardProps) {
 
         {/* Block/Skip Indicators */}
         {(task.is_blockable || task.is_skippable) && (
-          <Group gap="xs" mt={-8}>
+          <Group gap="xs" mt={-4}>
             {task.is_blockable && (
-              <Badge size="xs" color="red" variant="dot">
+              <Badge size="xs" color="red" variant="dot" style={{ fontWeight: 600 }}>
                 BLOCK
               </Badge>
             )}
             {task.is_skippable && (
-              <Badge size="xs" color="yellow" variant="dot">
+              <Badge size="xs" color="yellow" variant="dot" style={{ fontWeight: 600 }}>
                 SKIP
               </Badge>
             )}

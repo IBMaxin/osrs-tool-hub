@@ -12,10 +12,12 @@ import {
   Card,
 } from '@mantine/core';
 import { IconCalculator, IconAlertCircle } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
 import { LoadoutBuilder } from './LoadoutBuilder';
 import { DPSComparisonTable } from './DPSComparisonTable';
 import { MarginalGainAnalysis } from './MarginalGainAnalysis';
 import { useCompareDPS } from '../hooks/useDPSLab';
+import { GearApi } from '../../../lib/api/gear';
 import type { LoadoutInput, DPSComparisonRequest } from '../types';
 
 export function DPSLab() {
@@ -24,6 +26,7 @@ export function DPSLab() {
   ]);
   const [combatStyle, setCombatStyle] = useState<'melee' | 'ranged' | 'magic'>('melee');
   const [attackType, setAttackType] = useState<'stab' | 'slash' | 'crush' | ''>('');
+  const [selectedBossId, setSelectedBossId] = useState<string | null>(null);
   const [playerStats, setPlayerStats] = useState({
     attack: 99,
     strength: 99,
@@ -32,6 +35,27 @@ export function DPSLab() {
   });
 
   const compareDPS = useCompareDPS();
+
+  const { data: bossesData, error: bossesError, isLoading: bossesLoading } = useQuery({
+    queryKey: ['bosses'],
+    queryFn: async () => {
+      try {
+        const result = await GearApi.getBosses();
+        // Ensure we always return a valid structure
+        return result && Array.isArray(result.bosses) ? result : { bosses: [] };
+      } catch (error) {
+        console.error('Failed to load bosses:', error);
+        return { bosses: [] };
+      }
+    },
+    staleTime: 1000 * 60 * 60, // Cache for 1 hour
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+
+  // Safely extract bosses array
+  const bosses = Array.isArray(bossesData?.bosses) ? bossesData.bosses : [];
+  const selectedBoss = bosses.find((b) => b && b.monster_id && b.monster_id.toString() === selectedBossId);
 
   const handleCompare = async () => {
     if (loadouts.length < 1) {
@@ -43,6 +67,12 @@ export function DPSLab() {
       combat_style: combatStyle,
       attack_type: attackType || undefined,
       player_stats: playerStats,
+      target_monster: selectedBoss
+        ? {
+            defence_stats: selectedBoss.defence_stats,
+            monster_id: selectedBoss.monster_id,
+          }
+        : undefined,
     };
 
     try {
@@ -127,10 +157,40 @@ export function DPSLab() {
                 />
               )}
             </Group>
+
+            <Group grow>
+              <Select
+                label="Target Boss/Monster (Optional)"
+                placeholder={
+                  bossesLoading
+                    ? 'Loading bosses...'
+                    : bossesError
+                    ? 'Failed to load bosses'
+                    : bosses.length === 0
+                    ? 'No bosses available'
+                    : 'Select boss for accurate DPS calculation...'
+                }
+                value={selectedBossId}
+                onChange={setSelectedBossId}
+                data={bosses
+                  .filter((boss) => boss && boss.monster_id && boss.name)
+                  .map((boss) => ({
+                    value: boss.monster_id.toString(),
+                    label: boss.name,
+                  }))}
+                clearable
+                searchable
+                disabled={!!bossesError || bossesLoading || bosses.length === 0}
+              />
+            </Group>
           </Stack>
         </Card>
 
-        <LoadoutBuilder loadouts={loadouts} onLoadoutsChange={setLoadouts} />
+        <LoadoutBuilder
+          loadouts={loadouts}
+          onLoadoutsChange={setLoadouts}
+          combatStyle={combatStyle}
+        />
 
         {compareDPS.isError && (
           <Alert icon={<IconAlertCircle size={16} />} title="Error" color="red">

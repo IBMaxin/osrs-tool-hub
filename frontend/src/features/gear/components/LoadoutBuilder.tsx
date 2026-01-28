@@ -1,19 +1,23 @@
+import { useState } from 'react';
 import {
   Card,
   Stack,
   TextInput,
-  NumberInput,
   Button,
   Group,
   Text,
   ActionIcon,
+  SimpleGrid,
 } from '@mantine/core';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import type { LoadoutInput } from '../types';
+import { ItemPickerModal } from './ItemPickerModal';
+import { LoadoutItemDisplay } from './LoadoutItemDisplay';
 
 interface LoadoutBuilderProps {
   loadouts: LoadoutInput[];
   onLoadoutsChange: (loadouts: LoadoutInput[]) => void;
+  combatStyle?: 'melee' | 'ranged' | 'magic';
 }
 
 const EQUIPMENT_SLOTS = [
@@ -30,7 +34,17 @@ const EQUIPMENT_SLOTS = [
   'ring',
 ];
 
-export function LoadoutBuilder({ loadouts, onLoadoutsChange }: LoadoutBuilderProps) {
+export function LoadoutBuilder({
+  loadouts,
+  onLoadoutsChange,
+  combatStyle = 'melee',
+}: LoadoutBuilderProps) {
+  const [pickerModal, setPickerModal] = useState<{
+    opened: boolean;
+    loadoutIndex: number;
+    slot: string;
+  }>({ opened: false, loadoutIndex: -1, slot: '' });
+
   const addLoadout = () => {
     const newLoadout: LoadoutInput = {
       name: `Loadout ${loadouts.length + 1}`,
@@ -53,6 +67,14 @@ export function LoadoutBuilder({ loadouts, onLoadoutsChange }: LoadoutBuilderPro
     const updated = [...loadouts];
     updated[loadoutIndex].loadout[slot] = itemId;
     onLoadoutsChange(updated);
+  };
+
+  const openPicker = (loadoutIndex: number, slot: string) => {
+    setPickerModal({ opened: true, loadoutIndex, slot });
+  };
+
+  const handleItemSelect = (itemId: number) => {
+    updateLoadoutItem(pickerModal.loadoutIndex, pickerModal.slot, itemId);
   };
 
   return (
@@ -91,19 +113,17 @@ export function LoadoutBuilder({ loadouts, onLoadoutsChange }: LoadoutBuilderPro
                 )}
               </Group>
 
-              <Group gap="xs">
+              <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="xs">
                 {EQUIPMENT_SLOTS.map((slot) => (
-                  <NumberInput
+                  <LoadoutItemDisplay
                     key={slot}
-                    placeholder={slot}
-                    value={loadout.loadout[slot] || ''}
-                    onChange={(value) => updateLoadoutItem(loadoutIndex, slot, value ? Number(value) : null)}
-                    min={1}
-                    style={{ width: 120 }}
-                    size="xs"
+                    itemId={loadout.loadout[slot] ?? null}
+                    slot={slot}
+                    onClick={() => openPicker(loadoutIndex, slot)}
+                    onRemove={() => updateLoadoutItem(loadoutIndex, slot, null)}
                   />
                 ))}
-              </Group>
+              </SimpleGrid>
             </Stack>
           </Card>
         ))}
@@ -114,6 +134,16 @@ export function LoadoutBuilder({ loadouts, onLoadoutsChange }: LoadoutBuilderPro
           </Text>
         )}
       </Stack>
+
+      {pickerModal.opened && (
+        <ItemPickerModal
+          opened={pickerModal.opened}
+          onClose={() => setPickerModal({ opened: false, loadoutIndex: -1, slot: '' })}
+          slot={pickerModal.slot}
+          combatStyle={combatStyle}
+          onSelect={handleItemSelect}
+        />
+      )}
     </Card>
   );
 }

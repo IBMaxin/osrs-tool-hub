@@ -25,22 +25,27 @@ async def import_item_stats(session: Session):
     logger.info(f"Loaded {len(data)} items from JSON. Updating DB...")
 
     updated_count = 0
+    skipped_not_equipable = 0
+    skipped_not_in_data = 0
 
     # Iterate through all items in our DB
     db_items = session.exec(select(Item)).all()
+    logger.info(f"Found {len(db_items)} items in database to check")
 
     for item in db_items:
         str_id = str(item.id)
         if str_id not in data:
+            skipped_not_in_data += 1
             continue
 
         stats = data[str_id]
-        equipment = stats.get("equipment", {})
-        requirements = stats.get("requirements", {})
-        weapon = stats.get("weapon", {})
+        equipment = stats.get("equipment") or {}
+        requirements = stats.get("requirements") or {}
+        weapon = stats.get("weapon") or {}
 
         # Skip if not equipable
         if not stats.get("equipable_by_player"):
+            skipped_not_equipable += 1
             continue
 
         # Update fields
@@ -61,9 +66,9 @@ async def import_item_stats(session: Session):
             item.quest_req = quest_req
 
         # Equipment metadata
-        weapon_type = weapon.get("weapon_type", "")
+        weapon_type = weapon.get("weapon_type", "") if weapon else ""
         item.is_2h = weapon_type in ["2h_sword", "2h_axe", "bow", "crossbow", "staff", "polearm"]
-        item.attack_speed = weapon.get("weapon_speed", 4)  # Default to 4 ticks
+        item.attack_speed = weapon.get("weapon_speed", 4) if weapon else 4  # Default to 4 ticks
 
         # Offensive Stats
         item.attack_stab = equipment.get("attack_stab", 0)
@@ -89,4 +94,8 @@ async def import_item_stats(session: Session):
         updated_count += 1
 
     session.commit()
-    logger.info(f"Updated stats for {updated_count} items.")
+    logger.info(
+        f"Updated stats for {updated_count} items. "
+        f"Skipped {skipped_not_equipable} non-equipable items. "
+        f"Skipped {skipped_not_in_data} items not in OSRSBox data."
+    )

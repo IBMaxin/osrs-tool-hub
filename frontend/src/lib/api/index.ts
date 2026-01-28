@@ -16,8 +16,11 @@ import type {
 
 export { apiClient } from './client';
 export { FlippingApi } from './flipping';
-export { GearApi, fetchFullProgression } from './gear';
-export { SlayerApi } from './slayer';
+export { GearApi, fetchFullProgression, type SlayerGearResponse } from './gear';
+export { SlayerApi, type SlayerStats } from './slayer';
+
+// Legacy function exports for backward compatibility
+export { fetchFullProgression as fetchWikiProgression } from './gear';
 
 export type {
   FlipFilters,
@@ -27,6 +30,7 @@ export type {
   ProgressionItem,
   ProgressionTier,
   FullProgressionResponse,
+  SlotProgressionResponse,
 } from './types';
 export type {
   DPSComparisonRequest,
@@ -44,6 +48,7 @@ export type {
   WatchlistCreateRequest,
 } from '../../features/flipping/types';
 
+// Trade API
 export const TradeApi = {
   getTrades: async (userId: string, filters: TradeFilters = {}): Promise<Trade[]> => {
     const params = new URLSearchParams();
@@ -76,6 +81,7 @@ export const TradeApi = {
   },
 };
 
+// Watchlist API
 export const WatchlistApi = {
   getWatchlist: async (userId: string, includeInactive = false): Promise<WatchlistItem[]> => {
     const params = new URLSearchParams();

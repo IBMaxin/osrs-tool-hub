@@ -200,7 +200,7 @@ class TradeService:
         # Get top 5 most profitable items
         best_items = sorted(
             [{"item_name": name, "profit": profit} for name, profit in profit_by_item.items()],
-            key=lambda x: x["profit"],
+            key=lambda x: int(x["profit"]),
             reverse=True,
         )[:5]
 

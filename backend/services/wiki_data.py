@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+from typing import Any
 
 # Path to JSON data files
 _DATA_DIR = Path(__file__).parent.parent / "data" / "wiki_progression"
@@ -29,7 +30,7 @@ def _load_progression_data() -> dict:
 WIKI_PROGRESSION = _load_progression_data()
 
 
-def get_progression_data(combat_style: str) -> dict:
+def get_progression_data(combat_style: str) -> dict[str, Any]:
     """
     Get progression data for a combat style.
 
@@ -39,7 +40,7 @@ def get_progression_data(combat_style: str) -> dict:
     Returns:
         Dictionary with progression data for the combat style
     """
-    return WIKI_PROGRESSION.get(combat_style, {})
+    return WIKI_PROGRESSION.get(combat_style, {})  # type: ignore[no-any-return]
 
 
 def get_slot_progression(combat_style: str, slot: str) -> list:
@@ -57,7 +58,7 @@ def get_slot_progression(combat_style: str, slot: str) -> list:
     return style_data.get(slot, [])
 
 
-def get_all_slots(combat_style: str) -> list:
+def get_all_slots(combat_style: str) -> list[str]:
     """
     Get all available slots for a combat style.
 

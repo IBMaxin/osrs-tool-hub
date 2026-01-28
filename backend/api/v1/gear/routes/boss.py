@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 
 from backend.db.session import get_session
-from backend.services.gear.boss import BossService, get_available_bosses
+from backend.services.gear.boss import BossService, get_available_bosses, get_boss_data
 
 router = APIRouter()
 
@@ -30,7 +30,7 @@ async def calculate_boss_bis(
     boss_name: str,
     request: BossBiSRequest,
     session: Session = Depends(get_session),
-):
+) -> dict:
     """
     Calculate BiS for a boss with constraints.
 
@@ -61,11 +61,17 @@ async def calculate_boss_bis(
 
 
 @router.get("/gear/bosses")
-async def list_bosses():
+async def list_bosses() -> dict:
     """
-    Get list of available bosses.
+    Get list of available bosses with full data.
 
     Returns:
-        List of available boss names
+        List of boss data including names, stats, and metadata
     """
-    return {"bosses": get_available_bosses()}
+    boss_names = get_available_bosses()
+    bosses_data = []
+    for boss_name in boss_names:
+        boss_data = get_boss_data(boss_name)
+        if boss_data:
+            bosses_data.append(boss_data)
+    return {"bosses": bosses_data}

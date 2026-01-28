@@ -1,12 +1,15 @@
+import { useState } from 'react'
 import { Container, Tabs } from '@mantine/core'
 import { ProgressionViewer } from './ProgressionViewer'
 import { WikiGearTable } from './WikiGearTable'
 import { DPSLab } from './components/DPSLab'
 
 export function Gear() {
+  const [activeTab, setActiveTab] = useState<string>('wiki-table')
+
   return (
     <Container>
-      <Tabs defaultValue="wiki-table">
+      <Tabs value={activeTab} onChange={(value) => setActiveTab(value || 'wiki-table')}>
         <Tabs.List>
           <Tabs.Tab value="wiki-table">Wiki Table View</Tabs.Tab>
           <Tabs.Tab value="detailed">Detailed View</Tabs.Tab>
@@ -22,7 +25,7 @@ export function Gear() {
         </Tabs.Panel>
 
         <Tabs.Panel value="dps-lab" pt="md">
-          <DPSLab />
+          {activeTab === 'dps-lab' && <DPSLab />}
         </Tabs.Panel>
       </Tabs>
     </Container>

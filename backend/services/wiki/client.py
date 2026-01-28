@@ -2,6 +2,7 @@
 
 import httpx
 import logging
+from typing import Any
 
 from backend.config import settings
 
@@ -40,7 +41,7 @@ class WikiAPIClient:
                 logger.error(f"Mapping fetch failed: {e}")
                 raise
 
-    async def fetch_latest_prices(self) -> dict:
+    async def fetch_latest_prices(self) -> dict[str, Any]:  # type: ignore[no-any-return]
         """
         Fetch latest high/low prices from Wiki.
 

@@ -96,6 +96,19 @@ async def compare_dps_endpoint(
         )
 
     try:
+        # Validate that at least one loadout has a weapon
+        has_weapon = False
+        for loadout_obj in loadout_objects:
+            if loadout_obj.get("loadout", {}).get("weapon"):
+                has_weapon = True
+                break
+        
+        if not has_weapon:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="At least one loadout must have a weapon equipped for DPS calculation"
+            )
+        
         results = compare_dps(
             loadouts=loadout_objects,
             combat_style=request.combat_style,
@@ -108,5 +121,7 @@ async def compare_dps_endpoint(
         response_results = [DPSComparisonResult(**result) for result in results]
 
         return DPSComparisonResponse(results=response_results)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

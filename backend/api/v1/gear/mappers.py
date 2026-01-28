@@ -3,7 +3,7 @@
 from typing import Dict, List, Any
 
 
-def map_gear_set_to_response(gear_set) -> Dict[str, Any]:
+def map_gear_set_to_response(gear_set: Any) -> Dict[str, Any]:
     """
     Map GearSet model to GearSetResponse schema.
 

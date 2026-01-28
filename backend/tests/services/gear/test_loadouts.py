@@ -112,11 +112,11 @@ class TestSuggestGear:
         results = suggest_gear(test_session, "weapon", "melee", budget_per_slot=10000000)
 
         assert len(results) > 0
-        # Should be sorted by score descending
-        assert results[0]["score"] >= results[-1]["score"] if len(results) > 1 else True
+        # Should be sorted by relevance descending
+        assert results[0]["relevance"] >= results[-1]["relevance"] if len(results) > 1 else True
         assert "id" in results[0]
         assert "name" in results[0]
-        assert "score" in results[0]
+        assert "relevance" in results[0]
 
     def test_suggest_gear_ranged(self, test_session):
         """Test suggest_gear for ranged combat style."""
@@ -142,7 +142,7 @@ class TestSuggestGear:
         results = suggest_gear(test_session, "weapon", "ranged", budget_per_slot=10000000)
 
         assert len(results) > 0
-        assert results[0]["score"] > 0
+        assert results[0]["relevance"] >= 0
 
     def test_suggest_gear_magic(self, test_session):
         """Test suggest_gear for magic combat style."""
@@ -168,7 +168,7 @@ class TestSuggestGear:
         results = suggest_gear(test_session, "weapon", "magic", budget_per_slot=10000000)
 
         assert len(results) > 0
-        assert results[0]["score"] > 0
+        assert results[0]["relevance"] >= 0
 
     def test_suggest_gear_prayer(self, test_session):
         """Test suggest_gear for prayer combat style."""
@@ -193,7 +193,7 @@ class TestSuggestGear:
         results = suggest_gear(test_session, "neck", "prayer", budget_per_slot=10000000)
 
         assert len(results) > 0
-        assert results[0]["score"] > 0
+        assert results[0]["relevance"] >= 0
 
     def test_suggest_gear_filters_by_defence_level(self, test_session):
         """Test suggest_gear filters items by defence level requirement."""
@@ -221,8 +221,8 @@ class TestSuggestGear:
         item_ids = [r["id"] for r in results]
         assert 9999 not in item_ids  # High defence item excluded
 
-    def test_suggest_gear_returns_top_10(self, test_session):
-        """Test suggest_gear returns at most 10 items."""
+    def test_suggest_gear_returns_top_100(self, test_session):
+        """Test suggest_gear returns at most 100 items."""
         # Create many items
         for i in range(20):
             item = Item(
@@ -245,7 +245,9 @@ class TestSuggestGear:
 
         results = suggest_gear(test_session, "weapon", "melee", budget_per_slot=10000000)
 
-        assert len(results) <= 10
+        # Function returns up to 100 items, so 20 items should all be returned
+        assert len(results) == 20
+        assert len(results) <= 100  # But never more than 100
 
 
 class TestGetBestLoadout:

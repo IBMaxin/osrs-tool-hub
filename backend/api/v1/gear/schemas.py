@@ -203,3 +203,52 @@ class DPSComparisonResponse(BaseModel):
     """Response model for DPS comparison."""
 
     results: List[DPSComparisonResult]
+
+
+class SlayerGearRequest(BaseModel):
+    """Request model for slayer gear suggestions."""
+
+    task_id: int = Field(..., description="Slayer task ID")
+    stats: dict[str, int] = Field(
+        ..., description="Player stats: attack, strength, defence, ranged, magic, prayer"
+    )
+    budget: int = Field(
+        default=100_000_000, ge=0, le=2_147_483_647, description="Budget in GP"
+    )
+    combat_style: Optional[str] = Field(
+        None, description="Combat style: melee, ranged, or magic (optional, will use task recommendation if not provided)"
+    )
+    quests_completed: Optional[List[str]] = Field(
+        None, description="List of completed quests"
+    )
+    achievements_completed: Optional[List[str]] = Field(
+        None, description="List of completed achievements"
+    )
+    ironman: bool = Field(
+        default=False, description="If True, filter out tradeable items (ironman mode)"
+    )
+
+    @field_validator("combat_style")
+    @classmethod
+    def validate_combat_style(cls, v: Optional[str]) -> Optional[str]:
+        """Validate combat style."""
+        if v is not None:
+            valid_styles = ["melee", "ranged", "magic"]
+            if v.lower() not in valid_styles:
+                raise ValueError(f"Combat style must be one of: {', '.join(valid_styles)}")
+            return v.lower()
+        return v
+
+    @field_validator("stats")
+    @classmethod
+    def validate_stats(cls, v: dict[str, int]) -> dict[str, int]:
+        """Validate player stats."""
+        valid_stats = ["attack", "strength", "defence", "ranged", "magic", "prayer"]
+        for stat_name, stat_value in v.items():
+            if stat_name.lower() not in valid_stats:
+                raise ValueError(
+                    f"Invalid stat: {stat_name}. Must be one of: {', '.join(valid_stats)}"
+                )
+            if stat_value < 1 or stat_value > 99:
+                raise ValueError(f"Stat {stat_name} must be between 1 and 99")
+        return {k.lower(): v for k, v in v.items()}

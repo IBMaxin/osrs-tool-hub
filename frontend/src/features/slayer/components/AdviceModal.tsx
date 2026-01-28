@@ -16,6 +16,7 @@ import type { TaskAdvice } from '../../../lib/api';
 import { SlayerApi } from '../../../lib/api';
 import { notifications } from '@mantine/notifications';
 import { LocationSection } from './LocationSection';
+import { SlayerGearSuggestions } from './SlayerGearSuggestions/SlayerGearSuggestions';
 
 interface AdviceModalProps {
   opened: boolean;
@@ -141,6 +142,9 @@ export function AdviceModal({
               </Badge>
             </Group>
           </Stack>
+
+          {/* Gear Suggestions */}
+          <SlayerGearSuggestions taskId={taskId} enabled={opened} />
 
           {/* Location Section */}
           {locationLoading ? (

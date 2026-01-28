@@ -129,3 +129,91 @@ def test_get_progression_loadout_error_response():
         # The route might match slot first, so could be 404
         # But if it matches tier route, should be 400
         assert response.status_code in [400, 404]
+
+
+def test_get_global_progression_success():
+    """Test global progression endpoint with valid request."""
+    with patch("backend.api.v1.gear.routes.progression.get_global_upgrade_path") as mock_func:
+        mock_func.return_value = {
+            "recommended_upgrades": [
+                {"slot": "weapon", "cost": 1000000, "dps_per_gp": 0.5, "style": "melee"}
+            ],
+            "upgrades_by_style": {"melee": {}},
+            "total_cost": 1000000,
+            "bank_value": 2000000,
+            "remaining_budget": 1000000,
+        }
+
+        response = client.post(
+            "/api/v1/gear/global-upgrade-path",
+            json={
+                "current_gear": {"melee": {"weapon": 1}},
+                "bank_value": 2000000,
+                "stats": {"attack": 70, "strength": 70},
+            },
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "recommended_upgrades" in data
+        assert "upgrades_by_style" in data
+
+
+def test_get_global_progression_with_quests_and_achievements():
+    """Test global progression endpoint with quests and achievements."""
+    with patch("backend.api.v1.gear.routes.progression.get_global_upgrade_path") as mock_func:
+        mock_func.return_value = {
+            "recommended_upgrades": [],
+            "upgrades_by_style": {},
+            "total_cost": 0,
+            "bank_value": 1000000,
+            "remaining_budget": 1000000,
+        }
+
+        response = client.post(
+            "/api/v1/gear/global-upgrade-path",
+            json={
+                "current_gear": {"melee": {"weapon": 1}},
+                "bank_value": 1000000,
+                "stats": {"attack": 70, "strength": 70},
+                "quests_completed": ["Dragon Slayer"],
+                "achievements_completed": ["Achievement 1"],
+            },
+        )
+
+        assert response.status_code == 200
+        call_kwargs = mock_func.call_args[1]
+        assert call_kwargs["quests_completed"] == {"Dragon Slayer"}
+        assert call_kwargs["achievements_completed"] == {"Achievement 1"}
+
+
+def test_get_global_progression_handles_errors():
+    """Test global progression endpoint handles errors."""
+    with patch("backend.api.v1.gear.routes.progression.get_global_upgrade_path") as mock_func:
+        mock_func.side_effect = Exception("Service error")
+
+        response = client.post(
+            "/api/v1/gear/global-upgrade-path",
+            json={
+                "current_gear": {"melee": {"weapon": 1}},
+                "bank_value": 1000000,
+                "stats": {"attack": 70, "strength": 70},
+            },
+        )
+
+        assert response.status_code == 400
+        assert "error" in response.json()["error"]["message"].lower()
+
+
+def test_get_global_progression_validation_error():
+    """Test global progression endpoint with invalid request."""
+    response = client.post(
+        "/api/v1/gear/global-upgrade-path",
+        json={
+            "current_gear": {},
+            "bank_value": -1,  # Invalid
+            "stats": {"attack": 70},
+        },
+    )
+
+    assert response.status_code == 422  # Validation error

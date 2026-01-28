@@ -14,7 +14,7 @@ export function MasterSelector({
   onMasterChange
 }: MasterSelectorProps) {
   if (isLoading) {
-    return <Skeleton height={42} />;
+    return <Skeleton height={48} radius="md" />;
   }
 
   if (!masters || masters.length === 0) {
@@ -29,8 +29,12 @@ export function MasterSelector({
       }}
       data={masters.map(master => ({ value: master, label: master }))}
       fullWidth
-      size="md"
+      size="lg"
       color="yellow"
+      radius="md"
+      style={{
+        backgroundColor: 'var(--mantine-color-dark-7)',
+      }}
     />
   );
 }

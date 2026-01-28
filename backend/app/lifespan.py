@@ -56,12 +56,36 @@ async def lifespan(app: FastAPI):
         if not item_count:
             logger.info("Database is empty, starting initial sync...")
             await wiki_client.sync_items_to_db(session)
+            logger.info("Items synced, now importing equipment stats from OSRSBox...")
+            # After syncing items, import their stats
+            try:
+                from backend.services.item_stats import import_item_stats
+                await import_item_stats(session)
+                logger.info("✅ Item stats imported successfully")
+            except Exception as e:
+                logger.error(f"Failed to import item stats: {e}")
+                logger.warning("Items may be missing equipment stats. Run POST /api/v1/admin/sync-stats manually.")
         else:
             logger.info("Database already has items, skipping initial sync")
 
         # Always sync prices on startup to ensure we have current data
         logger.info("Running initial price sync...")
         await wiki_client.sync_prices_to_db(session)
+
+        # Check if items need stats populated
+        items_without_stats_count = session.exec(
+            select(func.count(Item.id)).where(Item.slot.is_(None))
+        ).one()
+        
+        if items_without_stats_count > 0:
+            logger.info(f"Found {items_without_stats_count} items without equipment stats, importing from OSRSBox...")
+            try:
+                from backend.services.item_stats import import_item_stats
+                await import_item_stats(session)
+                logger.info("✅ Item stats imported successfully")
+            except Exception as e:
+                logger.error(f"Failed to import item stats: {e}")
+                logger.warning("Items may be missing equipment stats. Run POST /api/v1/admin/sync-stats manually.")
 
         # Always run seed to ensure data is up to date
         logger.info("Running slayer data seed/update...")

@@ -164,3 +164,9 @@ export interface FullProgressionResponse {
   combat_style: string;
   slots: Record<string, ProgressionTier[]>;
 }
+
+export interface SlotProgressionResponse {
+  combat_style: string;
+  slot: string;
+  tiers: ProgressionTier[];
+}
