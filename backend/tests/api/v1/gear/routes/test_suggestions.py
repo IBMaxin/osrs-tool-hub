@@ -48,7 +48,7 @@ def test_get_gear_suggestions_invalid_slot():
 
     # Should return 400 Bad Request
     assert response.status_code == 400
-    assert "Invalid slot" in response.json()["detail"]
+    assert "Invalid slot" in response.json()["error"]["message"]
 
 
 def test_get_gear_suggestions_invalid_style():
@@ -57,7 +57,7 @@ def test_get_gear_suggestions_invalid_style():
 
     # Should return 400 Bad Request
     assert response.status_code == 400
-    assert "Invalid combat style" in response.json()["detail"]
+    assert "Invalid combat style" in response.json()["error"]["message"]
 
 
 def test_get_alternatives_endpoint():
@@ -102,8 +102,8 @@ def test_get_alternatives_handles_errors():
         # Should return 400 Bad Request with error message
         assert response.status_code == 400
         assert (
-            "error" in response.json()["detail"].lower()
-            or "Service error" in response.json()["detail"]
+            "error" in response.json()["error"]["message"].lower()
+            or "Service error" in response.json()["error"]["message"]
         )
 
 

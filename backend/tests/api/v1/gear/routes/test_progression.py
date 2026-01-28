@@ -39,7 +39,7 @@ def test_get_progression_invalid_style():
     response = client.get("/api/v1/gear/progression/invalid")
 
     assert response.status_code == 400
-    assert "Invalid combat style" in response.json()["detail"]
+    assert "Invalid combat style" in response.json()["error"]["message"]
 
 
 def test_get_progression_error_handling():
@@ -53,7 +53,7 @@ def test_get_progression_error_handling():
 
         # Should return 500 Internal Server Error
         assert response.status_code == 500
-        assert "error" in response.json()["detail"].lower()
+        assert "error" in response.json()["error"]["message"].lower()
 
 
 def test_get_progression_http_exception_re_raise():
@@ -71,7 +71,7 @@ def test_get_progression_http_exception_re_raise():
 
         # Should return 400 Bad Request (HTTPException re-raised)
         assert response.status_code == 400
-        assert "Validation error" in response.json()["detail"]
+        assert "Validation error" in response.json()["error"]["message"]
 
 
 def test_get_slot_progression_invalid_slot():
@@ -90,7 +90,7 @@ def test_get_slot_progression_invalid_slot():
 
         # Should return 404 Not Found
         assert response.status_code == 404
-        assert "not found" in response.json()["detail"].lower()
+        assert "not found" in response.json()["error"]["message"].lower()
 
 
 def test_get_wiki_progression_invalid_style():
@@ -98,7 +98,7 @@ def test_get_wiki_progression_invalid_style():
     response = client.get("/api/v1/gear/wiki-progression/invalid")
 
     assert response.status_code == 400
-    assert "Invalid combat style" in response.json()["detail"]
+    assert "Invalid combat style" in response.json()["error"]["message"]
 
 
 def test_get_progression_loadout_invalid_tier():

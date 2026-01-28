@@ -383,12 +383,12 @@ class TestGetUpgradePath:
         )
 
         assert result["combat_style"] == "melee"
-        assert "upgrades" in result
+        assert "upgrades_by_slot" in result
         # Should find upgrade for weapon (Abyssal whip is better)
-        if "weapon" in result["upgrades"]:
+        if "weapon" in result["upgrades_by_slot"]:
             assert (
-                result["upgrades"]["weapon"]["recommended"]["score"]
-                > result["upgrades"]["weapon"]["current"]["score"]
+                result["upgrades_by_slot"]["weapon"]["recommended"]["score"]
+                > result["upgrades_by_slot"]["weapon"]["current"]["score"]
             )
 
     def test_get_upgrade_path_no_current_item(self, test_session):
@@ -400,8 +400,8 @@ class TestGetUpgradePath:
             test_session, current_loadout, "melee", budget=10000000, stats=stats
         )
 
-        # Should return empty upgrades for None items
-        assert result["upgrades"] == {}
+        # Should return empty upgrades_by_slot for None items
+        assert result["upgrades_by_slot"] == {}
 
     def test_get_upgrade_path_nonexistent_item(self, test_session):
         """Test get_upgrade_path handles nonexistent current item."""
@@ -413,7 +413,7 @@ class TestGetUpgradePath:
         )
 
         # Should handle gracefully
-        assert result["upgrades"] == {}
+        assert result["upgrades_by_slot"] == {}
 
     def test_get_upgrade_path_respects_budget(self, test_session, sample_items):
         """Test get_upgrade_path respects budget constraints."""
@@ -432,7 +432,7 @@ class TestGetUpgradePath:
         )
 
         # Upgrade cost should be within budget
-        if result["upgrades"]:
+        if result["upgrades_by_slot"]:
             total_cost = result["total_upgrade_cost"]
             assert total_cost <= 100000
 

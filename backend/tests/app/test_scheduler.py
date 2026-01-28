@@ -14,6 +14,7 @@ def test_setup_scheduler_creates_scheduler():
     with (
         patch("backend.app.scheduler.WikiAPIClient", return_value=mock_wiki_client),
         patch("backend.app.scheduler.engine"),
+        patch("backend.app.scheduler.WatchlistService"),
     ):
         scheduler = setup_scheduler()
 
@@ -28,14 +29,17 @@ def test_setup_scheduler_adds_price_job():
     with (
         patch("backend.app.scheduler.WikiAPIClient", return_value=mock_wiki_client),
         patch("backend.app.scheduler.engine"),
+        patch("backend.app.scheduler.WatchlistService"),
     ):
         scheduler = setup_scheduler()
 
-        # Verify job was added
+        # Verify jobs were added (price update and watchlist alerts)
         jobs = scheduler.get_jobs()
-        assert len(jobs) == 1
+        assert len(jobs) == 2
         assert jobs[0].id is not None
         assert jobs[0].trigger.interval.seconds == 300  # 5 minutes
+        assert jobs[1].id is not None
+        assert jobs[1].trigger.interval.seconds == 300  # 5 minutes
 
 
 @pytest.mark.asyncio
@@ -52,10 +56,11 @@ async def test_price_update_job_executes():
         patch("backend.app.scheduler.WikiAPIClient", return_value=mock_wiki_client),
         patch("backend.app.scheduler.engine"),
         patch("backend.app.scheduler.Session", return_value=mock_session),
+        patch("backend.app.scheduler.WatchlistService"),
     ):
         scheduler = setup_scheduler()
 
-        # Get the job function
+        # Get the price update job function (first job)
         jobs = scheduler.get_jobs()
         job_func = jobs[0].func
 
@@ -80,11 +85,12 @@ async def test_price_update_job_handles_errors():
         patch("backend.app.scheduler.WikiAPIClient", return_value=mock_wiki_client),
         patch("backend.app.scheduler.engine"),
         patch("backend.app.scheduler.Session", return_value=mock_session),
+        patch("backend.app.scheduler.WatchlistService"),
         patch("backend.app.scheduler.logger") as mock_logger,
     ):
         scheduler = setup_scheduler()
 
-        # Get the job function
+        # Get the price update job function (first job)
         jobs = scheduler.get_jobs()
         job_func = jobs[0].func
 
