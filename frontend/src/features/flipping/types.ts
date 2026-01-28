@@ -5,7 +5,7 @@
 export type SortField = 'roi' | 'margin' | 'potential_profit' | 'buy_price';
 export type SortDirection = 'asc' | 'desc';
 
-import type { FlipFilters } from '../../lib/api';
+import type { FlipFilters } from '../../lib/api/types';
 
 export interface UseFlipsOptions {
   filters: FlipFilters;

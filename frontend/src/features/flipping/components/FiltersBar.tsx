@@ -1,4 +1,5 @@
 import { 
+  Box,
   Card, 
   Stack, 
   Group, 
@@ -15,10 +16,13 @@ import { FlipFilters } from '../../../lib/api';
 interface FiltersBarProps {
   filters: FlipFilters;
   onFiltersChange: (filters: FlipFilters) => void;
+  /** Optional ref for the filters container (used by focusFilter / keyboard shortcut). */
+  filterContainerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export function FiltersBar({ filters, onFiltersChange }: FiltersBarProps) {
+export function FiltersBar({ filters, onFiltersChange, filterContainerRef }: FiltersBarProps) {
   return (
+    <Box ref={filterContainerRef as React.RefObject<HTMLDivElement>}>
     <Card withBorder shadow="md" radius="md" p="md">
       <Stack gap="md">
         <Group gap="xs">
@@ -83,5 +87,6 @@ export function FiltersBar({ filters, onFiltersChange }: FiltersBarProps) {
         </Grid>
       </Stack>
     </Card>
+    </Box>
   );
 }

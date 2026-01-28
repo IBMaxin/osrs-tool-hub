@@ -251,6 +251,38 @@
 - [x] Backward compatibility maintained (optional parameters, additive migrations)
 - [x] Error handling standardized (ErrorResponse schema)
 
+### Usability & Color Scheme Improvements (2026-01-28)
+- [x] **Navigation dropdowns** (App.tsx)
+  - [x] Hierarchical NavLinks: Flipping (Scanner, Profit Tracker, Trade History), Gear (Loadout Builder, DPS Lab, Progression), Slayer (Task Advisor, Monster Database)
+  - [x] Descriptions, childrenOffset, defaultOpened, Badges (New/Beta)
+  - [x] Sub-routes (e.g. flipping/scanner, gear/dps-lab); content by top-level segment
+- [x] **Theme updates** (osrs-theme.ts)
+  - [x] Status semantic colors: profit, loss, warning, info, neutral (WCAG AA)
+  - [x] Badge defaultProps + light profit/loss styles
+  - [x] MantineReactTable styles: thead, zebra tbodyTr, cell, pagination
+- [x] **LoadingSkeleton** (lib/components/LoadingSkeleton.tsx)
+  - [x] Reusable skeleton rows; used in FlipTable when loading
+- [x] **useKeyboardShortcuts** (lib/hooks/useKeyboardShortcuts.ts)
+  - [x] Global shortcuts; FlippingPage: R = refetch, F = focus filter
+- [x] **SearchableDropdown** (lib/components/SearchableDropdown.tsx)
+  - [x] OSRS-themed searchable select for 50+ item lists (e.g. boss selection)
+- [x] **FiltersBar** focusFilter support (filterContainerRef, keyboard shortcut)
+
+### Frontend API & Type Fixes (2026-01-28)
+- [x] **lib/api exports**
+  - [x] Export FlipFilters, FlipOpportunity, SlayerTask, TaskAdvice, ProgressionItem, etc. from ./types
+  - [x] TradeApi / WatchlistApi with getTrades(userId, filters), getStats, getWatchlist, getAlerts, addToWatchlist, removeFromWatchlist
+  - [x] fetchFullProgression in gear API; SlayerApi.getLocation + TaskLocationData
+- [x] **Cycle breaks**
+  - [x] flipping/types imports FlipFilters from lib/api/types; slayer/types imports SlayerTask, TaskAdvice from lib/api/types
+- [x] **Unused imports removed**
+  - [x] useTrades, useWatchlist, TradeHistory, WatchlistManager, DPSComparisonTable, LoadoutBuilder, MarginalGainAnalysis, useDPSLab
+- [x] **Type fixes**
+  - [x] NumberInput onChange → `number | ''` in TradeLogForm, TradeStats, WatchlistManager
+  - [x] DPSLab Select attackType; FiltersBar ref assertion
+- [x] **TaskAdvice** extended with category, meta (backend-aligned); TaskLocationData added
+- [x] **Build**: `npm run build` passes; all 18 frontend tests pass
+
 ---
 
 ## 🔴 High Priority (P0/P1) - Critical/Important
@@ -349,7 +381,8 @@
 - [ ] Improve error handling in hooks (more user-friendly messages)
 - [ ] Add error boundaries for all features
 - [ ] Better error display in UI
-- [ ] Loading states (skeleton screens, loading indicators)
+- [x] Loading states: LoadingSkeleton component + FlipTable usage (2026-01-28); expand to more features as needed
+- [x] Keyboard shortcuts: useKeyboardShortcuts hook + FlippingPage R/F (2026-01-28); add per-feature as needed
 - [ ] Accessibility improvements (ARIA labels, keyboard navigation)
 
 ---
@@ -569,7 +602,7 @@
 
 #### Improve Type Safety
 - [ ] Add more type hints in backend
-- [ ] Strict TypeScript in frontend
+- [x] Strict TypeScript in frontend: lib/api exports, NumberInput/Select types, TaskAdvice/TaskLocationData aligned (2026-01-28)
 - [ ] Type validation at boundaries
 
 ### CI/CD Enhancements
@@ -662,8 +695,12 @@
 | High Priority | 15 | 0 | 25+ |
 | Medium Priority | 0 | 0 | 20+ |
 | Low Priority | 0 | 0 | 10+ |
-| Technical Debt | 5 | 0 | 15+ |
+| Technical Debt | 6 | 0 | 14+ |
 | Documentation | 0 | 0 | 10+ |
+
+### Recent (2026-01-28)
+- **Usability**: Nav dropdowns, status colors, LoadingSkeleton, useKeyboardShortcuts, SearchableDropdown, table/theme polish.
+- **Frontend**: lib/api exports fixed, TradeApi/WatchlistApi implemented, fetchFullProgression + SlayerApi.getLocation; cycle breaks, unused imports removed, NumberInput/Select type fixes. Build ✅, 18 frontend tests ✅.
 
 ---
 
@@ -671,9 +708,10 @@
 
 ### Phase 1: Quick Wins (1-2 days)
 1. ✅ Fix type safety issues - **COMPLETED**
-2. [ ] Add task filtering (by recommendation, combat level)
-3. [ ] Add task sorting (by XP, profit, weight)
-4. [ ] Improve caching in hooks
+2. ✅ Usability pass (nav dropdowns, skeletons, shortcuts, theme) - **COMPLETED** (2026-01-28)
+3. [ ] Add task filtering (by recommendation, combat level)
+4. [ ] Add task sorting (by XP, profit, weight)
+5. [ ] Improve caching in hooks
 
 ### Phase 2: Core Features (3-5 days)
 1. [ ] Task weight calculator with percentages
@@ -700,4 +738,5 @@
 
 *Last Updated: 2026-01-28*  
 *Consolidated from: TODO.md, STATUS.md, FLIPPING_ISSUES.md, SLAYER_VERIFICATION.md, SLAYER_ANALYSIS.md, SLAYER_PATCHES.md, PATCHES_APPLIED.md, TEST_FIXES.md, roadmap.md, refactor.md, CHANGELOG_2026-01-27.md*  
-*Feature Roadmap Implementation: Complete (5 weeks) - Trade logging, watchlists/alerts, DPS lab, constraint-aware loadouts, boss BiS, and enhanced progression features*
+*Feature Roadmap Implementation: Complete (5 weeks) - Trade logging, watchlists/alerts, DPS lab, constraint-aware loadouts, boss BiS, and enhanced progression features*  
+*2026-01-28: Usability & color scheme (nav dropdowns, status colors, LoadingSkeleton, useKeyboardShortcuts, SearchableDropdown, theme/table polish). Frontend API & type fixes (lib/api exports, TradeApi/WatchlistApi, fetchFullProgression, SlayerApi.getLocation, cycle breaks, unused imports, NumberInput/Select types). Build ✅, 18 frontend tests ✅.*

@@ -8,10 +8,7 @@ import {
   Stack,
   Badge,
   NumberInput,
-  Button,
-  ActionIcon,
 } from '@mantine/core';
-import { IconTrash, IconFilter } from '@tabler/icons-react';
 import { useTrades } from '../hooks/useTrades';
 import type { Trade, TradeFilters } from '../types';
 import { formatNumber } from '../utils/format';

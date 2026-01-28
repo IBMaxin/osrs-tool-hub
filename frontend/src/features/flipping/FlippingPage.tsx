@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { 
   Container, 
   Title, 
@@ -8,8 +8,9 @@ import {
   Button,
   Tabs
 } from '@mantine/core';
-import { IconRefresh, IconCoins, IconHistory, IconChartBar, IconBell } from '@tabler/icons-react';
+import { IconRefresh, IconCoins, IconHistory, IconChartBar } from '@tabler/icons-react';
 import { FlipFilters } from '../../lib/api';
+import { useKeyboardShortcuts } from '../../lib/hooks/useKeyboardShortcuts';
 import { FiltersBar } from './components/FiltersBar';
 import { ResultsTable } from './components/ResultsTable';
 import { TradeLogForm } from './components/TradeLogForm';
@@ -55,6 +56,15 @@ export function FlippingPage() {
     SortIcon,
   } = useFlips({ filters });
 
+  const filterContainerRef = useRef<HTMLDivElement>(null);
+  const focusFilter = useCallback(() => {
+    const input = filterContainerRef.current?.querySelector('input');
+    (input as HTMLInputElement | null)?.focus();
+  }, []);
+  useKeyboardShortcuts(
+    useMemo(() => ({ r: () => refetch(), f: focusFilter }), [refetch, focusFilter])
+  );
+
   return (
     <Container size="xl" py="xl">
       <Stack gap="lg">
@@ -90,7 +100,11 @@ export function FlippingPage() {
 
           <Tabs.Panel value="opportunities" pt="md">
             <Stack gap="lg">
-              <FiltersBar filters={filters} onFiltersChange={setFilters} />
+              <FiltersBar
+                filters={filters}
+                onFiltersChange={setFilters}
+                filterContainerRef={filterContainerRef}
+              />
               <ResultsTable
                 flips={sortedFlips}
                 isLoading={isLoading}

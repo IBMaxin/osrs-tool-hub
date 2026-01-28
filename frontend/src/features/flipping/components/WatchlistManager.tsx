@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Card,
   Stack,
-  TextInput,
   NumberInput,
   Select,
   Button,
@@ -77,7 +76,7 @@ export function WatchlistManager({ userId }: WatchlistManagerProps) {
                   label="Item ID"
                   placeholder="Enter item ID"
                   value={itemId}
-                  onChange={(value) => setItemId(value)}
+                  onChange={(value) => setItemId(value === '' ? '' : Number(value))}
                   required
                   min={1}
                 />
@@ -97,7 +96,7 @@ export function WatchlistManager({ userId }: WatchlistManagerProps) {
                 label="Threshold (GP)"
                 placeholder="Alert threshold"
                 value={threshold}
-                onChange={(value) => setThreshold(value)}
+                onChange={(value) => setThreshold(value === '' ? '' : Number(value))}
                 required
                 min={1}
                 leftSection={<Text size="xs">GP</Text>}

@@ -49,7 +49,7 @@ export function TradeStats({ userId }: TradeStatsProps) {
             <NumberInput
               placeholder="Days (all time if empty)"
               value={days}
-              onChange={(value) => setDays(value)}
+              onChange={(value) => setDays(value === '' ? '' : Number(value))}
               min={1}
               style={{ width: 150 }}
             />

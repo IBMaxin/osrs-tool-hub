@@ -85,7 +85,7 @@ export function TradeLogForm({ userId, defaultItemId, defaultItemName, onSuccess
               label="Item ID"
               placeholder="Enter item ID"
               value={itemId}
-              onChange={(value) => setItemId(value)}
+              onChange={(value) => setItemId(value === '' ? '' : Number(value))}
               required
               min={1}
             />
@@ -102,7 +102,7 @@ export function TradeLogForm({ userId, defaultItemId, defaultItemName, onSuccess
               label="Buy Price (GP)"
               placeholder="Price per item"
               value={buyPrice}
-              onChange={(value) => setBuyPrice(value)}
+              onChange={(value) => setBuyPrice(value === '' ? '' : Number(value))}
               required
               min={1}
               leftSection={<Text size="xs">GP</Text>}
@@ -111,7 +111,7 @@ export function TradeLogForm({ userId, defaultItemId, defaultItemName, onSuccess
               label="Sell Price (GP)"
               placeholder="Price per item (if sold)"
               value={sellPrice}
-              onChange={(value) => setSellPrice(value)}
+              onChange={(value) => setSellPrice(value === '' ? '' : Number(value))}
               min={1}
               leftSection={<Text size="xs">GP</Text>}
             />
@@ -122,7 +122,7 @@ export function TradeLogForm({ userId, defaultItemId, defaultItemName, onSuccess
               label="Quantity"
               placeholder="Number of items"
               value={quantity}
-              onChange={(value) => setQuantity(value)}
+              onChange={(value) => setQuantity(value === '' ? '' : Number(value))}
               required
               min={1}
             />

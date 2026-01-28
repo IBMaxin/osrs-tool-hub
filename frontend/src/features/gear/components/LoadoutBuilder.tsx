@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Card,
   Stack,
@@ -7,8 +6,6 @@ import {
   Button,
   Group,
   Text,
-  Select,
-  Badge,
   ActionIcon,
 } from '@mantine/core';
 import { IconPlus, IconTrash } from '@tabler/icons-react';

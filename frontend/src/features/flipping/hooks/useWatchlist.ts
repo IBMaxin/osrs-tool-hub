@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { WatchlistApi, WatchlistItem, WatchlistAlert, WatchlistCreateRequest } from '../../../lib/api';
+import { WatchlistApi, WatchlistCreateRequest } from '../../../lib/api';
 
 /**
  * Hook for fetching watchlist items.

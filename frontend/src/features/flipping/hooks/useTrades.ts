@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { TradeApi, Trade, TradeCreateRequest, TradeStats, TradeFilters } from '../../../lib/api';
+import { TradeApi, TradeCreateRequest, TradeFilters } from '../../../lib/api';
 
 /**
  * Hook for fetching trade history with filters.

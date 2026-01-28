@@ -2,7 +2,7 @@
  * Types specific to the slayer feature.
  */
 
-import type { SlayerTask, TaskAdvice } from '../../lib/api';
+import type { SlayerTask, TaskAdvice } from '../../lib/api/types';
 
 export interface UseSlayerMastersReturn {
   masters: string[] | undefined;

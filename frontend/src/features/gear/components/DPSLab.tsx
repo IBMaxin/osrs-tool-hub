@@ -80,7 +80,7 @@ export function DPSLab() {
                 <Select
                   label="Attack Type"
                   value={attackType}
-                  onChange={(value) => setAttackType(value || '')}
+                  onChange={(value) => setAttackType((value ?? '') as '' | 'stab' | 'slash' | 'crush')}
                   data={[
                     { value: '', label: 'Auto' },
                     { value: 'stab', label: 'Stab' },

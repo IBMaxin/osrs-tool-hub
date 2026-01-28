@@ -45,4 +45,16 @@ describe('App', () => {
     expect(screen.getByText('Gear Page')).toBeInTheDocument()
     expect(screen.queryByText('Flipping Page')).not.toBeInTheDocument()
   })
+
+  it('renders hierarchical dropdown nav with sub-links', () => {
+    render(<App />)
+    expect(screen.getByText('Scanner')).toBeInTheDocument()
+    expect(screen.getByText('Profit Tracker')).toBeInTheDocument()
+    expect(screen.getByText('Trade History')).toBeInTheDocument()
+    expect(screen.getByText('Loadout Builder')).toBeInTheDocument()
+    expect(screen.getByText('DPS Lab')).toBeInTheDocument()
+    expect(screen.getByText('Progression')).toBeInTheDocument()
+    expect(screen.getByText('Task Advisor')).toBeInTheDocument()
+    expect(screen.getByText('Monster Database')).toBeInTheDocument()
+  })
 })

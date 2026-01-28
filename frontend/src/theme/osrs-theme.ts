@@ -66,6 +66,15 @@ const osrsGreen: MantineColorsTuple = [
   '#124712',
 ];
 
+/** Semantic status colors (profit/loss/warning/info/neutral) for WCAG AA contrast on #1A0F08 */
+export const statusColors = {
+  profit: '#228B22',
+  loss: '#DC143C',
+  warning: '#FF981F',
+  info: '#D4AF37',
+  neutral: '#8B6914',
+} as const;
+
 export const osrsTheme = createTheme({
   primaryColor: 'osrsBrown',
   colors: {
@@ -74,6 +83,11 @@ export const osrsTheme = createTheme({
     osrsOrange,
     osrsRed,
     osrsGreen,
+    profit: osrsGreen,
+    loss: osrsRed,
+    warning: osrsOrange,
+    info: osrsGold,
+    neutral: osrsBrown,
   },
   
   fontFamily: '"Trebuchet MS", "Lucida Grande", Tahoma, sans-serif',
@@ -201,11 +215,22 @@ export const osrsTheme = createTheme({
     },
     
     Badge: {
+      defaultProps: {
+        color: 'neutral',
+      },
       styles: {
         root: {
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '0.5px',
+          '&[data-variant="light"][data-color="profit"]': {
+            backgroundColor: 'rgba(34, 139, 34, 0.15)',
+            color: '#228B22',
+          },
+          '&[data-variant="light"][data-color="loss"]': {
+            backgroundColor: 'rgba(220, 20, 60, 0.15)',
+            color: '#DC143C',
+          },
         },
       },
     },
@@ -242,9 +267,37 @@ export const osrsTheme = createTheme({
         },
       },
     },
+
+    MantineReactTable: {
+      styles: {
+        thead: {
+          backgroundColor: '#4A360C',
+          color: '#FFE799',
+          fontWeight: 700,
+        },
+        tbodyTr: {
+          '&:nth-of-type(odd)': {
+            backgroundColor: '#2B1B0E',
+          },
+          '&:nth-of-type(even)': {
+            backgroundColor: '#1A0F08',
+          },
+          '&:hover': {
+            backgroundColor: '#4A360C',
+          },
+        },
+        cell: {
+          color: '#E8D4BB',
+          padding: '8px 12px',
+        },
+        pagination: {
+          backgroundColor: '#2B1B0E',
+          color: '#D4AF37',
+        },
+      },
+    },
   },
-  
-  // Global styles for MantineReactTable
+
   other: {
     MantineReactTable: {
       baseBackgroundColor: '#2B1B0E',

@@ -1,13 +1,11 @@
 import {
   Card,
   Table,
-  Group,
   Text,
   Badge,
   Stack,
 } from '@mantine/core';
 import type { DPSComparisonResult } from '../types';
-import { formatNumber } from '../../flipping/utils/format';
 
 interface DPSComparisonTableProps {
   results: DPSComparisonResult[];

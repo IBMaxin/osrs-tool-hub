@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { GearApi, DPSComparisonRequest, DPSComparisonResponse } from '../../../lib/api';
+import { GearApi, DPSComparisonRequest } from '../../../lib/api';
 
 /**
  * Hook for comparing DPS of multiple loadouts.

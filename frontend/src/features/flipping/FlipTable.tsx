@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { MantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
 import { Slider, Text, Group, Paper, Title } from '@mantine/core';
 import { FlippingApi, type FlipOpportunity } from '../../lib/api';
+import { LoadingSkeleton } from '../../lib/components/LoadingSkeleton';
 
 export function FlipTable() {
   const [maxBudget, setMaxBudget] = useState<number>(10000000); // 10M default
@@ -101,6 +102,8 @@ export function FlipTable() {
     ],
     []
   );
+
+  if (isLoading) return <LoadingSkeleton rows={10} />;
 
   return (
     <Paper p="md" shadow="sm" withBorder>
