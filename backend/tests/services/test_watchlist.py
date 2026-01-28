@@ -288,7 +288,7 @@ class TestWatchlistService:
         session.commit()
 
         service = WatchlistService(session)
-        watchlist_item = service.add_to_watchlist(
+        _ = service.add_to_watchlist(
             user_id="test_user_1",
             item_id=4151,
             alert_type="price_below",

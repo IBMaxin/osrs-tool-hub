@@ -64,7 +64,7 @@ def migrate_tables() -> None:
             # This is just a placeholder for future column additions
             print("✓ Trade table will be created by SQLModel")
         else:
-            existing_trade_columns = [col["name"] for col in inspector.get_columns("trade")]
+            _ = [col["name"] for col in inspector.get_columns("trade")]
             # Future column additions would go here
             print("✓ Trade table exists")
 

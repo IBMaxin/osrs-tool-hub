@@ -437,14 +437,12 @@ def get_global_upgrade_path(
         if not loadout:
             continue
 
-        # Determine content tag based on unlocked content
-        content_tag = None
+        # Content tag mapping reserved for future use (ToA, GWD, etc.)
         if unlocked_content:
-            # Map content to content tags
             if "ToA" in unlocked_content or "toa" in [c.lower() for c in unlocked_content]:
-                content_tag = "toa_entry"
+                pass  # toa_entry
             elif "GWD" in unlocked_content or "gwd" in [c.lower() for c in unlocked_content]:
-                content_tag = "gwd"
+                pass  # gwd
 
         try:
             upgrade_result = get_upgrade_path(

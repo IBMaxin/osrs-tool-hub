@@ -331,7 +331,7 @@ class TestTradeService:
         session.add(trade1)
         session.commit()
 
-        trade2 = service.log_trade(
+        _ = service.log_trade(
             user_id="test_user_1",
             item_id=4151,
             buy_price=1500000,
@@ -430,7 +430,7 @@ class TestTradeService:
         session.add(trade1)
         session.commit()
 
-        trade2 = service.log_trade(
+        _ = service.log_trade(
             user_id="test_user_1",
             item_id=4151,
             buy_price=1500000,
