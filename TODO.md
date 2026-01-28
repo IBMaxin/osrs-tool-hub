@@ -4,7 +4,7 @@
 **Status**: Active Development  
 **Test Coverage**: 96.7% overall (639+ backend tests passing) ✅  
 **Coverage Target**: 70%+ (✅ Exceeded - All production files above 70%)
-**E2E Tests**: 101 tests ✅ | **Integration Tests**: 27 tests ✅
+**E2E Tests**: 101 tests ✅ | **Integration Tests**: 28 tests ✅
 
 ---
 
@@ -23,7 +23,7 @@
   - [x] Complete multi-step workflows (5 tests)
 - [x] All tests follow existing patterns and include error scenarios
 - [x] Updated test documentation (README.md files)
-- [x] Total: 101 E2E tests + 27 integration tests = 128 comprehensive tests
+- [x] Total: 101 E2E tests + 28 integration tests = 129 comprehensive tests
 
 ### Backend Infrastructure
 - [x] Real-time price integration via OSRS Wiki API (5-minute updates)
@@ -125,7 +125,7 @@
   - [x] Fixed 5 failing tests in test_loadouts.py (score → relevance, top 10 → top 100)
   - [x] Overall coverage: 96.7% (7,935/8,203 lines covered)
   - [x] All production files above 70% coverage ✅
-  - [x] Total tests: 577 passing (all tests passing)
+  - [x] Total tests: 639 passing (all tests passing)
 
 ### Configuration & Security
 - [x] Removed hardcoded credentials from User-Agent
@@ -618,7 +618,7 @@
   - [x] 5 tests covering end-to-end user journeys
 - [x] Cross-feature data consistency tests ✅ (2026-01-28)
   - [x] 2 tests ensuring data integrity across features
-  - [x] Total integration tests: 27 (up from 11)
+  - [x] Total integration tests: 28 (up from 11)
 
 ### Database Improvements
 
@@ -724,10 +724,10 @@
 ## 📊 Progress Summary
 
 ### Overall Status
-- **Total Tests**: 577 passing ✅ (all tests passing)
+- **Total Tests**: 639 passing ✅ (all tests passing)
 - **Test Coverage**: 96.7% overall (target: 70%+ ✅, exceeded)
-- **E2E Tests**: 47 passing ✅
-- **Integration Tests**: 11 passing ✅
+- **E2E Tests**: 101 passing ✅
+- **Integration Tests**: 28 passing ✅
 - **Backend Refactoring**: 100% complete ✅
 - **Frontend Refactoring**: 100% complete ✅
 - **Slayer Data Coverage**: ~85% (Nieve 35/41 tasks), improving
@@ -812,4 +812,4 @@
 *Consolidated from: TODO.md, STATUS.md, FLIPPING_ISSUES.md, SLAYER_VERIFICATION.md, SLAYER_ANALYSIS.md, SLAYER_PATCHES.md, PATCHES_APPLIED.md, TEST_FIXES.md, roadmap.md, refactor.md, CHANGELOG_2026-01-27.md*  
 *Feature Roadmap Implementation: Complete (5 weeks) - Trade logging, watchlists/alerts, DPS lab, constraint-aware loadouts, boss BiS, and enhanced progression features*  
 *2026-01-28: Usability & color scheme (nav dropdowns, status colors, LoadingSkeleton, useKeyboardShortcuts, SearchableDropdown, theme/table polish). Frontend API & type fixes (lib/api exports, TradeApi/WatchlistApi, fetchFullProgression, SlayerApi.getLocation, cycle breaks, unused imports, NumberInput/Select types). Build ✅, 18 frontend tests ✅.*  
-*2026-01-28: Test coverage improvements - Achieved 96.7% overall coverage (exceeded 70% target). Added 90+ tests for 11 low-coverage files. Fixed 5 failing tests in test_loadouts.py. All 577 tests passing ✅. All production files above 70% coverage ✅.*
+*2026-01-28: Test coverage improvements - Achieved 96.7% overall coverage (exceeded 70% target). Added 90+ tests for 11 low-coverage files. Fixed 5 failing tests in test_loadouts.py. All 639 tests passing ✅. All production files above 70% coverage ✅.*
