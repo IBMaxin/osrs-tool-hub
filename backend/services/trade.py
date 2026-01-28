@@ -3,8 +3,7 @@
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
-from sqlmodel import Session, select, func, and_, or_
-from sqlalchemy import case
+from sqlmodel import Session, select
 
 from backend.models import Trade, Item
 
@@ -156,7 +155,9 @@ class TradeService:
 
         # Filter by date range if specified
         if days:
-            cutoff_date = datetime.now(tz=datetime.now().tzinfo or datetime.utcnow().tzinfo) - timedelta(days=days)
+            cutoff_date = datetime.now(
+                tz=datetime.now().tzinfo or datetime.utcnow().tzinfo
+            ) - timedelta(days=days)
             query = query.where(Trade.created_at >= cutoff_date)
 
         trades = self.session.exec(query).all()

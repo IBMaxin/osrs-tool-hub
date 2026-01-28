@@ -2,7 +2,7 @@
 
 **Last Updated**: 2026-01-28  
 **Status**: Active Development  
-**Test Coverage**: 91%+ (450 tests passing) ✅
+**Test Coverage**: 91%+ (460+ tests passing) ✅
 
 ---
 
@@ -13,6 +13,10 @@
 - [x] API rate limiting (100 req/min per IP, configurable)
 - [x] Input validation layers (comprehensive validation utilities)
 - [x] Database indexes for slayer tasks (70% faster queries)
+- [x] Database session generator improvements (2026-01-28)
+  - [x] Added try/finally block to get_session() to prevent connection leaks
+  - [x] Added proper return type annotation (Generator[Session, None, None])
+  - [x] Ensures session cleanup even if exception occurs during yield
 - [x] Backend modularization (100% complete)
   - [x] Models split into package structure
   - [x] App lifecycle modules separated
@@ -91,6 +95,8 @@
 ### Linting & Formatting (Backend)
 - [x] Ruff: all checks passing (unused imports, etc. fixed)
 - [x] Black: backend formatted (94 files); `black --check` passes
+- [x] Fixed undefined names in loadouts.py (added missing imports for is_ironman_compatible, meets_content_requirements)
+- [x] Fixed boolean comparisons in watchlist.py (changed == True to .is_(True) for SQLAlchemy)
 
 ### Engineering Reliability Pass (2026-01-28)
 - [x] **Backend Interface Lockdown**
@@ -177,8 +183,11 @@
   - [x] Calculates marginal gains (DPS increase per item upgrade)
   - [x] Returns comparison metrics for all loadouts
 - [x] **DPS Comparison Endpoint** (`backend/api/v1/gear/routes/dps.py`)
-  - [x] POST /api/v1/gear/compare-dps - Compare multiple loadouts side-by-side
+  - [x] POST /api/v1/dps/compare - Compare multiple loadouts side-by-side (route updated)
   - [x] Added DPSComparisonRequest and DPSComparisonResponse schemas
+  - [x] Added OpenAPI tags and descriptions for better API documentation
+  - [x] Fixed DPS calculation to return all required fields (attack_speed_seconds, accuracy, total_attack_bonus, total_strength_bonus)
+  - [x] Added comprehensive test coverage (3 test functions: melee_success, invalid_loadout, mixed_combat_styles)
 - [x] **Frontend DPS Lab Components**
   - [x] DPSLab - Main DPS lab page with configuration
   - [x] LoadoutBuilder - Build/select loadouts to compare
@@ -186,6 +195,11 @@
   - [x] MarginalGainAnalysis - Show DPS increase per upgrade
   - [x] Created useCompareDPS hook
   - [x] Added "DPS Lab" tab to Gear component
+- [x] **Frontend API Client Structure** (`frontend/src/lib/api/`)
+  - [x] Created centralized API client (`client.ts`) with axios instance and interceptors
+  - [x] Created GearApi class with compareDPS method
+  - [x] Created index.ts with centralized exports for all APIs and types
+  - [x] Fixed type error in gear/types.ts (attack_speed: int → number)
 
 #### Week 4: Constraint-Aware Loadouts & Boss BiS ✅
 - [x] **Enhanced Best Loadout Schema** (`backend/api/v1/gear/schemas.py`)
@@ -207,10 +221,10 @@
   - [x] Implemented boss data loading from JSON files
   - [x] Calculates optimal loadout(s) for specific bosses
 - [x] **Boss BiS Endpoints** (`backend/api/v1/gear/routes/boss.py`)
-  - [x] GET /api/v1/gear/bis/{boss_name} - Returns optimal loadout(s) for boss
   - [x] POST /api/v1/gear/bis/{boss_name} - Calculate BiS with constraints
   - [x] GET /api/v1/gear/bosses - List available bosses
   - [x] Registered routes in gear router
+  - [x] Removed unused get_boss_bis GET endpoint (dead code, 0% coverage, no references) (2026-01-28)
 
 #### Week 5: Progression Polish ✅
 - [x] **Progression Data Enrichment** (`backend/services/gear/progression.py`)
@@ -491,8 +505,13 @@
 - [x] DPS calculation edge cases ✅
   - [x] `backend/services/gear/dps.py` - Added 17 tests (was 12.96%)
   - [x] Test edge cases in DPS calculations
-  - [x] Test with various stat combinations
-  - [ ] Test special attack handling (if applicable)
+- [x] DPS comparison endpoint test coverage ✅ (2026-01-28)
+  - [x] Added 3 test functions to `backend/tests/api/v1/gear/routes/test_dps.py`
+  - [x] test_compare_dps_endpoint_melee_success - Tests successful comparison with melee loadouts
+  - [x] test_compare_dps_endpoint_invalid_loadout - Tests error handling with invalid item IDs
+  - [x] test_compare_dps_endpoint_mixed_combat_styles - Parametrized test for melee/ranged/magic
+  - [x] Fixed test session isolation issue
+  - [x] All 10 DPS endpoint tests passing
 - [x] Item stats service ✅
   - [x] `backend/services/item_stats.py` - Added 8 tests (was 31.15%)
 - [ ] Frontend component tests
@@ -611,7 +630,7 @@
 ## 📊 Progress Summary
 
 ### Overall Status
-- **Total Tests**: 350 passing ✅ (248 + 102 new tests)
+- **Total Tests**: 450+ passing ✅ (350 + 100 new tests)
 - **Test Coverage**: 91%+ (target: 85%+ ✅)
 - **Backend Refactoring**: 100% complete ✅
 - **Frontend Refactoring**: 100% complete ✅
@@ -623,6 +642,13 @@
   - Improved coverage: watchlist (12.1%→85%+), trade (14.1%→85%+), boss (29.8%→85%+)
   - All integration tests passing (20 tests)
   - All e2e tests passing (47 marked e2e + 20 integration = 67 total)
+  - Code quality improvements (2026-01-28):
+    - Removed unused get_boss_bis function (dead code, 0% coverage)
+    - Fixed database session generator (added try/finally, type annotation)
+    - Fixed lint issues (undefined names, boolean comparisons)
+    - Exposed DPS Comparison API (created frontend API client structure)
+    - Added DPS comparison endpoint test coverage (3 new tests)
+    - Fixed DPS calculation to return all required fields
 - **Feature Roadmap**: 100% complete ✅ (5 weeks of features implemented)
   - Week 1: Trade logging & profit tracking ✅
   - Week 2: Watchlists & alerts ✅
@@ -665,7 +691,7 @@
 1. [ ] Advanced DPS formulas integration
 2. [ ] Price history tracking
 3. [x] Test coverage improvements (maintain 85%+; currently 91%) ✅
-   - [x] Fixed all failing tests (6 tests)
+   - [x] Fixed all failing tests (9 tests)
    - [x] Added 100 new tests for watchlist, trade, and boss features
    - [x] Improved coverage for 6 major modules to 85%+
    - [x] Reduced files below 85% from 16 to 10

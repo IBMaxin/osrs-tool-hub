@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 from sqlmodel import Session
 
 from backend.services.trade import TradeService
-from backend.models import Trade, Item
+from backend.models import Item
 
 
 class TestTradeService:
@@ -240,9 +240,7 @@ class TestTradeService:
         )
 
         start_date = datetime.now(timezone.utc) - timedelta(days=5)
-        history = service.get_trade_history(
-            "test_user_1", start_date=start_date
-        )
+        history = service.get_trade_history("test_user_1", start_date=start_date)
         assert len(history) == 1
         assert history[0].id == trade2.id
 

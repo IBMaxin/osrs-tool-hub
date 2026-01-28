@@ -8,8 +8,6 @@ from sqlmodel import Session
 
 from backend.database import get_session
 from backend.services.trade import TradeService
-from backend.models import Trade
-from backend.api.v1.schemas import ErrorResponse, ErrorDetail
 from backend.app.middleware import limiter
 from backend.config import settings
 from pydantic import BaseModel, Field, field_validator
@@ -26,7 +24,9 @@ class TradeCreateRequest(BaseModel):
     buy_price: int = Field(..., gt=0, description="Price per item when bought")
     quantity: int = Field(..., gt=0, description="Quantity of items")
     sell_price: Optional[int] = Field(None, gt=0, description="Optional price per item when sold")
-    status: str = Field(default="bought", description="Trade status: 'bought', 'sold', or 'cancelled'")
+    status: str = Field(
+        default="bought", description="Trade status: 'bought', 'sold', or 'cancelled'"
+    )
 
     @field_validator("status")
     @classmethod
@@ -114,7 +114,9 @@ def create_trade(
 def get_trades(
     request: Request,
     user_id: str = Query(..., description="User identifier"),
-    status: Optional[str] = Query(None, description="Filter by status: 'bought', 'sold', 'cancelled'"),
+    status: Optional[str] = Query(
+        None, description="Filter by status: 'bought', 'sold', 'cancelled'"
+    ),
     item_id: Optional[int] = Query(None, gt=0, description="Filter by item ID"),
     start_date: Optional[datetime] = Query(None, description="Filter by start date (ISO format)"),
     end_date: Optional[datetime] = Query(None, description="Filter by end date (ISO format)"),
@@ -163,7 +165,9 @@ def get_trades(
 def get_trade_stats(
     request: Request,
     user_id: str = Query(..., description="User identifier"),
-    days: Optional[int] = Query(None, ge=1, description="Number of days to look back (None = all time)"),
+    days: Optional[int] = Query(
+        None, ge=1, description="Number of days to look back (None = all time)"
+    ),
     session: Session = Depends(get_session),
 ) -> TradeStatsResponse:
     """

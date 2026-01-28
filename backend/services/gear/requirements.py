@@ -1,6 +1,6 @@
 """Item requirement checking utilities."""
 
-from typing import Dict, List, Optional, Set
+from typing import Dict, Optional, Set
 
 from backend.models import Item
 

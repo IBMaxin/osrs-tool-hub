@@ -8,7 +8,6 @@ from unittest.mock import patch, MagicMock, AsyncMock
 
 from backend.main import app
 from backend.database import get_session
-from backend.api.v1.gear.schemas import GearSetCreate, GearSetResponse
 
 # Create test engine
 test_engine = create_engine(
@@ -54,6 +53,7 @@ class TestCreateGearSet:
         mock_gear_set.items = '{"4151": 1, "11802": 1}'  # JSON string as stored in DB
         mock_gear_set.total_cost = 1000000
         from datetime import datetime
+
         mock_gear_set.created_at = datetime(2024, 1, 1)
         mock_gear_set.updated_at = datetime(2024, 1, 1)
 
@@ -104,6 +104,7 @@ class TestGetGearSets:
     def test_get_all_gear_sets_success(self):
         """Test getting all gear sets successfully."""
         from datetime import datetime
+
         mock_gear_set1 = MagicMock()
         mock_gear_set1.id = 1
         mock_gear_set1.name = "Set 1"
@@ -155,6 +156,7 @@ class TestGetGearSetById:
     def test_get_gear_set_by_id_success(self):
         """Test getting a gear set by ID successfully."""
         from datetime import datetime
+
         mock_gear_set = MagicMock()
         mock_gear_set.id = 1
         mock_gear_set.name = "Test Set"

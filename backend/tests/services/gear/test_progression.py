@@ -3,7 +3,7 @@
 import pytest
 from sqlmodel import Session, SQLModel, create_engine
 from sqlalchemy.pool import StaticPool
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from backend.services.gear.progression import (
     get_preset_loadout,
@@ -88,7 +88,9 @@ class TestGetPresetLoadout:
             "head": ["Rune full helm"],
         }
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
             assert loadout["combat_style"] == "melee"
@@ -116,7 +118,9 @@ class TestGetPresetLoadout:
             "shield": [],  # Empty slot
         }
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
             assert loadout["slots"]["shield"] is None
@@ -127,7 +131,9 @@ class TestGetPresetLoadout:
             "weapon": ["Non-existent item"],
         }
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
             assert loadout["slots"]["weapon"] is None
@@ -140,7 +146,9 @@ class TestGetPresetLoadout:
             "weapon": ["Non-existent item", "Abyssal whip"],  # Second one exists
         }
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
             assert loadout["slots"]["weapon"] is not None
@@ -157,7 +165,9 @@ class TestGetPresetLoadout:
         test_session.add(snapshot)
         test_session.commit()
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
             weapon_data = loadout["slots"]["weapon"]
@@ -177,7 +187,9 @@ class TestGetProgressionLoadout:
             "weapon": ["Abyssal whip"],
         }
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             result = get_progression_loadout(test_session, "melee", "low")
 
             assert result["tier"] == "low"
@@ -204,7 +216,9 @@ class TestGetProgressionLoadout:
             "shield": [],  # Empty slot
         }
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             result = get_progression_loadout(test_session, "melee", "low")
 
             assert "shield" not in result["loadout"]  # Empty slots are skipped
@@ -215,7 +229,9 @@ class TestGetProgressionLoadout:
             "weapon": ["Non-existent item"],
         }
 
-        with patch("backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}):
+        with patch(
+            "backend.services.gear.progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+        ):
             result = get_progression_loadout(test_session, "melee", "low")
 
             assert "weapon" not in result["loadout"]  # Missing items are skipped

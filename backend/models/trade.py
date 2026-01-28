@@ -16,7 +16,9 @@ class Trade(SQLModel, table=True):
     buy_price: int = Field(description="Price per item when bought")
     sell_price: Optional[int] = Field(default=None, description="Price per item when sold")
     quantity: int = Field(gt=0, description="Quantity of items traded")
-    profit: int = Field(default=0, description="Calculated profit: (sell_price - buy_price) * quantity - tax")
+    profit: int = Field(
+        default=0, description="Calculated profit: (sell_price - buy_price) * quantity - tax"
+    )
     status: str = Field(
         default="bought",
         description="Trade status: 'bought', 'sold', or 'cancelled'",

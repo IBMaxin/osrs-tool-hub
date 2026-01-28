@@ -28,7 +28,16 @@ def calculate_dps(
 
     weapon = items.get("weapon")
     if not weapon:
-        return {"dps": 0.0, "max_hit": 0, "attack_speed": 0, "details": {}}
+        return {
+            "dps": 0.0,
+            "max_hit": 0,
+            "attack_speed": 0,
+            "attack_speed_seconds": 0.0,
+            "accuracy": 0.0,
+            "total_attack_bonus": 0,
+            "total_strength_bonus": 0,
+            "details": {},
+        }
 
     # Calculate total bonuses from all equipped items
     total_attack = 0
@@ -173,9 +182,7 @@ def compare_dps(
         baseline_dps = results[0]["dps"]
         for result in results[1:]:
             dps_increase = result["dps"] - baseline_dps
-            dps_increase_percent = (
-                (dps_increase / baseline_dps * 100) if baseline_dps > 0 else 0
-            )
+            dps_increase_percent = (dps_increase / baseline_dps * 100) if baseline_dps > 0 else 0
             result["dps_increase"] = round(dps_increase, 2)
             result["dps_increase_percent"] = round(dps_increase_percent, 2)
 

@@ -123,10 +123,9 @@ def test_get_best_loadout_handles_errors():
         assert response.status_code == 400
         data = response.json()
         assert "error" in data
-        assert (
-            "error" in data["error"].get("message", "").lower()
-            or "Service error" in data["error"].get("message", "")
-        )
+        assert "error" in data["error"].get("message", "").lower() or "Service error" in data[
+            "error"
+        ].get("message", "")
 
 
 def test_get_upgrade_path_valid():
@@ -182,7 +181,6 @@ def test_get_upgrade_path_handles_errors():
         assert response.status_code == 400
         data = response.json()
         assert "error" in data
-        assert (
-            "error" in data["error"].get("message", "").lower()
-            or "Service error" in data["error"].get("message", "")
-        )
+        assert "error" in data["error"].get("message", "").lower() or "Service error" in data[
+            "error"
+        ].get("message", "")

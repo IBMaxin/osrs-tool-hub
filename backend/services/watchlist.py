@@ -1,7 +1,7 @@
 """Watchlist service for managing item watchlists and price alerts."""
 
 from datetime import datetime
-from typing import List, Optional
+from typing import List
 
 from sqlmodel import Session, select
 
@@ -64,7 +64,7 @@ class WatchlistService:
                 WatchlistItem.user_id == user_id,
                 WatchlistItem.item_id == item_id,
                 WatchlistItem.alert_type == alert_type,
-                WatchlistItem.is_active == True,
+                WatchlistItem.is_active.is_(True),
             )
         ).first()
 
@@ -93,9 +93,7 @@ class WatchlistService:
 
         return watchlist_item
 
-    def get_watchlist(
-        self, user_id: str, include_inactive: bool = False
-    ) -> List[WatchlistItem]:
+    def get_watchlist(self, user_id: str, include_inactive: bool = False) -> List[WatchlistItem]:
         """
         Get user's watchlist.
 
@@ -109,7 +107,7 @@ class WatchlistService:
         query = select(WatchlistItem).where(WatchlistItem.user_id == user_id)
 
         if not include_inactive:
-            query = query.where(WatchlistItem.is_active == True)
+            query = query.where(WatchlistItem.is_active.is_(True))
 
         query = query.order_by(WatchlistItem.created_at.desc())
 
@@ -183,7 +181,7 @@ class WatchlistService:
         """
         # Get all active watchlist items
         active_items = self.session.exec(
-            select(WatchlistItem).where(WatchlistItem.is_active == True)
+            select(WatchlistItem).where(WatchlistItem.is_active.is_(True))
         ).all()
 
         triggered_count = 0

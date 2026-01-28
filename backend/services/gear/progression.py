@@ -307,19 +307,40 @@ def _determine_game_stage(tier_name: str) -> str:
     """
     # Late game tiers
     late_game_keywords = [
-        "torva", "masori", "zaryte", "twisted", "avernic", "dizana",
-        "venator", "anguish", "torture", "suffering", "pegasian",
-        "primordial", "ferocious", "inquisitor", "oathplate"
+        "torva",
+        "masori",
+        "zaryte",
+        "twisted",
+        "avernic",
+        "dizana",
+        "venator",
+        "anguish",
+        "torture",
+        "suffering",
+        "pegasian",
+        "primordial",
+        "ferocious",
+        "inquisitor",
+        "oathplate",
     ]
-    
+
     # Mid game tiers
     mid_game_keywords = [
-        "barrows", "void", "crystal", "blowpipe", "dragon", "rune",
-        "armadyl", "bandos", "guthix", "saradomin", "zamorak"
+        "barrows",
+        "void",
+        "crystal",
+        "blowpipe",
+        "dragon",
+        "rune",
+        "armadyl",
+        "bandos",
+        "guthix",
+        "saradomin",
+        "zamorak",
     ]
 
     tier_lower = tier_name.lower()
-    
+
     if any(keyword in tier_lower for keyword in late_game_keywords):
         return "late_game"
     elif any(keyword in tier_lower for keyword in mid_game_keywords):
@@ -410,7 +431,7 @@ def get_global_upgrade_path(
 
     # Calculate upgrade paths for each style
     styles = ["melee", "ranged", "magic"]
-    
+
     for style in styles:
         loadout = current_gear.get(style, {})
         if not loadout:

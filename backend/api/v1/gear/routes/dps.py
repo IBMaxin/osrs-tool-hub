@@ -7,9 +7,14 @@ from backend.db.session import get_session
 from backend.models import Item
 from backend.services.gear import GearService
 from backend.services.gear.dps import compare_dps
-from backend.api.v1.gear.schemas import DPSRequest, DPSComparisonRequest, DPSComparisonResponse, DPSComparisonResult
+from backend.api.v1.gear.schemas import (
+    DPSRequest,
+    DPSComparisonRequest,
+    DPSComparisonResponse,
+    DPSComparisonResult,
+)
 
-router = APIRouter()
+router = APIRouter(tags=["Gear", "DPS"])
 
 
 @router.post("/gear/dps")
@@ -50,7 +55,12 @@ async def calculate_dps(request: DPSRequest, session: Session = Depends(get_sess
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 
-@router.post("/gear/compare-dps", response_model=DPSComparisonResponse)
+@router.post(
+    "/dps/compare",
+    response_model=DPSComparisonResponse,
+    summary="Compare DPS for multiple loadouts",
+    description="Compare Damage Per Second (DPS) for multiple gear loadouts side-by-side. Returns detailed DPS metrics including max hit, accuracy, attack speed, and marginal gains compared to the baseline loadout.",
+)
 async def compare_dps_endpoint(
     request: DPSComparisonRequest, session: Session = Depends(get_session)
 ):
@@ -78,10 +88,12 @@ async def compare_dps_endpoint(
             else:
                 items[slot] = None
 
-        loadout_objects.append({
-            "name": loadout_input.name,
-            "loadout": items,
-        })
+        loadout_objects.append(
+            {
+                "name": loadout_input.name,
+                "loadout": items,
+            }
+        )
 
     try:
         results = compare_dps(
@@ -93,9 +105,7 @@ async def compare_dps_endpoint(
         )
 
         # Convert to response models
-        response_results = [
-            DPSComparisonResult(**result) for result in results
-        ]
+        response_results = [DPSComparisonResult(**result) for result in results]
 
         return DPSComparisonResponse(results=response_results)
     except Exception as e:

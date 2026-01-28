@@ -1,9 +1,8 @@
 """Unit tests for gear loadout optimization utilities."""
 
 import pytest
-from sqlmodel import Session, SQLModel, create_engine, select
+from sqlmodel import Session, SQLModel, create_engine
 from sqlalchemy.pool import StaticPool
-from unittest.mock import patch, MagicMock
 
 from backend.services.gear.loadouts import (
     suggest_gear,
@@ -256,7 +255,9 @@ class TestGetBestLoadout:
         """Test get_best_loadout for melee combat style."""
         # Add price snapshots
         for item in sample_items:
-            snapshot = PriceSnapshot(item_id=item.id, high_price=item.value, low_price=item.value - 1000)
+            snapshot = PriceSnapshot(
+                item_id=item.id, high_price=item.value, low_price=item.value - 1000
+            )
             test_session.add(snapshot)
         test_session.commit()
 
@@ -312,7 +313,9 @@ class TestGetBestLoadout:
         """Test get_best_loadout respects budget constraints."""
         # Set high prices
         for item in sample_items:
-            snapshot = PriceSnapshot(item_id=item.id, high_price=item.value * 10, low_price=item.value * 9)
+            snapshot = PriceSnapshot(
+                item_id=item.id, high_price=item.value * 10, low_price=item.value * 9
+            )
             test_session.add(snapshot)
         test_session.commit()
 
@@ -366,7 +369,9 @@ class TestGetUpgradePath:
         """Test get_upgrade_path finds better items for current loadout."""
         # Add price snapshots
         for item in sample_items:
-            snapshot = PriceSnapshot(item_id=item.id, high_price=item.value, low_price=item.value - 1000)
+            snapshot = PriceSnapshot(
+                item_id=item.id, high_price=item.value, low_price=item.value - 1000
+            )
             test_session.add(snapshot)
         test_session.commit()
 
@@ -381,7 +386,10 @@ class TestGetUpgradePath:
         assert "upgrades" in result
         # Should find upgrade for weapon (Abyssal whip is better)
         if "weapon" in result["upgrades"]:
-            assert result["upgrades"]["weapon"]["recommended"]["score"] > result["upgrades"]["weapon"]["current"]["score"]
+            assert (
+                result["upgrades"]["weapon"]["recommended"]["score"]
+                > result["upgrades"]["weapon"]["current"]["score"]
+            )
 
     def test_get_upgrade_path_no_current_item(self, test_session):
         """Test get_upgrade_path handles None current item."""
@@ -410,7 +418,9 @@ class TestGetUpgradePath:
     def test_get_upgrade_path_respects_budget(self, test_session, sample_items):
         """Test get_upgrade_path respects budget constraints."""
         for item in sample_items:
-            snapshot = PriceSnapshot(item_id=item.id, high_price=item.value, low_price=item.value - 1000)
+            snapshot = PriceSnapshot(
+                item_id=item.id, high_price=item.value, low_price=item.value - 1000
+            )
             test_session.add(snapshot)
         test_session.commit()
 
@@ -433,7 +443,9 @@ class TestGetAlternatives:
     def test_get_alternatives_melee(self, test_session, sample_items):
         """Test get_alternatives for melee combat style."""
         for item in sample_items:
-            snapshot = PriceSnapshot(item_id=item.id, high_price=item.value, low_price=item.value - 1000)
+            snapshot = PriceSnapshot(
+                item_id=item.id, high_price=item.value, low_price=item.value - 1000
+            )
             test_session.add(snapshot)
         test_session.commit()
 
@@ -448,7 +460,9 @@ class TestGetAlternatives:
     def test_get_alternatives_with_budget(self, test_session, sample_items):
         """Test get_alternatives filters by budget."""
         for item in sample_items:
-            snapshot = PriceSnapshot(item_id=item.id, high_price=item.value, low_price=item.value - 1000)
+            snapshot = PriceSnapshot(
+                item_id=item.id, high_price=item.value, low_price=item.value - 1000
+            )
             test_session.add(snapshot)
         test_session.commit()
 

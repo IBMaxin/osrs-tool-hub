@@ -1,9 +1,7 @@
 """Tests for boss service."""
 
 import pytest
-import json
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from sqlmodel import Session
 
 from backend.services.gear.boss import BossService, get_boss_data, get_available_bosses
@@ -65,7 +63,14 @@ class TestBossService:
         result = service.get_bis_for_boss(
             boss_name="vorkath",
             budget=10000000,
-            stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+            stats={
+                "attack": 99,
+                "strength": 99,
+                "defence": 99,
+                "ranged": 99,
+                "magic": 99,
+                "prayer": 99,
+            },
         )
 
         assert "boss_info" in result
@@ -80,7 +85,14 @@ class TestBossService:
             service.get_bis_for_boss(
                 boss_name="nonexistent",
                 budget=10000000,
-                stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+                stats={
+                    "attack": 99,
+                    "strength": 99,
+                    "defence": 99,
+                    "ranged": 99,
+                    "magic": 99,
+                    "prayer": 99,
+                },
             )
 
     def test_get_bis_for_boss_with_ironman(self, session: Session):
@@ -89,7 +101,14 @@ class TestBossService:
         result = service.get_bis_for_boss(
             boss_name="vorkath",
             budget=10000000,
-            stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+            stats={
+                "attack": 99,
+                "strength": 99,
+                "defence": 99,
+                "ranged": 99,
+                "magic": 99,
+                "prayer": 99,
+            },
             ironman=True,
         )
 
@@ -101,7 +120,14 @@ class TestBossService:
         result = service.get_bis_for_boss(
             boss_name="vorkath",
             budget=10000000,
-            stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+            stats={
+                "attack": 99,
+                "strength": 99,
+                "defence": 99,
+                "ranged": 99,
+                "magic": 99,
+                "prayer": 99,
+            },
             exclude_items=["Abyssal whip"],
         )
 
@@ -113,7 +139,14 @@ class TestBossService:
         result = service.get_bis_for_boss(
             boss_name="vorkath",
             budget=10000000,
-            stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+            stats={
+                "attack": 99,
+                "strength": 99,
+                "defence": 99,
+                "ranged": 99,
+                "magic": 99,
+                "prayer": 99,
+            },
             max_tick_manipulation=True,
         )
 
@@ -122,17 +155,24 @@ class TestBossService:
     def test_get_bis_for_boss_handles_loadout_error(self, session: Session):
         """Test that service handles errors when calculating loadout."""
         service = BossService(session)
-        
+
         with patch("backend.services.gear.boss.get_best_loadout") as mock_loadout:
             mock_loadout.side_effect = Exception("Loadout calculation error")
-            
+
             # Should not raise, but log error and continue
             result = service.get_bis_for_boss(
                 boss_name="vorkath",
                 budget=10000000,
-                stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+                stats={
+                    "attack": 99,
+                    "strength": 99,
+                    "defence": 99,
+                    "ranged": 99,
+                    "magic": 99,
+                    "prayer": 99,
+                },
             )
-            
+
             # Should still return result structure, but with empty or partial loadouts
             assert "recommended_loadouts" in result
 
@@ -142,7 +182,14 @@ class TestBossService:
         result = service.get_bis_for_boss(
             boss_name="zulrah",
             budget=10000000,
-            stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+            stats={
+                "attack": 99,
+                "strength": 99,
+                "defence": 99,
+                "ranged": 99,
+                "magic": 99,
+                "prayer": 99,
+            },
         )
 
         # Zulrah typically has multiple recommended styles
@@ -154,7 +201,14 @@ class TestBossService:
         result = service.get_bis_for_boss(
             boss_name="vorkath",
             budget=10000000,
-            stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+            stats={
+                "attack": 99,
+                "strength": 99,
+                "defence": 99,
+                "ranged": 99,
+                "magic": 99,
+                "prayer": 99,
+            },
         )
 
         assert "notes" in result
@@ -166,7 +220,14 @@ class TestBossService:
         result = service.get_bis_for_boss(
             boss_name="vorkath",
             budget=10000000,
-            stats={"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+            stats={
+                "attack": 99,
+                "strength": 99,
+                "defence": 99,
+                "ranged": 99,
+                "magic": 99,
+                "prayer": 99,
+            },
         )
 
         for loadout in result["recommended_loadouts"]:

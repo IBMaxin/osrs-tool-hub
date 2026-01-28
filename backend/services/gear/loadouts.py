@@ -7,7 +7,11 @@ from sqlalchemy import and_
 from backend.models import Item
 from backend.services.gear.pricing import get_item_price
 from backend.services.gear.scoring import score_item_for_style
-from backend.services.gear.requirements import meets_requirements
+from backend.services.gear.requirements import (
+    meets_requirements,
+    meets_content_requirements,
+    is_ironman_compatible,
+)
 from backend.services.gear.dps import calculate_dps
 
 
@@ -145,7 +149,7 @@ def get_best_loadout(
         # Filter by quest/achievement requirements, constraints, and budget
         valid_items = []
         exclude_items_set = set(exclude_items or [])
-        
+
         for item in items:
             if not meets_requirements(item, stats, quests_completed, achievements_completed):
                 continue
@@ -299,7 +303,9 @@ def get_upgrade_path(
                     # Calculate DPS with this upgrade
                     upgraded_items = current_items.copy()
                     upgraded_items[slot] = item
-                    upgraded_dps_result = calculate_dps(upgraded_items, combat_style, attack_type, stats)
+                    upgraded_dps_result = calculate_dps(
+                        upgraded_items, combat_style, attack_type, stats
+                    )
                     upgraded_dps = upgraded_dps_result.get("dps", 0.0)
                     dps_increase = upgraded_dps - current_dps
 

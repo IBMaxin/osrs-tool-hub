@@ -1,6 +1,5 @@
 """Tests for trades API endpoints."""
 
-import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 from datetime import datetime, timedelta, timezone

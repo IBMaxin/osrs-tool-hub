@@ -36,7 +36,7 @@ export interface DPSComparisonResult {
   loadout_name: string;
   dps: number;
   max_hit: number;
-  attack_speed: int;
+  attack_speed: number;
   attack_speed_seconds: number;
   accuracy: number;
   total_attack_bonus: number;

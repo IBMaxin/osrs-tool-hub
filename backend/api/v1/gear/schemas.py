@@ -150,13 +150,17 @@ class LoadoutInput(BaseModel):
 class DPSComparisonRequest(BaseModel):
     """Request model for DPS comparison."""
 
-    loadouts: List[LoadoutInput] = Field(..., min_length=1, description="List of loadouts to compare")
+    loadouts: List[LoadoutInput] = Field(
+        ..., min_length=1, description="List of loadouts to compare"
+    )
     combat_style: str = Field(..., description="Combat style: melee, ranged, or magic")
     attack_type: Optional[str] = Field(None, description="For melee: stab, slash, or crush")
     player_stats: Optional[dict[str, int]] = Field(
         None, description="Player combat stats: attack, strength, ranged, magic"
     )
-    target_monster: Optional[dict] = Field(None, description="Optional monster stats for more accurate calculations")
+    target_monster: Optional[dict] = Field(
+        None, description="Optional monster stats for more accurate calculations"
+    )
 
     @field_validator("combat_style")
     @classmethod

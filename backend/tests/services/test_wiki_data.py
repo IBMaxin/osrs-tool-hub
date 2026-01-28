@@ -1,9 +1,5 @@
 """Unit tests for wiki_data module."""
 
-import pytest
-from unittest.mock import patch, mock_open
-import json
-
 from backend.services.wiki_data import (
     get_progression_data,
     get_slot_progression,

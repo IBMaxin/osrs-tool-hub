@@ -67,7 +67,9 @@ class TestWikiAPIClientFetchMethods:
         with patch("httpx.AsyncClient") as mock_client_class:
             mock_response = MagicMock()
             mock_response.status_code = 403
-            mock_error = httpx.HTTPStatusError("403 Forbidden", request=MagicMock(), response=mock_response)
+            mock_error = httpx.HTTPStatusError(
+                "403 Forbidden", request=MagicMock(), response=mock_response
+            )
             mock_client = AsyncMock()
             mock_client.get = AsyncMock(side_effect=mock_error)
             mock_client_class.return_value.__aenter__.return_value = mock_client

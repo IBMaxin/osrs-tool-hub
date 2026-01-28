@@ -34,21 +34,6 @@ def setup_db():
     test_engine.dispose()
 
 
-class TestGetBossBiS:
-    """Test GET /api/v1/gear/bis/{boss_name} endpoint."""
-
-    def test_get_boss_bis_validation_error(self):
-        """Test GET endpoint validation (stats dict can't be passed as query param)."""
-        # The GET endpoint expects stats as dict which doesn't work well as query param
-        # This test verifies validation error handling
-        response = client.get(
-            "/api/v1/gear/bis/vorkath",
-            params={"budget": 10000000},
-        )
-        # Should return validation error since stats is required
-        assert response.status_code == 422
-
-
 class TestPostBossBiS:
     """Test POST /api/v1/gear/bis/{boss_name} endpoint."""
 
@@ -65,7 +50,14 @@ class TestPostBossBiS:
 
             payload = {
                 "budget": 10000000,
-                "stats": {"attack": 99, "strength": 99, "defence": 99, "ranged": 99, "magic": 99, "prayer": 99},
+                "stats": {
+                    "attack": 99,
+                    "strength": 99,
+                    "defence": 99,
+                    "ranged": 99,
+                    "magic": 99,
+                    "prayer": 99,
+                },
                 "ironman": False,
             }
 

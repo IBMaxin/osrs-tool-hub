@@ -8,7 +8,6 @@ from typing import Dict, List, Optional
 from sqlmodel import Session
 
 from backend.services.gear.loadouts import get_best_loadout
-from backend.models import Monster
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ def get_boss_data(boss_name: str) -> Optional[Dict]:
         Dictionary with boss data or None if not found
     """
     boss_file = _BOSS_DATA_DIR / f"{boss_name.lower()}.json"
-    
+
     if not boss_file.exists():
         logger.warning(f"Boss data file not found: {boss_file}")
         return None
@@ -100,7 +99,9 @@ class BossService:
         """
         boss_data = get_boss_data(boss_name)
         if not boss_data:
-            raise ValueError(f"Boss '{boss_name}' not found. Available bosses: {', '.join(get_available_bosses())}")
+            raise ValueError(
+                f"Boss '{boss_name}' not found. Available bosses: {', '.join(get_available_bosses())}"
+            )
 
         recommended_styles = boss_data.get("recommended_styles", ["melee", "ranged", "magic"])
         content_tag = boss_data.get("content_tags", [])
@@ -108,7 +109,7 @@ class BossService:
 
         # Calculate BiS for each recommended style
         recommended_loadouts = []
-        
+
         for style in recommended_styles:
             try:
                 loadout = get_best_loadout(

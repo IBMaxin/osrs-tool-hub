@@ -1,7 +1,7 @@
 """Unit tests for gear pricing utilities."""
 
 import pytest
-from sqlmodel import Session, SQLModel, create_engine, select
+from sqlmodel import Session, SQLModel, create_engine
 from sqlalchemy.pool import StaticPool
 
 from backend.services.gear.pricing import get_item_price, get_item_cost

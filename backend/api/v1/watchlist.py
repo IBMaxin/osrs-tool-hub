@@ -7,7 +7,6 @@ from sqlmodel import Session
 
 from backend.database import get_session
 from backend.services.watchlist import WatchlistService
-from backend.models import WatchlistItem, WatchlistAlert
 from backend.app.middleware import limiter
 from backend.config import settings
 from pydantic import BaseModel, Field, field_validator
@@ -24,7 +23,9 @@ class WatchlistCreateRequest(BaseModel):
     alert_type: str = Field(
         ..., description="Alert type: 'price_below', 'price_above', or 'margin_above'"
     )
-    threshold: int = Field(..., gt=0, description="Threshold value for alert (price or margin in GP)")
+    threshold: int = Field(
+        ..., gt=0, description="Threshold value for alert (price or margin in GP)"
+    )
 
     @field_validator("alert_type")
     @classmethod
@@ -103,8 +104,14 @@ def add_to_watchlist(
         return WatchlistItemResponse.model_validate(
             {
                 **watchlist_item.model_dump(),
-                "created_at": watchlist_item.created_at.isoformat() if watchlist_item.created_at else None,
-                "last_triggered_at": watchlist_item.last_triggered_at.isoformat() if watchlist_item.last_triggered_at else None,
+                "created_at": (
+                    watchlist_item.created_at.isoformat() if watchlist_item.created_at else None
+                ),
+                "last_triggered_at": (
+                    watchlist_item.last_triggered_at.isoformat()
+                    if watchlist_item.last_triggered_at
+                    else None
+                ),
             }
         )
     except ValueError as e:
@@ -141,7 +148,9 @@ def get_watchlist(
             {
                 **item.model_dump(),
                 "created_at": item.created_at.isoformat() if item.created_at else None,
-                "last_triggered_at": item.last_triggered_at.isoformat() if item.last_triggered_at else None,
+                "last_triggered_at": (
+                    item.last_triggered_at.isoformat() if item.last_triggered_at else None
+                ),
             }
         )
         for item in watchlist_items
@@ -170,7 +179,9 @@ def remove_from_watchlist(
     """
     try:
         service = WatchlistService(session)
-        removed = service.remove_from_watchlist(watchlist_item_id=watchlist_item_id, user_id=user_id)
+        removed = service.remove_from_watchlist(
+            watchlist_item_id=watchlist_item_id, user_id=user_id
+        )
         if not removed:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
