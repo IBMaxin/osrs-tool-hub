@@ -1,21 +1,77 @@
-# OSRS Tool Hub - Cursor Rules
+# OSRS Tool Hub – Cursor Rules
+
+## Stack
+
+- **Backend**: FastAPI, SQLModel, Poetry, Python ^3.13. Uvicorn, Pydantic Settings, SlowAPI (rate limiting).
+- **Frontend**: React 18, TypeScript (strict), Vite, Mantine 7, TanStack Query, Vitest. Node 20.
 
 ## Project Structure
-- Backend: FastAPI with SQLModel (SQLite), httpx, apscheduler, Poetry
-- Frontend: React + Vite + TypeScript, Mantine UI, TanStack Query
 
-## Code Style
-- Use type hints throughout Python code
-- Follow FastAPI best practices for API design
-- Use async/await for async operations
-- Frontend: Use TypeScript strict mode, functional components with hooks
+```
+backend/
+  api/v1/           # REST routes under /api/v1
+    flips.py, trades.py, watchlist.py, slayer.py
+    gear/           # gear routes (dps, boss, progression, loadouts, gear_sets, suggestions)
+      routes/, schemas.py, validators.py, mappers.py
+    schemas.py      # ErrorResponse, ErrorDetail
+    validators.py   # Query validators (budget, ROI, volume, etc.)
+  app/              # factory, lifespan, middleware, logging_config, routers, scheduler
+  db/               # engine, session
+  models/
+  services/
+  tests/            # pytest; markers: e2e, integration, unit
+
+frontend/src/
+  features/         # Feature-first
+    flipping/       # components/, hooks/, types.ts, utils/
+    gear/
+    slayer/
+  lib/
+    api/            # client.ts, flipping.ts, gear.ts, slayer.ts, types.ts, index.ts
+    components/     # LoadingSkeleton, SearchableDropdown
+    hooks/          # useKeyboardShortcuts
+    utils/          # format.ts
+  theme/            # osrs-theme.ts (createTheme, statusColors, OSRS palette)
+  test/             # Vitest + React Testing Library; mocks, testUtils
+```
 
 ## API Design
-- RESTful endpoints under `/api/v1/`
-- Use Pydantic models for request/response validation
-- Return proper HTTP status codes
 
-## Database
-- Use SQLModel for ORM
-- SQLite for development (can be swapped for PostgreSQL in production)
-- Use migrations for schema changes
+- **Base**: `/api/v1`. Frontend `apiClient` (axios) uses `baseURL: '/api/v1'`; Vite proxies to backend.
+- **Errors**: Use `ErrorResponse` / `ErrorDetail`. `raise HTTPException(status_code=..., detail="msg")`; global handler returns JSON matching `ErrorResponse`.
+- **Endpoints**: Use `response_model` on routes. Validators in `api/v1/validators.py` and `gear/validators.py` for query params.
+
+## Backend Rules
+
+- **Types**: Type hints everywhere; `def f() -> T:`.
+- **Async**: `async def`, `await` for I/O. Use `Depends(get_session)` for DB.
+- **Errors**: `raise HTTPException(status_code=..., detail="...")`. No generic `Exception` in handlers.
+- **SQLModel**: `Optional[T]`, `Field(default=None, index=True)` as needed.
+- **Logging**: `logger.info()` / `logger.error()` etc. **Never `print()`**.
+- **Lint/format**: Ruff, Black (line-length 100). Mypy strict (`disallow_untyped_defs`).
+
+## Frontend Rules
+
+- **TypeScript**: Strict mode. No `any`; use proper types. Import shared types from `lib/api` or feature `types.ts`.
+- **Data fetching**: TanStack Query. `useQuery({ queryKey: ['...', deps], queryFn: () => Api...., staleTime: 30000 })`. Use hooks in `features/*/hooks/`.
+- **UI**: Mantine 7. Use `styles` prop for component overrides. Theme and OSRS palette live in `theme/osrs-theme.ts` (use `statusColors`, semantic colors `profit` / `loss` / `warning` / `info` / `neutral`). No standalone CSS files.
+- **Components**: Functional components only. Logic in custom hooks; keep components thin.
+- **API**: Import from `lib/api` (e.g. `FlippingApi`, `TradeApi`, `SlayerApi`, `GearApi`, `fetchFullProgression`). Use `apiClient` only when adding new low-level calls.
+
+## Testing
+
+- **Backend**: `poetry run pytest`. Markers: `@pytest.mark.e2e`, `@pytest.mark.integration`, `@pytest.mark.unit`. Coverage target 85%+.
+- **Frontend**: `npm run test:run` (Vitest). Use `render` from `test/utils/testUtils` (wraps with `MantineProvider`, `QueryClientProvider`, `Notifications`). Mock API via `test/mocks` or `vi.mock('../../lib/api')`.
+- **CI**: Ruff, Black, Mypy, pytest (backend); `npm run lint`, `npm run build` (tsc), `npm run test:run` (frontend).
+
+## OSRS-Specific
+
+- **Wiki API**: Source of truth for prices, items, progression. Cache 6–24h where applicable.
+- **Theme**: `osrs-theme.ts` defines brown/gold/orange/red/green palette and semantic status colors. Use for badges, tables, and status (e.g. profit/loss).
+- **Conventions**: Hierarchical nav (e.g. Flipping → Scanner, Profit Tracker, Trade History). Reusable pieces in `lib/components` (e.g. `LoadingSkeleton`, `SearchableDropdown`) and `lib/hooks`.
+
+---
+
+## Verification (2026-01-28)
+
+Rules checked against repo: structure (api/v1, app, db, features, lib, theme, test), API (`apiClient` /api/v1, ErrorResponse, get_session), stack (pyproject, package.json), CI (workflow), tests (testUtils, vi.mock, pytest markers), theme (osrs-theme, statusColors). App includes `scheduler`. Frontend build and 18 frontend tests pass.
