@@ -13,7 +13,7 @@ router = APIRouter(prefix="/slayer", tags=["Slayer"])
 
 @router.get("/masters", response_model=List[str])
 @limiter.limit(settings.default_rate_limit)
-def get_slayer_masters(request: Request, session: Session = Depends(get_session)):
+def get_slayer_masters(request: Request, session: Session = Depends(get_session)) -> List[str]:
     """Get list of Slayer Masters."""
     service = SlayerService(session)
     return service.get_masters()
@@ -23,7 +23,7 @@ def get_slayer_masters(request: Request, session: Session = Depends(get_session)
 @limiter.limit(settings.default_rate_limit)
 def get_master_tasks(
     request: Request, master: SlayerMaster, session: Session = Depends(get_session)
-):
+) -> List[dict]:
     """Get tasks for a specific master."""
     service = SlayerService(session)
     return service.get_tasks(master)
@@ -71,7 +71,9 @@ def get_master_tasks(
     },
 )
 @limiter.limit(settings.default_rate_limit)
-def get_task_location(request: Request, task_id: int, session: Session = Depends(get_session)):
+def get_task_location(
+    request: Request, task_id: int, session: Session = Depends(get_session)
+) -> dict:
     """Get detailed location information for a slayer task.
 
     Returns comprehensive location data including:
@@ -110,7 +112,7 @@ def get_task_advice(
     slayer_level: int = Query(1, ge=1, le=99, description="Player's Slayer level"),
     combat_level: int = Query(3, ge=3, le=126, description="Player's Combat level"),
     session: Session = Depends(get_session),
-):
+) -> dict:
     """Get advice (Block/Skip/Do) for a task based on player stats.
 
     Args:

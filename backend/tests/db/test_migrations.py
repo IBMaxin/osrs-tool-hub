@@ -1,8 +1,7 @@
 """Tests for database migrations."""
 
 import pytest
-from unittest.mock import patch, MagicMock, call
-from sqlalchemy import inspect
+from unittest.mock import patch, MagicMock
 
 from backend.db.migrations import migrate_tables, init_db
 

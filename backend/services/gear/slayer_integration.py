@@ -46,8 +46,14 @@ def suggest_slayer_gear(
 
     # Get task data (weakness, attack_style)
     task_data = SLAYER_TASK_DATA.get(task.category) or SLAYER_TASK_DATA.get(monster.name) or {}
-    attack_style_str = task_data.get("attack_style", "Melee")
-    weakness_list = task_data.get("weakness", [])
+    if not isinstance(task_data, dict):
+        task_data = {}
+
+    attack_style_str = str(task_data.get("attack_style", "Melee"))
+    weakness_val = task_data.get("weakness", [])
+    weakness_list: List[str] = (
+        [str(w) for w in weakness_val] if isinstance(weakness_val, list) else []
+    )
 
     # Use provided combat style or parse from task data
     if combat_style:

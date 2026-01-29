@@ -1,11 +1,8 @@
 """Tests for slayer gear suggestion endpoints."""
 
-import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 from sqlmodel import Session
-
-from backend.models import Monster, SlayerTask, SlayerMaster
 
 
 class TestSlayerGearEndpoint:
@@ -41,9 +38,7 @@ class TestSlayerGearEndpoint:
             assert "task_id" in data
             assert "monster_name" in data
 
-    def test_suggest_slayer_gear_task_not_found(
-        self, client: TestClient, session: Session
-    ):
+    def test_suggest_slayer_gear_task_not_found(self, client: TestClient, session: Session):
         """Test slayer gear suggestion with non-existent task."""
         with patch("backend.api.v1.gear.routes.slayer.GearService") as mock_service_class:
             mock_service = MagicMock()

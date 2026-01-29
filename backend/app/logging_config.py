@@ -4,7 +4,7 @@ import logging
 import sys
 
 
-def setup_logging():
+def setup_logging() -> None:
     """
     Configure logging for the entire application.
     Sets INFO level for production use to avoid performance issues during startup.

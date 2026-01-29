@@ -37,11 +37,12 @@ def get_upgrade_path(
     Returns:
         Dict with upgrade recommendations per slot
     """
-    upgrades = {}
-    upgrade_list = []
+    upgrades_by_slot: dict[str, dict[str, object]] = {}
+    upgrade_list: list[dict[str, object]] = []
+    total_upgrade_cost = 0
 
     # Convert current_loadout (slot -> item_id) to current_items (slot -> Item)
-    current_items = {}
+    current_items: dict[str, Item | None] = {}
     for slot, item_id in current_loadout.items():
         if item_id is not None:
             item = session.get(Item, item_id)
@@ -70,15 +71,15 @@ def get_upgrade_path(
         # Find better items in same slot
         query = select(Item).where(
             and_(
-                Item.slot == slot,
-                Item.attack_req <= stats.get("attack", 1),
-                Item.strength_req <= stats.get("strength", 1),
-                Item.defence_req <= stats.get("defence", 1),
-                Item.ranged_req <= stats.get("ranged", 1),
-                Item.magic_req <= stats.get("magic", 1),
-                Item.prayer_req <= stats.get("prayer", 1),
+                Item.slot == slot,  # type: ignore[arg-type]
+                Item.attack_req <= stats.get("attack", 1),  # type: ignore[arg-type]
+                Item.strength_req <= stats.get("strength", 1),  # type: ignore[arg-type]
+                Item.defence_req <= stats.get("defence", 1),  # type: ignore[arg-type]
+                Item.ranged_req <= stats.get("ranged", 1),  # type: ignore[arg-type]
+                Item.magic_req <= stats.get("magic", 1),  # type: ignore[arg-type]
+                Item.prayer_req <= stats.get("prayer", 1),  # type: ignore[arg-type]
             )
-        )
+        )  # type: ignore[arg-type]
 
         items = session.exec(query).all()
 
@@ -121,7 +122,8 @@ def get_upgrade_path(
 
         if better_items:
             best_upgrade = better_items[0]
-            upgrade_data = {
+            total_upgrade_cost += int(best_upgrade["upgrade_cost"])
+            upgrade_data: dict[str, object] = {
                 "slot": slot,
                 "current": {
                     "id": current_item.id,
@@ -158,32 +160,47 @@ def get_upgrade_path(
                     for alt in better_items[1:6]  # Top 5 alternatives
                 ],
             }
-            upgrades[slot] = upgrade_data
+            upgrades_by_slot[slot] = upgrade_data
             upgrade_list.append(upgrade_data)
 
     # Sort all upgrades by priority (DPS per GP)
-    upgrade_list.sort(key=lambda x: x["recommended"]["dps_per_gp"], reverse=True)
+    def dps_per_gp_key(upgrade: dict[str, object]) -> float:
+        rec = upgrade.get("recommended")
+        if isinstance(rec, dict):
+            val = rec.get("dps_per_gp")
+            if isinstance(val, (int, float)):
+                return float(val)
+        return 0.0
+
+    upgrade_list.sort(key=dps_per_gp_key, reverse=True)
 
     # Add priority numbers
     for idx, upgrade in enumerate(upgrade_list, start=1):
-        upgrades[upgrade["slot"]]["recommended"]["priority"] = idx
+        rec = upgrade.get("recommended")
+        if isinstance(rec, dict):
+            rec["priority"] = idx
+
+    recommended_upgrades: list[dict[str, object]] = []
+    for upgrade in upgrade_list:
+        rec = upgrade.get("recommended")
+        if not isinstance(rec, dict):
+            continue
+
+        recommended_upgrades.append(
+            {
+                "item": str(rec.get("name", "")),
+                "slot": str(upgrade.get("slot", "")),
+                "cost": int(rec.get("upgrade_cost", 0)),
+                "dps_increase": float(rec.get("dps_increase", 0.0)),
+                "dps_per_gp": float(rec.get("dps_per_gp", 0.0)),
+                "priority": int(rec.get("priority", 0)),
+            }
+        )
 
     return {
         "combat_style": combat_style,
         "current_dps": round(current_dps, 2),
-        "recommended_upgrades": [
-            {
-                "item": upgrade["recommended"]["name"],
-                "slot": upgrade["slot"],
-                "cost": upgrade["recommended"]["upgrade_cost"],
-                "dps_increase": upgrade["recommended"]["dps_increase"],
-                "dps_per_gp": upgrade["recommended"]["dps_per_gp"],
-                "priority": upgrade["recommended"]["priority"],
-            }
-            for upgrade in upgrade_list
-        ],
-        "upgrades_by_slot": upgrades,
-        "total_upgrade_cost": sum(
-            upgrade["recommended"]["upgrade_cost"] for upgrade in upgrades.values()
-        ),
+        "recommended_upgrades": recommended_upgrades,
+        "upgrades_by_slot": upgrades_by_slot,
+        "total_upgrade_cost": total_upgrade_cost,
     }

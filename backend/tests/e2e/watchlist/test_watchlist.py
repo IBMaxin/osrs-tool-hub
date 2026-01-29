@@ -223,9 +223,7 @@ class TestWatchlistDeleteEndpoint(BaseE2ETest):
         watchlist_item_id = create_response.json()["id"]
 
         # Remove from watchlist
-        response = client.delete(
-            f"/api/v1/watchlist/{watchlist_item_id}?user_id={user_id}"
-        )
+        response = client.delete(f"/api/v1/watchlist/{watchlist_item_id}?user_id={user_id}")
         assert response.status_code == 204
 
         # Verify it's removed
@@ -263,9 +261,7 @@ class TestWatchlistDeleteEndpoint(BaseE2ETest):
         watchlist_item_id = create_response.json()["id"]
 
         # Try to remove with different user_id
-        response = client.delete(
-            f"/api/v1/watchlist/{watchlist_item_id}?user_id=different-user"
-        )
+        response = client.delete(f"/api/v1/watchlist/{watchlist_item_id}?user_id=different-user")
         # Should return 400 (item does not belong to user)
         assert_error_response(response, 400)
 

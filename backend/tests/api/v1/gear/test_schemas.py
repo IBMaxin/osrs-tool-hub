@@ -6,8 +6,6 @@ from pydantic import ValidationError
 from backend.api.v1.gear.schemas import (
     GearSetCreate,
     BestLoadoutRequest,
-    UpgradePathRequest,
-    DPSRequest,
     DPSComparisonRequest,
     LoadoutInput,
     SlayerGearRequest,
@@ -241,10 +239,7 @@ class TestDPSComparisonRequest:
 
     def test_dps_comparison_request_too_many_loadouts(self):
         """Test DPSComparisonRequest with too many loadouts."""
-        loadouts = [
-            LoadoutInput(name=f"Loadout {i}", loadout={"weapon": 4151})
-            for i in range(11)
-        ]
+        loadouts = [LoadoutInput(name=f"Loadout {i}", loadout={"weapon": 4151}) for i in range(11)]
         with pytest.raises(ValidationError):
             DPSComparisonRequest(
                 loadouts=loadouts,

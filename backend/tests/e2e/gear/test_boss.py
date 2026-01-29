@@ -42,11 +42,11 @@ class TestBossBiSEndpoint(BaseE2ETest):
         """Test calculating BiS for a boss."""
         # Use a known boss key (not display name)
         from backend.services.gear.boss import get_available_bosses
-        
+
         available_bosses = get_available_bosses()
         if not available_bosses:
             pytest.skip("No bosses available for testing")
-        
+
         boss_name = available_bosses[0]  # Use the key, not the display name
 
         payload = {
@@ -76,11 +76,11 @@ class TestBossBiSEndpoint(BaseE2ETest):
         """Test calculating BiS with constraints."""
         # Use a known boss key (not display name)
         from backend.services.gear.boss import get_available_bosses
-        
+
         available_bosses = get_available_bosses()
         if not available_bosses:
             pytest.skip("No bosses available for testing")
-        
+
         boss_name = available_bosses[0]  # Use the key, not the display name
 
         payload = {
@@ -134,11 +134,11 @@ class TestBossBiSEndpoint(BaseE2ETest):
         """Test calculating BiS with invalid budget."""
         # Use a known boss key (not display name)
         from backend.services.gear.boss import get_available_bosses
-        
+
         available_bosses = get_available_bosses()
         if not available_bosses:
             pytest.skip("No bosses available for testing")
-        
+
         boss_name = available_bosses[0]  # Use the key, not the display name
 
         payload = {
@@ -165,11 +165,11 @@ class TestBossBiSEndpoint(BaseE2ETest):
         """Test calculating BiS with missing stats."""
         # Use a known boss key (not display name)
         from backend.services.gear.boss import get_available_bosses
-        
+
         available_bosses = get_available_bosses()
         if not available_bosses:
             pytest.skip("No bosses available for testing")
-        
+
         boss_name = available_bosses[0]  # Use the key, not the display name
 
         payload = {

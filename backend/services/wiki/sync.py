@@ -118,7 +118,7 @@ async def sync_prices_to_db(client: WikiAPIClient, session: Session) -> None:
 async def sync_24h_volume_to_db(client: WikiAPIClient, session: Session) -> None:
     """
     Populate or update 24-hour volume data from Wiki timeseries API.
-    
+
     Fetches buy/sell volume aggregates for the last 24 hours and stores them
     in the PriceSnapshot table for GE Tracker-style analytics.
 
@@ -128,24 +128,24 @@ async def sync_24h_volume_to_db(client: WikiAPIClient, session: Session) -> None
     """
     logger.info("Syncing 24h volume data from Wiki...")
     volume_data = await client.fetch_24h_volume()
-    
+
     # The API returns data in format: {"data": {item_id: {buyVolume, sellVolume, ...}}}
     data = volume_data.get("data", {})
     count = 0
-    
+
     for item_id_str, volume_info in data.items():
         try:
             item_id = int(item_id_str)
-            
+
             # Extract 24h volume data
             buy_volume_24h = volume_info.get("buyVolume")
             sell_volume_24h = volume_info.get("sellVolume")
-            
+
             # Check if price snapshot exists for this item
             existing = session.exec(
                 select(PriceSnapshot).where(PriceSnapshot.item_id == item_id)
             ).first()
-            
+
             if existing:
                 # Update existing snapshot with 24h volume data
                 existing.buy_volume_24h = buy_volume_24h
@@ -155,10 +155,10 @@ async def sync_24h_volume_to_db(client: WikiAPIClient, session: Session) -> None
             else:
                 logger.warning(f"No price snapshot for item {item_id}, skipping volume sync")
                 continue
-                
+
         except (ValueError, KeyError) as e:
             logger.warning(f"Skipping invalid volume data for item {item_id_str}: {e}")
             continue
-    
+
     session.commit()
     logger.info(f"Synced 24h volume for {count} items")

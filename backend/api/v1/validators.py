@@ -1,7 +1,7 @@
 """Input validation utilities for API endpoints."""
 
 from fastapi import HTTPException, Query, status
-from typing import Optional
+from typing import Any, Optional
 
 
 def validate_budget(budget: Optional[int]) -> Optional[int]:
@@ -186,7 +186,7 @@ def validate_slot(slot: str) -> str:
 
 
 # Query parameter validators using FastAPI Query
-def BudgetQuery(default: Optional[int] = None, **kwargs):
+def BudgetQuery(default: Optional[int] = None, **kwargs: Any) -> Any:
     """Create a validated budget query parameter."""
     return Query(
         default,
@@ -197,21 +197,21 @@ def BudgetQuery(default: Optional[int] = None, **kwargs):
     )
 
 
-def ROIQuery(default: float = 0.0, **kwargs):
+def ROIQuery(default: float = 0.0, **kwargs: Any) -> Any:
     """Create a validated ROI query parameter."""
     return Query(
         default, ge=0.0, le=10000.0, description="Minimum ROI percentage (0 to 10000)", **kwargs
     )
 
 
-def VolumeQuery(default: int = 0, **kwargs):
+def VolumeQuery(default: int = 0, **kwargs: Any) -> Any:
     """Create a validated volume query parameter."""
     return Query(
         default, ge=0, le=2_147_483_647, description="Minimum volume (0 to 2,147,483,647)", **kwargs
     )
 
 
-def LevelQuery(default: int = 1, min_level: int = 1, max_level: int = 99, **kwargs):
+def LevelQuery(default: int = 1, min_level: int = 1, max_level: int = 99, **kwargs: Any) -> Any:
     """Create a validated level query parameter."""
     return Query(
         default,

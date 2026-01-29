@@ -33,9 +33,7 @@ class ItemResponse(BaseModel):
 
 
 @router.get("/gear/items/{item_id}", response_model=ItemResponse)
-async def get_item(
-    item_id: int, session: Session = Depends(get_session)
-) -> ItemResponse:
+async def get_item(item_id: int, session: Session = Depends(get_session)) -> ItemResponse:
     """
     Get item details by ID.
 

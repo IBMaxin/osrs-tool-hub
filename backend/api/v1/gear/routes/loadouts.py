@@ -14,7 +14,9 @@ router = APIRouter()
 
 
 @router.get("/gear/preset")
-async def get_preset_loadout(combat_style: str, tier: str, session: Session = Depends(get_session)):
+async def get_preset_loadout(
+    combat_style: str, tier: str, session: Session = Depends(get_session)
+) -> dict:
     """
     Get a full loadout for a specific combat style and tier.
 
@@ -34,7 +36,9 @@ async def get_preset_loadout(combat_style: str, tier: str, session: Session = De
 
 
 @router.post("/gear/best-loadout")
-async def get_best_loadout(request: BestLoadoutRequest, session: Session = Depends(get_session)):
+async def get_best_loadout(
+    request: BestLoadoutRequest, session: Session = Depends(get_session)
+) -> dict:
     """
     Get the best loadout a player can afford/wear based on stats and budget.
 
@@ -69,7 +73,9 @@ async def get_best_loadout(request: BestLoadoutRequest, session: Session = Depen
 
 
 @router.post("/gear/upgrade-path")
-async def get_upgrade_path(request: UpgradePathRequest, session: Session = Depends(get_session)):
+async def get_upgrade_path(
+    request: UpgradePathRequest, session: Session = Depends(get_session)
+) -> dict:
     """
     Find the next upgrade path with cost analysis.
 

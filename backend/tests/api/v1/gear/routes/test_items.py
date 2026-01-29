@@ -1,11 +1,8 @@
 """Tests for item lookup endpoints."""
 
-import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from sqlmodel import Session
-
-from backend.models import Item, PriceSnapshot
 
 
 class TestGetItem:
@@ -58,7 +55,9 @@ class TestGetItem:
             assert "defence_magic" in stats
             assert "defence_ranged" in stats
 
-    def test_get_item_includes_all_requirements(self, client: TestClient, session: Session, sample_items):
+    def test_get_item_includes_all_requirements(
+        self, client: TestClient, session: Session, sample_items
+    ):
         """Test get_item includes all requirement fields."""
         item = sample_items[0]
 
@@ -77,7 +76,9 @@ class TestGetItem:
             assert "quest" in requirements
             assert "achievement" in requirements
 
-    def test_get_item_uses_price_from_snapshot(self, client: TestClient, session: Session, sample_items):
+    def test_get_item_uses_price_from_snapshot(
+        self, client: TestClient, session: Session, sample_items
+    ):
         """Test get_item uses price from PriceSnapshot."""
         item = sample_items[0]
 
@@ -88,7 +89,9 @@ class TestGetItem:
             data = response.json()
             assert data["price"] == 1500000
 
-    def test_get_item_handles_missing_price(self, client: TestClient, session: Session, sample_items):
+    def test_get_item_handles_missing_price(
+        self, client: TestClient, session: Session, sample_items
+    ):
         """Test get_item handles missing price gracefully."""
         item = sample_items[0]
 

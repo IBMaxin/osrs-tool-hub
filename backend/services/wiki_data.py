@@ -43,7 +43,7 @@ def get_progression_data(combat_style: str) -> dict[str, Any]:
     return WIKI_PROGRESSION.get(combat_style, {})  # type: ignore[no-any-return]
 
 
-def get_slot_progression(combat_style: str, slot: str) -> list:
+def get_slot_progression(combat_style: str, slot: str) -> list[Any]:
     """
     Get progression data for a specific slot.
 
@@ -54,8 +54,9 @@ def get_slot_progression(combat_style: str, slot: str) -> list:
     Returns:
         List of tier groups for the slot
     """
-    style_data = WIKI_PROGRESSION.get(combat_style, {})
-    return style_data.get(slot, [])
+    style_data: dict[str, Any] = WIKI_PROGRESSION.get(combat_style, {})
+    slot_data = style_data.get(slot, [])
+    return slot_data if isinstance(slot_data, list) else []
 
 
 def get_all_slots(combat_style: str) -> list[str]:

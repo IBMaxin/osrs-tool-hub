@@ -64,7 +64,7 @@ class WatchlistService:
                 WatchlistItem.user_id == user_id,
                 WatchlistItem.item_id == item_id,
                 WatchlistItem.alert_type == alert_type,
-                WatchlistItem.is_active.is_(True),
+                WatchlistItem.is_active.is_(True),  # type: ignore[attr-defined]
             )
         ).first()
 
@@ -107,9 +107,9 @@ class WatchlistService:
         query = select(WatchlistItem).where(WatchlistItem.user_id == user_id)
 
         if not include_inactive:
-            query = query.where(WatchlistItem.is_active.is_(True))
+            query = query.where(WatchlistItem.is_active.is_(True))  # type: ignore[attr-defined]
 
-        query = query.order_by(WatchlistItem.created_at.desc())
+        query = query.order_by(WatchlistItem.created_at.desc())  # type: ignore[attr-defined]
 
         watchlist_items = self.session.exec(query).all()
         return list(watchlist_items)
@@ -162,9 +162,9 @@ class WatchlistService:
             return []
 
         query = select(WatchlistAlert).where(
-            WatchlistAlert.watchlist_item_id.in_(watchlist_item_ids)
+            WatchlistAlert.watchlist_item_id.in_(watchlist_item_ids)  # type: ignore[attr-defined]
         )
-        query = query.order_by(WatchlistAlert.triggered_at.desc())
+        query = query.order_by(WatchlistAlert.triggered_at.desc())  # type: ignore[attr-defined]
         query = query.limit(limit)
 
         alerts = self.session.exec(query).all()
@@ -181,7 +181,7 @@ class WatchlistService:
         """
         # Get all active watchlist items
         active_items = self.session.exec(
-            select(WatchlistItem).where(WatchlistItem.is_active.is_(True))
+            select(WatchlistItem).where(WatchlistItem.is_active.is_(True))  # type: ignore[attr-defined]
         ).all()
 
         triggered_count = 0

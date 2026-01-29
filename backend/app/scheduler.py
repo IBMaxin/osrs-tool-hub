@@ -22,7 +22,7 @@ def setup_scheduler() -> AsyncIOScheduler:
     wiki_client = WikiAPIClient()
 
     # Define job to run every 5 minutes (300 seconds)
-    async def update_prices_job():
+    async def update_prices_job() -> None:
         try:
             with Session(engine) as session:
                 await wiki_client.sync_prices_to_db(session)
@@ -30,7 +30,7 @@ def setup_scheduler() -> AsyncIOScheduler:
             logger.error(f"Price update failed: {e}")
 
     # Define job to evaluate watchlist alerts every 5 minutes (300 seconds)
-    async def evaluate_watchlist_alerts_job():
+    async def evaluate_watchlist_alerts_job() -> None:
         try:
             with Session(engine) as session:
                 service = WatchlistService(session)

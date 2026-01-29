@@ -4,8 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from backend.models import Item, PriceSnapshot, Monster, SlayerTask, SlayerMaster
-from backend.tests.e2e.helpers import create_test_monster, create_test_slayer_task
+from backend.models import Item, PriceSnapshot, Monster, SlayerTask
 
 
 @pytest.mark.integration
@@ -13,7 +12,11 @@ class TestCompleteFlippingWorkflow:
     """Test complete flipping workflow from discovery to tracking."""
 
     def test_discover_flip_track_profit_workflow(
-        self, client: TestClient, session: Session, sample_items: list[Item], sample_price_snapshots: list[PriceSnapshot]
+        self,
+        client: TestClient,
+        session: Session,
+        sample_items: list[Item],
+        sample_price_snapshots: list[PriceSnapshot],
     ):
         """Test complete workflow: discover flip -> add to watchlist -> track trade -> check stats."""
         user_id = "test-user-flip-workflow"
@@ -21,7 +24,7 @@ class TestCompleteFlippingWorkflow:
 
         # Step 1: Discover flip opportunity
         flip_response = client.get(
-            f"/api/v1/flips/opportunities?max_budget=10000000&min_roi=1.0&min_volume=100"
+            "/api/v1/flips/opportunities?max_budget=10000000&min_roi=1.0&min_volume=100"
         )
         assert flip_response.status_code == 200
         opportunities = flip_response.json()
@@ -92,8 +95,6 @@ class TestCompleteGearProgressionWorkflow:
         self, client: TestClient, session: Session, sample_items: list[Item]
     ):
         """Test workflow: get progression -> get suggestions -> create gear set -> get upgrade path."""
-        user_id = "test-user-gear-workflow"
-
         # Step 1: Get gear progression
         progression_response = client.get("/api/v1/gear/progression/melee")
         assert progression_response.status_code == 200
@@ -103,7 +104,9 @@ class TestCompleteGearProgressionWorkflow:
         assert "slots" in progression
 
         # Step 2: Get gear suggestions (need slot parameter)
-        suggestions_response = client.get("/api/v1/gear/suggestions?slot=weapon&combat_style=melee&budget=10000000")
+        suggestions_response = client.get(
+            "/api/v1/gear/suggestions?slot=weapon&combat_style=melee&budget=10000000"
+        )
         if suggestions_response.status_code == 200:
             suggestions = suggestions_response.json()
             assert isinstance(suggestions, list)
@@ -121,7 +124,7 @@ class TestCompleteGearProgressionWorkflow:
                     }
                     gear_set_response = client.post("/api/v1/gear", json=gear_set_payload)
                     assert gear_set_response.status_code == 201
-                    gear_set_id = gear_set_response.json()["id"]
+                    gear_set_response.json()["id"]
 
                     # Step 4: Get upgrade path
                     upgrade_payload = {
@@ -131,7 +134,9 @@ class TestCompleteGearProgressionWorkflow:
                         "stats": {"attack": 70, "strength": 70, "defence": 70},
                         "attack_type": "slash",
                     }
-                    upgrade_response = client.post("/api/v1/gear/upgrade-path", json=upgrade_payload)
+                    upgrade_response = client.post(
+                        "/api/v1/gear/upgrade-path", json=upgrade_payload
+                    )
                     assert upgrade_response.status_code == 200
                     upgrade_data = upgrade_response.json()
 
@@ -154,16 +159,16 @@ class TestCompleteSlayerWorkflow:
         masters_response = client.get("/api/v1/slayer/masters")
         assert masters_response.status_code == 200
         masters = masters_response.json()
-        
+
         if len(masters) == 0:
             pytest.skip("No slayer masters available for testing")
-        
+
         # Step 2: Get tasks for master
         master = masters[0]
         tasks_response = client.get(f"/api/v1/slayer/tasks/{master}")
         assert tasks_response.status_code == 200
         tasks = tasks_response.json()
-        
+
         if len(tasks) == 0:
             pytest.skip(f"No tasks available for master {master}")
 
@@ -178,6 +183,7 @@ class TestCompleteSlayerWorkflow:
         # Step 4: Get gear suggestion for task
         # First, get the actual task from database
         from sqlmodel import select
+
         task = session.exec(select(SlayerTask).where(SlayerTask.id == task_id)).first()
 
         if task:
@@ -185,7 +191,14 @@ class TestCompleteSlayerWorkflow:
                 "/api/v1/gear/slayer-gear",
                 json={
                     "task_id": task.id,
-                    "stats": {"attack": 70, "strength": 70, "defence": 70, "ranged": 70, "magic": 70, "prayer": 50},
+                    "stats": {
+                        "attack": 70,
+                        "strength": 70,
+                        "defence": 70,
+                        "ranged": 70,
+                        "magic": 70,
+                        "prayer": 50,
+                    },
                     "budget": 10000000,
                     "combat_style": "melee",
                 },
@@ -201,7 +214,11 @@ class TestCrossFeatureDataConsistency:
     """Test data consistency across different features."""
 
     def test_item_price_consistency_across_features(
-        self, client: TestClient, session: Session, sample_items: list[Item], sample_price_snapshots: list[PriceSnapshot]
+        self,
+        client: TestClient,
+        session: Session,
+        sample_items: list[Item],
+        sample_price_snapshots: list[PriceSnapshot],
     ):
         """Test that item prices are consistent across flipping, gear, and trades."""
         item = sample_items[0]
@@ -248,7 +265,12 @@ class TestCrossFeatureDataConsistency:
         )
         client.post(
             "/api/v1/watchlist",
-            json={"user_id": user1, "item_id": item.id, "alert_type": "price_below", "threshold": 1000},
+            json={
+                "user_id": user1,
+                "item_id": item.id,
+                "alert_type": "price_below",
+                "threshold": 1000,
+            },
         )
 
         # User 2: Create trade and watchlist for same item
@@ -258,7 +280,12 @@ class TestCrossFeatureDataConsistency:
         )
         client.post(
             "/api/v1/watchlist",
-            json={"user_id": user2, "item_id": item.id, "alert_type": "price_above", "threshold": 2000},
+            json={
+                "user_id": user2,
+                "item_id": item.id,
+                "alert_type": "price_above",
+                "threshold": 2000,
+            },
         )
 
         # Verify isolation

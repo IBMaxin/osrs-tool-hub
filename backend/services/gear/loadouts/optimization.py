@@ -68,7 +68,7 @@ def get_best_loadout(
     ]
     slots = [s for s in slots if s not in exclude_slots]
 
-    loadout = {}
+    loadout: dict[str, Item | None] = {}
     total_cost = 0
     remaining_budget = budget
 
@@ -79,14 +79,14 @@ def get_best_loadout(
         # Filter by requirements
         query = query.where(
             and_(
-                Item.attack_req <= stats.get("attack", 1),
-                Item.strength_req <= stats.get("strength", 1),
-                Item.defence_req <= stats.get("defence", 1),
-                Item.ranged_req <= stats.get("ranged", 1),
-                Item.magic_req <= stats.get("magic", 1),
-                Item.prayer_req <= stats.get("prayer", 1),
+                Item.attack_req <= stats.get("attack", 1),  # type: ignore[arg-type]
+                Item.strength_req <= stats.get("strength", 1),  # type: ignore[arg-type]
+                Item.defence_req <= stats.get("defence", 1),  # type: ignore[arg-type]
+                Item.ranged_req <= stats.get("ranged", 1),  # type: ignore[arg-type]
+                Item.magic_req <= stats.get("magic", 1),  # type: ignore[arg-type]
+                Item.prayer_req <= stats.get("prayer", 1),  # type: ignore[arg-type]
             )
-        )
+        )  # type: ignore[arg-type]
 
         items = session.exec(query).all()
 
@@ -131,33 +131,35 @@ def get_best_loadout(
             loadout[slot] = None
 
     # Handle 2H weapons (exclude shield if weapon is 2H)
-    if loadout.get("weapon") and loadout["weapon"].is_2h:
+    weapon = loadout.get("weapon")
+    if weapon is not None and weapon.is_2h:
         loadout["shield"] = None
 
     # Calculate DPS
     dps_info = calculate_dps(loadout, combat_style, attack_type, stats)
 
     # Build response
-    result = {
+    slots_payload: dict[str, object] = {}
+    result: dict[str, object] = {
         "combat_style": combat_style,
         "total_cost": total_cost,
         "budget_used": budget - remaining_budget,
         "budget_remaining": remaining_budget,
         "dps": dps_info,
-        "slots": {},
+        "slots": slots_payload,
     }
 
-    for slot, item in loadout.items():
-        if item:
-            price = get_item_price(session, item)
-            result["slots"][slot] = {
-                "id": item.id,
-                "name": item.name,
-                "icon_url": item.icon_url,
+    for slot, equipped_item in loadout.items():
+        if equipped_item is not None:
+            price = get_item_price(session, equipped_item)
+            slots_payload[slot] = {
+                "id": equipped_item.id,
+                "name": equipped_item.name,
+                "icon_url": equipped_item.icon_url,
                 "price": price,
-                "score": score_item_for_style(item, combat_style, attack_type),
+                "score": score_item_for_style(equipped_item, combat_style, attack_type),
             }
         else:
-            result["slots"][slot] = None
+            slots_payload[slot] = None
 
     return result

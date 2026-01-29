@@ -1,6 +1,5 @@
 """Tests for database session management."""
 
-import pytest
 from sqlmodel import Session
 from unittest.mock import patch, MagicMock
 
@@ -53,7 +52,7 @@ class TestGetSession:
             mock_session.__exit__ = MagicMock(return_value=None)
 
             session_gen = get_session()
-            session = next(session_gen)
+            next(session_gen)
 
             # Simulate exception during yield
             try:

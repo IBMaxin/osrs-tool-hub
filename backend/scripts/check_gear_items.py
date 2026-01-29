@@ -1,5 +1,7 @@
 """Script to check if commonly used gear items are present in the database."""
 
+# ruff: noqa: E402
+
 import sys
 from pathlib import Path
 
@@ -233,7 +235,7 @@ def check_items(session: Session) -> dict:
             # Try exact match first, then try with common variants
             query = select(Item).where(Item.name.ilike(item_name))
             item = session.exec(query).first()
-            
+
             # If not found, try common variants (inactive, uncharged, empty, etc.)
             if not item:
                 # Try with common suffixes
@@ -249,7 +251,7 @@ def check_items(session: Session) -> dict:
                     item = session.exec(query).first()
                     if item:
                         break
-                
+
                 # Also try partial match (for items like "Blade of saeldor" matching "Blade of saeldor (inactive)")
                 if not item:
                     # Extract base name (remove common suffixes from search)
@@ -264,7 +266,9 @@ def check_items(session: Session) -> dict:
                 results["missing"].append(f"{category}: {item_name}")
             elif not item.slot:
                 # Item exists but doesn't have slot/stats populated
-                results["missing_stats"].append(f"{category}: {item_name} -> Found: {item.name} (ID: {item.id})")
+                results["missing_stats"].append(
+                    f"{category}: {item_name} -> Found: {item.name} (ID: {item.id})"
+                )
             else:
                 # Found with stats - note if it's a variant name
                 if item.name.lower() != item_name.lower():
@@ -309,7 +313,7 @@ def main():
         # Check total items in DB
         total_items = session.exec(select(Item)).all()
         equipable_items = [item for item in total_items if item.slot]
-        
+
         print("\n" + "=" * 60)
         print("DATABASE STATISTICS:")
         print("=" * 60)

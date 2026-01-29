@@ -1,8 +1,13 @@
 """DPS (Damage Per Second) calculation utilities."""
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, TypedDict
 
 from backend.models import Item
+
+
+class DPSComparisonLoadout(TypedDict):
+    name: str
+    loadout: Dict[str, Optional[Item]]
 
 
 def calculate_dps(
@@ -126,7 +131,7 @@ def calculate_dps(
 
 
 def compare_dps(
-    loadouts: List[Dict[str, Dict[str, Optional[Item]]]],
+    loadouts: List[DPSComparisonLoadout],
     combat_style: str,
     attack_type: Optional[str] = None,
     player_stats: Optional[Dict[str, int]] = None,

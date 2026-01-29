@@ -89,7 +89,8 @@ class TestGetPresetLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.presets.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.presets.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
@@ -119,7 +120,8 @@ class TestGetPresetLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.presets.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.presets.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
@@ -132,7 +134,8 @@ class TestGetPresetLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.presets.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.presets.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
@@ -147,7 +150,8 @@ class TestGetPresetLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.presets.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.presets.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
@@ -166,7 +170,8 @@ class TestGetPresetLoadout:
         test_session.commit()
 
         with patch(
-            "backend.services.gear.progression.presets.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.presets.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
@@ -184,7 +189,8 @@ class TestGetPresetLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.presets.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.presets.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
@@ -217,7 +223,8 @@ class TestGetPresetLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.presets.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.presets.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             loadout = get_preset_loadout(test_session, "melee", "low")
 
@@ -235,7 +242,8 @@ class TestGetProgressionLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.wiki_progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.wiki_progression.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             result = get_progression_loadout(test_session, "melee", "low")
 
@@ -252,7 +260,9 @@ class TestGetProgressionLoadout:
 
     def test_get_progression_loadout_invalid_tier(self, test_session):
         """Test get_progression_loadout returns error for invalid tier."""
-        with patch("backend.services.gear.progression.wiki_progression.GEAR_PRESETS", {"melee": {}}):
+        with patch(
+            "backend.services.gear.progression.wiki_progression.GEAR_PRESETS", {"melee": {}}
+        ):
             result = get_progression_loadout(test_session, "melee", "invalid_tier")
             assert "error" in result
 
@@ -264,7 +274,8 @@ class TestGetProgressionLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.wiki_progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.wiki_progression.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             result = get_progression_loadout(test_session, "melee", "low")
 
@@ -277,7 +288,8 @@ class TestGetProgressionLoadout:
         }
 
         with patch(
-            "backend.services.gear.progression.wiki_progression.GEAR_PRESETS", {"melee": {"low": mock_preset}}
+            "backend.services.gear.progression.wiki_progression.GEAR_PRESETS",
+            {"melee": {"low": mock_preset}},
         ):
             result = get_progression_loadout(test_session, "melee", "low")
 
@@ -304,7 +316,10 @@ class TestGetWikiProgression:
             ],
         }
 
-        with patch("backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION", {"melee": mock_wiki_data}):
+        with patch(
+            "backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION",
+            {"melee": mock_wiki_data},
+        ):
             result = get_wiki_progression(test_session, "melee")
 
             assert "head" in result
@@ -334,7 +349,10 @@ class TestGetWikiProgression:
             ],
         }
 
-        with patch("backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION", {"melee": mock_wiki_data}):
+        with patch(
+            "backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION",
+            {"melee": mock_wiki_data},
+        ):
             result = get_wiki_progression(test_session, "melee")
 
             item = result["weapon"][0]["items"][0]
@@ -355,7 +373,10 @@ class TestGetWikiProgression:
             ],
         }
 
-        with patch("backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION", {"melee": mock_wiki_data}):
+        with patch(
+            "backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION",
+            {"melee": mock_wiki_data},
+        ):
             result = get_wiki_progression(test_session, "melee")
 
             item = result["weapon"][0]["items"][0]
@@ -372,7 +393,10 @@ class TestGetWikiProgression:
             ],
         }
 
-        with patch("backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION", {"melee": mock_wiki_data}):
+        with patch(
+            "backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION",
+            {"melee": mock_wiki_data},
+        ):
             result = get_wiki_progression(test_session, "melee")
 
             # Should handle invalid structure and process valid ones
@@ -391,7 +415,10 @@ class TestGetWikiProgression:
             ],
         }
 
-        with patch("backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION", {"melee": mock_wiki_data}):
+        with patch(
+            "backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION",
+            {"melee": mock_wiki_data},
+        ):
             result = get_wiki_progression(test_session, "melee")
 
             # Should handle gracefully
@@ -409,7 +436,10 @@ class TestGetWikiProgression:
             ],
         }
 
-        with patch("backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION", {"melee": mock_wiki_data}):
+        with patch(
+            "backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION",
+            {"melee": mock_wiki_data},
+        ):
             result = get_wiki_progression(test_session, "melee")
 
             # Should skip non-string items and process valid ones
@@ -457,7 +487,10 @@ class TestGetWikiProgression:
         }
 
         with (
-            patch("backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION", {"melee": mock_wiki_data}),
+            patch(
+                "backend.services.gear.progression.wiki_progression.WIKI_PROGRESSION",
+                {"melee": mock_wiki_data},
+            ),
             patch(
                 "backend.services.gear.progression.wiki_progression.find_item_by_name",
                 side_effect=Exception("Processing error"),

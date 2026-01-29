@@ -69,7 +69,9 @@ def migrate_tables() -> None:
                 for col, dtype in new_snapshot_columns.items():
                     if col not in existing_columns:
                         try:
-                            conn.execute(text(f"ALTER TABLE pricesnapshot ADD COLUMN {col} {dtype}"))
+                            conn.execute(
+                                text(f"ALTER TABLE pricesnapshot ADD COLUMN {col} {dtype}")
+                            )
                             print(f"✓ Added column: pricesnapshot.{col}")
                         except Exception as e:
                             print(f"⚠ Could not add column pricesnapshot.{col}: {e}")

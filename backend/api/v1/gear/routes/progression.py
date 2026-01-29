@@ -18,7 +18,9 @@ router = APIRouter()
 
 
 @router.get("/gear/progression/{combat_style}")
-async def get_progression(combat_style: str, session: Session = Depends(get_session)):
+async def get_progression(
+    combat_style: str, session: Session = Depends(get_session)
+) -> dict[str, object]:
     """
     Get gear progression data for a combat style with live prices and item details.
 
@@ -56,7 +58,7 @@ async def get_progression(combat_style: str, session: Session = Depends(get_sess
 @router.get("/gear/progression/{combat_style}/{slot}")
 async def get_slot_progression_data(
     combat_style: str, slot: str, session: Session = Depends(get_session)
-):
+) -> dict[str, object]:
     """
     Get progression data for a specific slot with live prices and item details.
 
@@ -85,7 +87,7 @@ async def get_slot_progression_data(
 
 
 @router.get("/gear/wiki-progression/{style}")
-async def get_wiki_gear_table(style: str, session: Session = Depends(get_session)):
+async def get_wiki_gear_table(style: str, session: Session = Depends(get_session)) -> dict:
     """
     Get Wiki-style gear progression table for a combat style.
 
@@ -103,7 +105,9 @@ async def get_wiki_gear_table(style: str, session: Session = Depends(get_session
 
 
 @router.get("/gear/progression/{style}/{tier}")
-async def get_progression_loadout(style: str, tier: str, session: Session = Depends(get_session)):
+async def get_progression_loadout(
+    style: str, tier: str, session: Session = Depends(get_session)
+) -> dict:
     """
     Get a progression loadout for a specific combat style and tier.
 
@@ -147,7 +151,7 @@ class GlobalProgressionRequest(BaseModel):
 @router.post("/gear/global-upgrade-path")
 async def get_global_progression(
     request: GlobalProgressionRequest, session: Session = Depends(get_session)
-):
+) -> dict:
     """
     Calculate cross-style account progression with prioritized upgrade path.
 

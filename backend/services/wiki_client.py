@@ -7,7 +7,7 @@ New code should import directly from backend.services.wiki.
 
 import httpx
 import logging
-from typing import List, Dict
+from typing import Any, Dict, List
 from sqlmodel import Session, select
 
 from backend.services.wiki import WikiAPIClient as _WikiAPIClient
@@ -19,14 +19,15 @@ logger = logging.getLogger(__name__)
 class WikiAPIClient(_WikiAPIClient):
     """WikiAPIClient with backward-compatible sync methods."""
 
-    async def fetch_mapping(self) -> List[Dict]:
+    async def fetch_mapping(self) -> List[Dict[str, Any]]:
         """Fetch item mapping (ID, name, limit, value) from Wiki."""
         url = f"{self.base_url}/mapping"
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(url, headers=self.headers, timeout=30.0)
                 response.raise_for_status()
-                return response.json()
+                data = response.json()
+                return data if isinstance(data, list) else []
             except httpx.HTTPStatusError as e:
                 if e.response.status_code == 403:
                     logger.error("403 Forbidden: Invalid User-Agent header")
@@ -35,23 +36,25 @@ class WikiAPIClient(_WikiAPIClient):
                 logger.error(f"Mapping fetch failed: {e}")
                 raise
 
-    async def fetch_latest_prices(self) -> Dict:
+    async def fetch_latest_prices(self) -> Dict[str, Any]:
         """Fetch latest high/low prices."""
         url = f"{self.base_url}/latest"
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=self.headers, timeout=10.0)
             response.raise_for_status()
-            return response.json()
+            data = response.json()
+            return data if isinstance(data, dict) else {}
 
-    async def fetch_24h_prices(self) -> Dict:
+    async def fetch_24h_prices(self) -> Dict[str, Any]:
         """Fetch 24h average prices and volume."""
         url = f"{self.base_url}/24h"
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=self.headers, timeout=10.0)
             response.raise_for_status()
-            return response.json()
+            data = response.json()
+            return data if isinstance(data, dict) else {}
 
-    async def sync_items_to_db(self, session: Session):
+    async def sync_items_to_db(self, session: Session) -> None:
         """Populate or update Item table from mapping."""
         logger.info("Syncing items from Wiki...")
         mapping = await self.fetch_mapping()
@@ -76,7 +79,7 @@ class WikiAPIClient(_WikiAPIClient):
         session.commit()
         logger.info(f"Synced {count} items")
 
-    async def sync_prices_to_db(self, session: Session):
+    async def sync_prices_to_db(self, session: Session) -> None:
         """Populate or update PriceSnapshot table from latest prices AND 24h volume."""
         logger.info("Syncing prices from Wiki...")
 

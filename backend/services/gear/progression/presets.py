@@ -1,6 +1,6 @@
 """Preset loadout utilities."""
 
-from typing import Dict
+from typing import Any, Dict
 from sqlmodel import Session, select
 
 from backend.models import PriceSnapshot
@@ -31,19 +31,15 @@ def get_preset_loadout(session: Session, combat_style: str, tier: str) -> Dict:
             f"Invalid tier: {tier}. Must be one of {list(GEAR_PRESETS[combat_style].keys())}"
         )
 
-    preset = GEAR_PRESETS[combat_style][tier]
-    loadout = {
-        "combat_style": combat_style,
-        "tier": tier,
-        "slots": {},
-        "total_cost": 0,
-        "missing_items": [],
-    }
+    preset: dict[str, list[str]] = GEAR_PRESETS[combat_style][tier]
+    slots_payload: dict[str, Any] = {}
+    missing_items: list[dict[str, Any]] = []
+    total_cost = 0
 
     # Process each slot
     for slot, item_names in preset.items():
         if not item_names:  # Empty slot (e.g., shield for 2H weapons)
-            loadout["slots"][slot] = None
+            slots_payload[slot] = None
             continue
 
         # Try to find the first available item from the list
@@ -60,8 +56,10 @@ def get_preset_loadout(session: Session, combat_style: str, tier: str) -> Dict:
                 select(PriceSnapshot).where(PriceSnapshot.item_id == item.id)
             ).first()
 
-            item_price = price_snapshot.high_price if price_snapshot else item.value or 0
-            loadout["total_cost"] += item_price
+            item_price = (
+                int(price_snapshot.high_price or 0) if price_snapshot else int(item.value or 0)
+            )
+            total_cost += item_price
 
             # Build item details
             item_data = {
@@ -101,10 +99,16 @@ def get_preset_loadout(session: Session, combat_style: str, tier: str) -> Dict:
                 },
             }
 
-            loadout["slots"][slot] = item_data
+            slots_payload[slot] = item_data
         else:
             # Item not found in database
-            loadout["slots"][slot] = None
-            loadout["missing_items"].append({"slot": slot, "names": item_names})
+            slots_payload[slot] = None
+            missing_items.append({"slot": slot, "names": item_names})
 
-    return loadout
+    return {
+        "combat_style": combat_style,
+        "tier": tier,
+        "slots": slots_payload,
+        "total_cost": total_cost,
+        "missing_items": missing_items,
+    }

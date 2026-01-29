@@ -4,12 +4,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from backend.models import Item, Monster, SlayerTask, SlayerMaster
+from backend.models import Item, Monster, SlayerMaster
 from backend.tests.e2e.base import BaseE2ETest
 from backend.tests.e2e.helpers import (
     assert_successful_response,
     assert_error_response,
-    create_test_monster,
     create_test_slayer_task,
 )
 

@@ -18,7 +18,7 @@ async def get_gear_suggestions(
     style: str = Query("melee", description="Combat style"),
     defence_level: int = Query(99, ge=1, le=99, description="Defence level"),
     session: Session = Depends(get_session),
-):
+) -> list[dict]:
     """
     Get gear suggestions for a specific slot and combat style.
 
@@ -53,7 +53,7 @@ async def get_alternatives(
     attack_type: Optional[str] = Query(None, description="For melee: stab, slash, crush"),
     limit: int = Query(10, ge=1, le=100, description="Maximum number of alternatives to return"),
     session: Session = Depends(get_session),
-):
+) -> list[dict]:
     """
     Get alternative items for a specific slot.
 
@@ -80,7 +80,7 @@ async def get_alternatives(
 
     service = GearService(session)
 
-    stats = None
+    stats: Optional[dict[str, int]] = None
     if any([attack, strength, defence, ranged, magic, prayer]):
         stats = {
             "attack": attack or 1,

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 _BOSS_DATA_DIR = Path(__file__).parent.parent.parent / "data" / "bosses"
 
 
-def get_boss_data(boss_name: str) -> Optional[Dict]:
+def get_boss_data(boss_name: str) -> Optional[dict[str, object]]:
     """
     Load boss data from JSON file.
 
@@ -33,7 +33,8 @@ def get_boss_data(boss_name: str) -> Optional[Dict]:
 
     try:
         with open(boss_file, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+            return data if isinstance(data, dict) else None
     except Exception as e:
         logger.error(f"Error loading boss data from {boss_file}: {e}")
         return None
@@ -103,9 +104,18 @@ class BossService:
                 f"Boss '{boss_name}' not found. Available bosses: {', '.join(get_available_bosses())}"
             )
 
-        recommended_styles = boss_data.get("recommended_styles", ["melee", "ranged", "magic"])
-        content_tag = boss_data.get("content_tags", [])
-        content_tag_str = content_tag[0] if content_tag else None
+        recommended_styles_val = boss_data.get("recommended_styles", ["melee", "ranged", "magic"])
+        recommended_styles: list[str] = (
+            [str(s) for s in recommended_styles_val]
+            if isinstance(recommended_styles_val, list)
+            else ["melee", "ranged", "magic"]
+        )
+
+        content_tags_val = boss_data.get("content_tags", [])
+        content_tags: list[str] = (
+            [str(t) for t in content_tags_val] if isinstance(content_tags_val, list) else []
+        )
+        content_tag_str = content_tags[0] if content_tags else None
 
         # Calculate BiS for each recommended style
         recommended_loadouts = []
@@ -135,5 +145,9 @@ class BossService:
         return {
             "boss_info": boss_data,
             "recommended_loadouts": recommended_loadouts,
-            "notes": boss_data.get("special_mechanics", []),
+            "notes": (
+                boss_data.get("special_mechanics", [])
+                if isinstance(boss_data.get("special_mechanics", []), list)
+                else []
+            ),
         }

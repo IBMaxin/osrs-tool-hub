@@ -114,8 +114,10 @@ def create_trade(
 def get_trades(
     request: Request,
     user_id: str = Query(..., description="User identifier"),
-    status: Optional[str] = Query(
-        None, description="Filter by status: 'bought', 'sold', 'cancelled'"
+    trade_status: Optional[str] = Query(
+        None,
+        alias="status",
+        description="Filter by status: 'bought', 'sold', 'cancelled'",
     ),
     item_id: Optional[int] = Query(None, gt=0, description="Filter by item ID"),
     start_date: Optional[datetime] = Query(None, description="Filter by start date (ISO format)"),
@@ -146,7 +148,7 @@ def get_trades(
         service = TradeService(session)
         trades = service.get_trade_history(
             user_id=user_id,
-            status=status,
+            status=trade_status,
             item_id=item_id,
             start_date=start_date,
             end_date=end_date,

@@ -1,6 +1,6 @@
 """Alternative item selection utilities."""
 
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, cast
 from sqlmodel import Session, select
 from sqlalchemy import and_
 
@@ -43,18 +43,18 @@ def get_alternatives(
     if stats:
         query = query.where(
             and_(
-                Item.attack_req <= stats.get("attack", 1),
-                Item.strength_req <= stats.get("strength", 1),
-                Item.defence_req <= stats.get("defence", 1),
-                Item.ranged_req <= stats.get("ranged", 1),
-                Item.magic_req <= stats.get("magic", 1),
-                Item.prayer_req <= stats.get("prayer", 1),
+                Item.attack_req <= stats.get("attack", 1),  # type: ignore[arg-type]
+                Item.strength_req <= stats.get("strength", 1),  # type: ignore[arg-type]
+                Item.defence_req <= stats.get("defence", 1),  # type: ignore[arg-type]
+                Item.ranged_req <= stats.get("ranged", 1),  # type: ignore[arg-type]
+                Item.magic_req <= stats.get("magic", 1),  # type: ignore[arg-type]
+                Item.prayer_req <= stats.get("prayer", 1),  # type: ignore[arg-type]
             )
-        )
+        )  # type: ignore[arg-type]
 
     items = session.exec(query).all()
 
-    alternatives = []
+    alternatives: list[dict[str, object]] = []
     for item in items:
         if stats and not meets_requirements(item, stats, quests_completed, achievements_completed):
             continue
@@ -92,5 +92,5 @@ def get_alternatives(
             )
 
     # Sort by score descending
-    alternatives.sort(key=lambda x: x["score"], reverse=True)
+    alternatives.sort(key=lambda x: cast(float, x["score"]), reverse=True)
     return alternatives[:limit]
