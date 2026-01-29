@@ -100,8 +100,8 @@ class FlippingService:
             post_tax_revenue = sell_price - tax
             margin = post_tax_revenue - buy_price
 
-            # Calculate ROI (GE Tracker style: margin / sell_price)
-            roi = margin / sell_price * 100
+            # Calculate ROI: margin / buy_price * 100
+            roi = margin / buy_price * 100
 
             if roi < min_roi:
                 continue
@@ -201,7 +201,7 @@ class FlippingService:
         # Use MIN instead of LEAST for SQLite compatibility
         # Note: "limit" is a reserved keyword in SQLite, so we need to escape it with quotes
         # Tax calculation: 2% of sell price, capped at 5M, exempt for items under 50gp
-        # ROI calculation: margin / sell_price * 100 (GE Tracker style)
+        # ROI calculation: margin / buy_price * 100
         # Margin x Volume: margin * (buy_volume_24h + sell_volume_24h)
         sql_query = text(
             f"""
@@ -219,7 +219,7 @@ class FlippingService:
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
                     ELSE CAST(i.high_price * 0.02 AS INTEGER)
-                END) - i.low_price) * 100.0 / NULLIF(i.high_price, 0) as roi,
+                END) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) as roi,
                 COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0) as volume,
                 COALESCE(ps.buy_volume_24h, ps.low_volume, 0) as buy_volume_24h,
                 COALESCE(ps.sell_volume_24h, ps.high_volume, 0) as sell_volume_24h,
@@ -238,14 +238,8 @@ class FlippingService:
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
                     ELSE CAST(i.high_price * 0.02 AS INTEGER)
-                END) - i.low_price) * 100.0 / NULLIF(i.high_price, 0) >= :min_roi
+                END) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) >= :min_roi
             ORDER BY
-                ((i.high_price - CASE
-                    WHEN i.high_price < 50 THEN 0
-                    WHEN i.high_price * 0.02 > 5000000 THEN 5000000
-                    ELSE CAST(i.high_price * 0.02 AS INTEGER)
-                END) - i.low_price) *
-                (COALESCE(ps.buy_volume_24h, ps.low_volume, 0) + COALESCE(ps.sell_volume_24h, ps.high_volume, 0)) DESC,
                 ((i.high_price - CASE
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
