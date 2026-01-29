@@ -70,16 +70,28 @@ class Item(SQLModel, table=True):
 
 
 class PriceSnapshot(SQLModel, table=True):
-    """Price snapshot model for tracking item prices over time."""
+    """Price snapshot model for tracking item prices over time.
+    
+    Volume fields represent total item units traded over a rolling
+    24-hour window ending at snapshot time (created_at), mirroring
+    OSRS Wiki / GE Tracker semantics.
+    """
 
     id: Optional[int] = Field(default=None, primary_key=True)
     item_id: int = Field(foreign_key="item.id")
+
     high_price: Optional[int] = None
     low_price: Optional[int] = None
     high_volume: Optional[int] = None
     low_volume: Optional[int] = None
+
     high_time: Optional[int] = None  # Unix timestamp
-    low_time: Optional[int] = None  # Unix timestamp
+    low_time: Optional[int] = None   # Unix timestamp
+
+    # 24-hour volume tracking (units traded, not transaction count)
+    buy_volume_24h: Optional[int] = None   # Total item units bought in last 24h
+    sell_volume_24h: Optional[int] = None  # Total item units sold in last 24h
+
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     @property
@@ -91,3 +103,19 @@ class PriceSnapshot(SQLModel, table=True):
     def low(self) -> Optional[int]:
         """Backward compatibility alias for low_price."""
         return self.low_price
+    
+    @property
+    def total_volume_24h(self) -> Optional[int]:
+        """Total item units traded in the last 24 hours.
+
+        Returns:
+        - None if both buy and sell volume are unknown
+        - Sum of known volumes otherwise
+        """
+        if self.buy_volume_24h is None and self.sell_volume_24h is None:
+            return None
+        return (self.buy_volume_24h or 0) + (self.sell_volume_24h or 0)
+    
+    def has_volume_data(self) -> bool:
+        """Return True if any 24h volume data is available."""
+        return self.buy_volume_24h is not None or self.sell_volume_24h is not None
