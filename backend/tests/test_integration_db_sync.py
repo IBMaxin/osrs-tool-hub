@@ -141,12 +141,15 @@ class TestFlippingServiceIntegration:
         session.add(item2)
 
         # Create price snapshots for volume data
+        # Note: find_best_flips filters by buy_volume_24h + sell_volume_24h, not high_volume/low_volume
         snapshot1 = PriceSnapshot(
             item_id=4151,
             high_price=1500000,
             low_price=1400000,
             high_volume=5000,
             low_volume=4000,
+            buy_volume_24h=5000,  # Required for find_best_flips volume filter
+            sell_volume_24h=4000,
         )
         session.add(snapshot1)
 
@@ -156,6 +159,8 @@ class TestFlippingServiceIntegration:
             low_price=3,
             high_volume=1000000,
             low_volume=1000000,
+            buy_volume_24h=1000000,  # Required for find_best_flips volume filter
+            sell_volume_24h=1000000,
         )
         session.add(snapshot2)
 

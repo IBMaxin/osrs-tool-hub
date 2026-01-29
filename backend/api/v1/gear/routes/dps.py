@@ -60,6 +60,48 @@ async def calculate_dps(request: DPSRequest, session: Session = Depends(get_sess
     response_model=DPSComparisonResponse,
     summary="Compare DPS for multiple loadouts",
     description="Compare Damage Per Second (DPS) for multiple gear loadouts side-by-side. Returns detailed DPS metrics including max hit, accuracy, attack speed, and marginal gains compared to the baseline loadout.",
+    responses={
+        200: {
+            "description": "DPS comparison results",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "results": [
+                            {
+                                "name": "Budget Setup",
+                                "dps": 4.2,
+                                "max_hit": 28,
+                                "accuracy": 0.85,
+                                "attack_speed": 2.4,
+                                "marginal_dps_gain": 0.0,
+                            },
+                            {
+                                "name": "Upgraded Setup",
+                                "dps": 5.1,
+                                "max_hit": 32,
+                                "accuracy": 0.92,
+                                "attack_speed": 2.4,
+                                "marginal_dps_gain": 0.9,
+                            },
+                        ]
+                    }
+                }
+            },
+        },
+        400: {
+            "description": "Invalid request (e.g., no weapon equipped)",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "error": {
+                            "code": "HTTP_400",
+                            "message": "At least one loadout must have a weapon equipped for DPS calculation",
+                        }
+                    }
+                }
+            },
+        },
+    },
 )
 async def compare_dps_endpoint(
     request: DPSComparisonRequest, session: Session = Depends(get_session)

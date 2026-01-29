@@ -72,4 +72,43 @@ describe('FlippingPage', () => {
       expect(screen.getByText(/No flips found/i)).toBeInTheDocument()
     })
   })
+
+  it('renders watchlist tab', () => {
+    vi.mocked(FlippingApi.getOpportunities).mockResolvedValue([])
+    
+    render(<FlippingPage />)
+    
+    // Check that watchlist tab exists
+    expect(screen.getByRole('tab', { name: /watchlist/i })).toBeInTheDocument()
+  })
+
+  it('switches to watchlist tab when clicked', async () => {
+    vi.mocked(FlippingApi.getOpportunities).mockResolvedValue([])
+    
+    const userEvent = await import('@testing-library/user-event')
+    render(<FlippingPage />)
+    
+    const watchlistTab = screen.getByRole('tab', { name: /watchlist/i })
+    await userEvent.default.click(watchlistTab)
+    
+    // Watchlist tab should be active (Mantine tabs use aria-selected)
+    await waitFor(() => {
+      expect(watchlistTab).toHaveAttribute('aria-selected', 'true')
+    })
+  })
+
+  it('displays watchlist content when tab is active', async () => {
+    vi.mocked(FlippingApi.getOpportunities).mockResolvedValue([])
+    
+    const userEvent = await import('@testing-library/user-event')
+    render(<FlippingPage />)
+    
+    const watchlistTab = screen.getByRole('tab', { name: /watchlist/i })
+    await userEvent.default.click(watchlistTab)
+    
+    // Watchlist manager should be visible - check for heading
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /add to watchlist/i })).toBeInTheDocument()
+    }, { timeout: 3000 })
+  })
 })

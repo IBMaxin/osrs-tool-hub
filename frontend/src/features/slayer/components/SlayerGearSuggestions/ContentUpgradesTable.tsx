@@ -1,71 +1,21 @@
-import { Table, Group, Text, Image } from '@mantine/core';
+import { Text, Group, Table, Image, Divider } from '@mantine/core';
 import { IconCoin } from '@tabler/icons-react';
+import { getAllItems } from './utils';
 import type { SlayerGearResponse } from '../../../../lib/api/gear';
 
-const EQUIPMENT_GRID = [
-  ['head', 'cape', 'neck'],
-  ['weapon', 'body', 'shield'],
-  ['legs', 'hands', 'feet'],
-  ['ring', 'ammo', null],
-];
-
 interface ContentUpgradesTableProps {
-  loadout: SlayerGearResponse['primary_loadout'];
+  gearData: SlayerGearResponse;
 }
 
-export function ContentUpgradesTable({ loadout }: ContentUpgradesTableProps) {
-  if (!loadout) return null;
+export function ContentUpgradesTable({ gearData }: ContentUpgradesTableProps) {
+  if (!gearData.primary_loadout) return null;
 
-  const getAllItems = (): Array<{ 
-    slot: string; 
-    item: NonNullable<SlayerGearResponse['primary_loadout']>['slots'][string]; 
-    context: string;
-  }> => {
-    const items: Array<{ 
-      slot: string; 
-      item: NonNullable<SlayerGearResponse['primary_loadout']>['slots'][string]; 
-      context: string;
-    }> = [];
-    
-    EQUIPMENT_GRID.flat()
-      .filter((slot): slot is string => slot !== null)
-      .forEach((slot) => {
-        const item = loadout.slots[slot];
-        if (!item) return;
-        
-        const nonNullItem = item as NonNullable<typeof item>;
-        
-        // Determine context/use case based on item name and slot
-        let context = '';
-        if (slot === 'weapon') {
-          if (nonNullItem.name.toLowerCase().includes('whip') || nonNullItem.name.toLowerCase().includes('tentacle')) {
-            context = 'General Slayer';
-          } else if (nonNullItem.name.toLowerCase().includes('rapier')) {
-            context = 'Combat training / Slayer';
-          } else if (nonNullItem.name.toLowerCase().includes('blade')) {
-            context = 'Slash weak enemies';
-          }
-        } else if (slot === 'head' && nonNullItem.name.toLowerCase().includes('serpentine')) {
-          context = 'Venom immunity';
-        } else if (slot === 'body' && nonNullItem.name.toLowerCase().includes('bandos')) {
-          context = 'Strength bonus';
-        }
-        
-        items.push({
-          slot,
-          item: nonNullItem,
-          context,
-        });
-      });
-    
-    return items;
-  };
-
-  const items = getAllItems();
+  const items = getAllItems(gearData);
   if (items.length === 0) return null;
 
   return (
     <>
+      <Divider color="osrsBrown.6" />
       <Text fw={600} size="md" c="osrsGold.4" mb="xs">Content specific upgrades</Text>
       <Table striped highlightOnHover withTableBorder withColumnBorders>
         <Table.Thead>

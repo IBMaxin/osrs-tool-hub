@@ -62,7 +62,8 @@ class TestFlipsContract:
     def test_get_opportunities_invalid_budget_error_schema(self, client: TestClient):
         """Test that invalid budget parameter returns ErrorResponse schema."""
         # Test with budget exceeding max (via query validation)
-        response = client.get("/api/v1/flips/opportunities?max_budget=9999999999")
+        # Max is 100B GP, so use 200B to exceed limit
+        response = client.get("/api/v1/flips/opportunities?max_budget=200000000000")
 
         # FastAPI Query validation will return 422 for out-of-range
         assert response.status_code in [400, 422]

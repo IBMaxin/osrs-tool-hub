@@ -8,7 +8,7 @@ import {
   Button,
   Tabs
 } from '@mantine/core';
-import { IconRefresh, IconCoins, IconHistory, IconChartBar } from '@tabler/icons-react';
+import { IconRefresh, IconCoins, IconHistory, IconChartBar, IconBell } from '@tabler/icons-react';
 import { FlipFilters } from '../../lib/api';
 import { useKeyboardShortcuts } from '../../lib/hooks/useKeyboardShortcuts';
 import { FiltersBar } from './components/FiltersBar';
@@ -92,6 +92,9 @@ export function FlippingPage() {
             </Tabs.Tab>
             <Tabs.Tab value="trades" leftSection={<IconHistory size={16} />}>
               My Trades
+            </Tabs.Tab>
+            <Tabs.Tab value="watchlist" leftSection={<IconBell size={16} />}>
+              Watchlist
             </Tabs.Tab>
             <Tabs.Tab value="stats" leftSection={<IconChartBar size={16} />}>
               Stats

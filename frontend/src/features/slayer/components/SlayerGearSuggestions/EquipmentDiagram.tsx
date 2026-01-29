@@ -1,7 +1,19 @@
-import { Stack, Text, Group, Card, Image, Box } from '@mantine/core';
+import {
+  Stack,
+  Text,
+  Group,
+  Card,
+  Image,
+  Box,
+} from '@mantine/core';
 import { IconCoin } from '@tabler/icons-react';
 import type { SlayerGearResponse } from '../../../../lib/api/gear';
 
+// Equipment slots arranged in wiki-style grid layout
+// Row 1: Head, Cape, Neck
+// Row 2: Weapon, Body, Shield  
+// Row 3: Legs, Hands, Feet
+// Row 4: Ring, Ammo
 const EQUIPMENT_GRID = [
   ['head', 'cape', 'neck'],
   ['weapon', 'body', 'shield'],

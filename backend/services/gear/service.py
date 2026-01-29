@@ -1,24 +1,26 @@
 """Main GearService class - orchestrates gear operations."""
 
-import json
 from typing import Optional, List, Dict, Set
-from sqlmodel import Session, select
+from sqlmodel import Session
 
 from backend.models import GearSet, Item
-from backend.services.gear.pricing import get_item_cost
-from backend.services.gear.loadouts import (
-    suggest_gear,
-    get_best_loadout,
-    get_upgrade_path,
-    get_alternatives,
+from backend.services.gear.gear_sets import (
+    create_gear_set as create_gear_set_func,
+    get_all_gear_sets as get_all_gear_sets_func,
+    get_gear_set_by_id as get_gear_set_by_id_func,
+    delete_gear_set as delete_gear_set_func,
 )
-from backend.services.gear.progression import (
-    get_preset_loadout,
-    get_progression_loadout,
-    get_wiki_progression,
+from backend.services.gear.gear_calculations import (
+    suggest_gear_for_slot,
+    calculate_dps_for_loadout,
+    get_best_loadout_for_stats,
+    get_upgrade_path_for_loadout,
+    get_alternatives_for_slot,
+    get_preset_loadout_for_tier,
+    get_progression_loadout_for_tier,
+    get_wiki_progression_for_style,
+    suggest_slayer_gear_for_task,
 )
-from backend.services.gear.dps import calculate_dps
-from backend.services.gear.slayer_integration import suggest_slayer_gear
 
 
 class GearService:
@@ -42,25 +44,7 @@ class GearService:
         Returns:
             Created gear set
         """
-        # Calculate total cost from DB (use low/buy price for gear set cost)
-        total_cost = 0
-        for item_id, quantity in items.items():
-            item = self.session.get(Item, item_id)
-            if item:
-                total_cost += get_item_cost(self.session, item) * quantity
-
-        gear_set = GearSet(
-            name=name,
-            description=description,
-            items=json.dumps(items),
-            total_cost=total_cost,
-        )
-
-        self.session.add(gear_set)
-        self.session.commit()
-        self.session.refresh(gear_set)
-
-        return gear_set
+        return create_gear_set_func(self.session, name, items, description)
 
     def get_all_gear_sets(self) -> list[GearSet]:
         """
@@ -69,8 +53,7 @@ class GearService:
         Returns:
             List of all gear sets
         """
-        statement = select(GearSet).order_by(GearSet.created_at.desc())
-        return list(self.session.exec(statement).all())
+        return get_all_gear_sets_func(self.session)
 
     def get_gear_set_by_id(self, gear_set_id: int) -> Optional[GearSet]:
         """
@@ -82,7 +65,7 @@ class GearService:
         Returns:
             Gear set or None if not found
         """
-        return self.session.get(GearSet, gear_set_id)
+        return get_gear_set_by_id_func(self.session, gear_set_id)
 
     def delete_gear_set(self, gear_set_id: int) -> bool:
         """
@@ -94,12 +77,7 @@ class GearService:
         Returns:
             True if deleted, False if not found
         """
-        gear_set = self.session.get(GearSet, gear_set_id)
-        if gear_set:
-            self.session.delete(gear_set)
-            self.session.commit()
-            return True
-        return False
+        return delete_gear_set_func(self.session, gear_set_id)
 
     def suggest_gear(
         self,
@@ -120,7 +98,9 @@ class GearService:
         Returns:
             List of suggested items with scores
         """
-        return suggest_gear(self.session, slot, combat_style, budget_per_slot, defence_level)
+        return suggest_gear_for_slot(
+            self.session, slot, combat_style, budget_per_slot, defence_level
+        )
 
     def get_preset_loadout(self, combat_style: str, tier: str) -> Dict:
         """
@@ -133,7 +113,7 @@ class GearService:
         Returns:
             Dictionary with loadout information including items, stats, and total cost
         """
-        return get_preset_loadout(self.session, combat_style, tier)
+        return get_preset_loadout_for_tier(self.session, combat_style, tier)
 
     def get_progression_loadout(self, style: str, tier: str) -> Dict:
         """
@@ -147,7 +127,7 @@ class GearService:
         Returns:
             Dictionary with tier, style, and loadout information
         """
-        return get_progression_loadout(self.session, style, tier)
+        return get_progression_loadout_for_tier(self.session, style, tier)
 
     def calculate_dps(
         self,
@@ -168,7 +148,9 @@ class GearService:
         Returns:
             Dict with DPS information
         """
-        return calculate_dps(items, combat_style, attack_type, player_stats)
+        return calculate_dps_for_loadout(
+            self.session, items, combat_style, attack_type, player_stats
+        )
 
     def get_best_loadout(
         self,
@@ -184,26 +166,8 @@ class GearService:
         content_tag: Optional[str] = None,
         max_tick_manipulation: bool = False,
     ) -> Dict:
-        """
-        Find the best loadout a player can afford/wear based on stats and budget.
-
-        Args:
-            combat_style: Combat style (melee, ranged, magic)
-            budget: Total budget in GP
-            stats: Dict with stat levels (attack, strength, defence, ranged, magic, prayer)
-            attack_type: For melee, attack type (stab, slash, crush)
-            quests_completed: Set of completed quest names
-            achievements_completed: Set of completed achievement names
-            exclude_slots: List of slots to exclude (e.g., ["shield"] for 2H weapons)
-            ironman: If True, filter out tradeable items (ironman mode)
-            exclude_items: List of item names to exclude
-            content_tag: Optional content tag to filter by (e.g., 'toa_entry', 'gwd')
-            max_tick_manipulation: If True, filter out items requiring tick manipulation
-
-        Returns:
-            Dict with best loadout, total cost, and DPS
-        """
-        return get_best_loadout(
+        """Find the best loadout based on stats and budget."""
+        return get_best_loadout_for_stats(
             self.session,
             combat_style,
             budget,
@@ -243,7 +207,7 @@ class GearService:
         Returns:
             Dict with upgrade recommendations per slot
         """
-        return get_upgrade_path(
+        return get_upgrade_path_for_loadout(
             self.session,
             current_loadout,
             combat_style,
@@ -281,7 +245,7 @@ class GearService:
         Returns:
             List of alternative items sorted by score
         """
-        return get_alternatives(
+        return get_alternatives_for_slot(
             self.session,
             slot,
             combat_style,
@@ -303,7 +267,7 @@ class GearService:
         Returns:
             Dictionary with enriched progression data for all slots
         """
-        return get_wiki_progression(self.session, style)
+        return get_wiki_progression_for_style(self.session, style)
 
     def suggest_slayer_gear(
         self,
@@ -315,23 +279,8 @@ class GearService:
         achievements_completed: Optional[Set[str]] = None,
         ironman: bool = False,
     ) -> Dict:
-        """
-        Suggest optimal gear for a slayer task based on user levels.
-        Returns multiple tier suggestions similar to wiki progression guides.
-
-        Args:
-            task_id: The slayer task ID
-            stats: Dict with stat levels (attack, strength, defence, ranged, magic, prayer)
-            budget: Total budget in GP (default: 100M)
-            combat_style: Optional combat style override
-            quests_completed: Set of completed quest names
-            achievements_completed: Set of completed achievement names
-            ironman: If True, filter out tradeable items (ironman mode)
-
-        Returns:
-            Dict with optimal loadouts for multiple tiers, task info, and reasoning
-        """
-        return suggest_slayer_gear(
+        """Suggest optimal gear for a slayer task based on user levels."""
+        return suggest_slayer_gear_for_task(
             self.session,
             task_id,
             stats,

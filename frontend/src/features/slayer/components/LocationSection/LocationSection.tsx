@@ -71,12 +71,17 @@ export function LocationSection({
       {/* Location Cards */}
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
         {locations.map((location, index) => (
-          <LocationCard key={index} location={location} index={index} />
+          <LocationCard key={index} location={location} />
         ))}
       </SimpleGrid>
 
       {/* Combat Strategy */}
-      <StrategySection strategy={strategy} />
+      <StrategySection 
+        strategy={strategy} 
+        weaknesses={weaknesses}
+        itemsNeeded={itemsNeeded}
+        alternatives={alternatives}
+      />
 
       {/* Weaknesses */}
       <WeaknessesSection weaknesses={weaknesses} />

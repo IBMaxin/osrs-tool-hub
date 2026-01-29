@@ -4,33 +4,20 @@ import {
   Group,
   Badge,
   Button,
-  NumberInput,
+  Loader,
   Divider,
   Alert,
-  Box,
-  ScrollArea,
-  SegmentedControl,
 } from '@mantine/core';
 import { IconSword, IconAlertCircle } from '@tabler/icons-react';
-import { Loader } from '@mantine/core';
-import { EquipmentDiagram } from './EquipmentDiagram';
-import { StatsInputForm } from './StatsInputForm';
-import { ContentUpgradesTable } from './ContentUpgradesTable';
-import { DPSSummary } from './DPSSummary';
 import { useSlayerGearSuggestions } from './useSlayerGearSuggestions';
+import { getCombatStyleColor } from './utils';
+import { StatsInputForm } from './StatsInputForm';
+import { GearProgressionDisplay } from './GearProgressionDisplay';
+import { ContentUpgradesTable } from './ContentUpgradesTable';
 
 interface SlayerGearSuggestionsProps {
   taskId: number | null;
   enabled: boolean;
-}
-
-function getCombatStyleColor(style: string) {
-  switch (style) {
-    case 'melee': return 'osrsRed';
-    case 'ranged': return 'osrsGreen';
-    case 'magic': return 'osrsBlue';
-    default: return 'gray';
-  }
 }
 
 export function SlayerGearSuggestions({ taskId, enabled }: SlayerGearSuggestionsProps) {
@@ -59,50 +46,16 @@ export function SlayerGearSuggestions({ taskId, enabled }: SlayerGearSuggestions
         </Badge>
       </Group>
 
-      <StatsInputForm stats={stats} onStatsChange={setStats} />
-
-      <Group>
-        <NumberInput
-          label="Budget (GP)"
-          value={budget}
-          onChange={(val) => setBudget(Number(val) || 0)}
-          min={0}
-          step={1_000_000}
-          size="xs"
-          style={{ flex: 1 }}
-        />
-        <Button
-          size="xs"
-          variant={ironman ? 'filled' : 'outline'}
-          color="osrsOrange"
-          onClick={() => setIronman(!ironman)}
-          style={{ marginTop: '24px' }}
-        >
-          {ironman ? 'Ironman' : 'Normal'}
-        </Button>
-      </Group>
-
-      {/* Combat Style Selector */}
-      <Stack gap="xs">
-        <Text size="sm" fw={500}>Combat Style:</Text>
-        <SegmentedControl
-          value={combatStyle || 'auto'}
-          onChange={(value) => setCombatStyle(value === 'auto' ? null : value as 'melee' | 'ranged' | 'magic')}
-          data={[
-            { label: 'Auto (Recommended)', value: 'auto' },
-            { label: 'Melee', value: 'melee' },
-            { label: 'Ranged', value: 'ranged' },
-            { label: 'Magic', value: 'magic' },
-          ]}
-          fullWidth
-          color="osrsGold"
-        />
-        {combatStyle && (
-          <Text size="xs" c="dimmed">
-            Showing gear for: {combatStyle.charAt(0).toUpperCase() + combatStyle.slice(1)}
-          </Text>
-        )}
-      </Stack>
+      <StatsInputForm
+        stats={stats}
+        onStatsChange={setStats}
+        budget={budget}
+        onBudgetChange={setBudget}
+        ironman={ironman}
+        onIronmanToggle={() => setIronman(!ironman)}
+        combatStyle={combatStyle}
+        onCombatStyleChange={setCombatStyle}
+      />
 
       <Button
         onClick={handleGetSuggestions}
@@ -166,35 +119,24 @@ export function SlayerGearSuggestions({ taskId, enabled }: SlayerGearSuggestions
           </Group>
 
           {/* Level-Based Gear Progression - Wiki Style */}
-          {gearData.tier_loadouts && gearData.tier_loadouts.length > 0 && (
-            <>
-              <Text fw={600} size="md" c="osrsGold.4">Gear Progression</Text>
-              <ScrollArea>
-                <Group align="flex-start" gap="md" wrap="nowrap" style={{ overflowX: 'auto' }}>
-                  {gearData.tier_loadouts.map((tierData) => (
-                    <Box key={tierData.tier} style={{ minWidth: '200px', flexShrink: 0 }}>
-                      <EquipmentDiagram 
-                        loadout={tierData.loadout} 
-                        tier={tierData.tier}
-                      />
-                    </Box>
-                  ))}
-                </Group>
-              </ScrollArea>
-            </>
-          )}
+          <GearProgressionDisplay tierLoadouts={gearData.tier_loadouts} />
 
           {/* Content Specific Upgrades Table */}
-          {gearData.primary_loadout && (
-            <>
-              <Divider color="osrsBrown.6" />
-              <ContentUpgradesTable loadout={gearData.primary_loadout} />
-            </>
-          )}
+          <ContentUpgradesTable gearData={gearData} />
 
           {/* DPS Stats Summary */}
           {gearData.primary_loadout && (
-            <DPSSummary loadout={gearData.primary_loadout} />
+            <Group justify="center" gap="md" mt="xs">
+              <Badge size="md" color="osrsGreen" variant="light">
+                DPS: {gearData.primary_loadout.dps.dps.toFixed(2)}
+              </Badge>
+              <Badge size="md" color="osrsOrange" variant="light">
+                Max Hit: {gearData.primary_loadout.dps.max_hit}
+              </Badge>
+              <Badge size="md" color="osrsBlue" variant="light">
+                Speed: {gearData.primary_loadout.dps.attack_speed_seconds.toFixed(1)}s
+              </Badge>
+            </Group>
           )}
         </Stack>
       )}

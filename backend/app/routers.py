@@ -1,79 +1,61 @@
-"""Router configuration and mounting."""
+"""Application routers configuration."""
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
+from backend.api.v1.health import router as health_router
+from backend.api.v1.flips import router as flips_router, flipping_router
+from backend.api.v1.trades import router as trades_router
+from backend.api.v1.watchlist import router as watchlist_router
+from backend.api.v1.slayer import router as slayer_router
+from backend.api.v1.gear.routes import (
+    items,
+    loadouts,
+    suggestions,
+    slayer as gear_slayer,
+    boss,
+    progression,
+    gear_sets,
+    dps
+)
 
-from backend.api.v1 import flips, gear, slayer, trades, watchlist
-from backend.services.flipping import FlippingService, FlipOpportunity
-from fastapi import Depends, Query
-from typing import List
-from backend.db.session import get_session
-from sqlmodel import Session
+api_router = APIRouter(prefix="/api/v1")
+
+# Core application routes
+api_router.include_router(health_router)
+api_router.include_router(flips_router)
+api_router.include_router(flipping_router)  # Legacy scanner endpoint for backward compatibility
+api_router.include_router(trades_router)
+api_router.include_router(watchlist_router)
+api_router.include_router(slayer_router)
+
+# Gear routes
+api_router.include_router(items.router)
+api_router.include_router(loadouts.router)
+api_router.include_router(suggestions.router)
+api_router.include_router(gear_slayer.router)
+api_router.include_router(boss.router)
+api_router.include_router(progression.router)
+api_router.include_router(gear_sets.router)
+api_router.include_router(dps.router)
 
 
 def include_routers(app: FastAPI) -> None:
     """
-    Include all API routers in the application.
-
+    Include all routers in the FastAPI application.
+    
     Args:
         app: FastAPI application instance
     """
-    # Include versioned routers
-    app.include_router(flips.router, prefix="/api/v1")
-    app.include_router(gear.router, prefix="/api/v1")
-    app.include_router(slayer.router, prefix="/api/v1")
-    app.include_router(trades.router, prefix="/api/v1")
-    app.include_router(watchlist.router, prefix="/api/v1")
-
-    # GE Tracker-style flip scanner endpoint
-    @app.get("/api/v1/flipping/scanner", response_model=List[FlipOpportunity], tags=["Flipping"])
-    def get_flip_scanner(
-        budget: int = Query(..., description="Maximum budget in GP", gt=0),
-        min_roi: float = Query(..., description="Minimum ROI percentage", ge=0.0),
-        min_volume: int = Query(..., description="Minimum volume requirement", ge=0),
-        exclude_members: bool = Query(False, description="Exclude members-only items"),
-        session: Session = Depends(get_session),
-    ) -> List[FlipOpportunity]:
-        """
-        GE Tracker-style flip scanner endpoint.
-
-        Finds the best flip opportunities based on budget, ROI, and volume filters.
-        All calculations are performed in the database layer for optimal performance.
-
-        Args:
-            budget: Maximum budget in GP (required)
-            min_roi: Minimum ROI percentage (required)
-            min_volume: Minimum volume requirement (required)
-            exclude_members: If True, exclude members-only items
-            session: Database session
-
-        Returns:
-            List of FlipOpportunity models sorted by potential profit
-        """
-        service = FlippingService(session)
-        return service.find_best_flips(
-            budget=budget, min_roi=min_roi, min_volume=min_volume, exclude_members=exclude_members
-        )
-
-    # Root and health endpoints
+    # Root endpoint
     @app.get("/")
-    async def root() -> dict[str, str]:
-        """Root endpoint."""
-        return {"message": "OSRS Tool Hub API"}
-
+    def root():
+        """Root endpoint with welcome message."""
+        return {"message": "Welcome to OSRS Tool Hub API"}
+    
+    # Simple health check endpoint at root (avoids naming conflict with health module)
     @app.get("/health")
-    async def health() -> dict[str, str]:
-        """Health check endpoint."""
+    def root_health():
+        """Simple health check endpoint."""
         return {"status": "healthy"}
-
-    # Admin endpoints
-    @app.post("/api/v1/admin/sync-stats")
-    async def sync_stats(session: Session = Depends(get_session)):
-        """
-        Sync item stats from OSRSBox.
-
-        This is a heavy operation (20MB JSON), so it might take 10-20 seconds.
-        """
-        from backend.services.item_stats import import_item_stats
-
-        await import_item_stats(session)
-        return {"status": "Stats updated"}
+    
+    # Include API v1 router
+    app.include_router(api_router)
