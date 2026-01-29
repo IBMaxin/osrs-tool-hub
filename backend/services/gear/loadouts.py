@@ -47,26 +47,28 @@ def suggest_gear(
     for item in items:
         # Calculate relevance for sorting (but don't filter - include all items)
         relevance = 0
-        
+
         if combat_style == "melee":
-            relevance = item.melee_strength * 4 + max(item.attack_stab, item.attack_slash, item.attack_crush)
+            relevance = item.melee_strength * 4 + max(
+                item.attack_stab, item.attack_slash, item.attack_crush
+            )
         elif combat_style == "ranged":
             relevance = item.ranged_strength * 4 + item.attack_ranged
         elif combat_style == "magic":
             relevance = item.magic_damage * 10 + item.attack_magic
         elif combat_style == "prayer":
             relevance = item.prayer_bonus * 2
-        
+
         # Include defensive stats and prayer bonus in relevance
         relevance += (
-            item.defence_stab + 
-            item.defence_slash + 
-            item.defence_crush + 
-            item.defence_magic + 
-            item.defence_ranged
+            item.defence_stab
+            + item.defence_slash
+            + item.defence_crush
+            + item.defence_magic
+            + item.defence_ranged
         ) * 0.3
         relevance += item.prayer_bonus * 1.5
-        
+
         # Include all items with full stats
         item_list.append(
             {

@@ -106,8 +106,12 @@ class FlippingService:
             # Volume calculations
             buy_vol_24h = price.buy_volume_24h
             sell_vol_24h = price.sell_volume_24h
-            total_vol_24h = (buy_vol_24h or 0) + (sell_vol_24h or 0) if (buy_vol_24h is not None or sell_vol_24h is not None) else None
-            
+            total_vol_24h = (
+                (buy_vol_24h or 0) + (sell_vol_24h or 0)
+                if (buy_vol_24h is not None or sell_vol_24h is not None)
+                else None
+            )
+
             # Margin x Volume (GE Tracker style)
             margin_x_volume = margin * (total_vol_24h or 0) if total_vol_24h is not None else None
 
@@ -141,8 +145,11 @@ class FlippingService:
 
         # Sort by Margin x Volume descending (GE Tracker style), then by potential_profit
         opportunities.sort(
-            key=lambda x: (x["margin_x_volume"] if x["margin_x_volume"] is not None else 0, x["potential_profit"] or 0), 
-            reverse=True
+            key=lambda x: (
+                x["margin_x_volume"] if x["margin_x_volume"] is not None else 0,
+                x["potential_profit"] or 0,
+            ),
+            reverse=True,
         )
 
         return opportunities[:limit]
@@ -263,7 +270,9 @@ class FlippingService:
             buy_vol_24h = int(row.buy_volume_24h) if row.buy_volume_24h else None
             sell_vol_24h = int(row.sell_volume_24h) if row.sell_volume_24h else None
             total_vol_24h = int(row.total_volume_24h) if row.total_volume_24h else None
-            margin_x_volume = margin_post_tax * (total_vol_24h or 0) if total_vol_24h is not None else None
+            margin_x_volume = (
+                margin_post_tax * (total_vol_24h or 0) if total_vol_24h is not None else None
+            )
 
             opportunities.append(
                 FlipOpportunity(

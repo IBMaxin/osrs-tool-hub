@@ -11,9 +11,7 @@ router = APIRouter()
 
 
 @router.post("/gear/slayer-gear")
-async def suggest_slayer_gear(
-    request: SlayerGearRequest, session: Session = Depends(get_session)
-):
+async def suggest_slayer_gear(request: SlayerGearRequest, session: Session = Depends(get_session)):
     """
     Suggest optimal gear for a slayer task based on user levels.
 
@@ -38,10 +36,10 @@ async def suggest_slayer_gear(
             achievements_completed=achievements,
             ironman=request.ironman,
         )
-        
+
         if "error" in result:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result["error"])
-        
+
         return result
     except HTTPException:
         raise

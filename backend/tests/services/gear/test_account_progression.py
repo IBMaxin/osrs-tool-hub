@@ -10,9 +10,7 @@ class TestGetGlobalUpgradePath:
     """Test get_global_upgrade_path function."""
 
     @patch("backend.services.gear.progression.account_progression.get_upgrade_path")
-    def test_get_global_upgrade_path_single_style(
-        self, mock_get_upgrade_path, session: Session
-    ):
+    def test_get_global_upgrade_path_single_style(self, mock_get_upgrade_path, session: Session):
         """Test get_global_upgrade_path with single style."""
         mock_get_upgrade_path.return_value = {
             "recommended_upgrades": [
@@ -37,22 +35,17 @@ class TestGetGlobalUpgradePath:
         assert all("style" in u for u in result["recommended_upgrades"])
 
     @patch("backend.services.gear.progression.account_progression.get_upgrade_path")
-    def test_get_global_upgrade_path_multiple_styles(
-        self, mock_get_upgrade_path, session: Session
-    ):
+    def test_get_global_upgrade_path_multiple_styles(self, mock_get_upgrade_path, session: Session):
         """Test get_global_upgrade_path with multiple styles."""
+
         def side_effect(session, current_loadout, combat_style, **kwargs):
             if combat_style == "melee":
                 return {
-                    "recommended_upgrades": [
-                        {"slot": "weapon", "cost": 1000000, "dps_per_gp": 0.5}
-                    ]
+                    "recommended_upgrades": [{"slot": "weapon", "cost": 1000000, "dps_per_gp": 0.5}]
                 }
             elif combat_style == "ranged":
                 return {
-                    "recommended_upgrades": [
-                        {"slot": "weapon", "cost": 800000, "dps_per_gp": 0.6}
-                    ]
+                    "recommended_upgrades": [{"slot": "weapon", "cost": 800000, "dps_per_gp": 0.6}]
                 }
             return {"recommended_upgrades": []}
 
@@ -136,11 +129,15 @@ class TestGetGlobalUpgradePath:
         )
 
         # Check melee call has attack_type
-        melee_call = [c for c in mock_get_upgrade_path.call_args_list if c[1]["combat_style"] == "melee"][0]
+        melee_call = [
+            c for c in mock_get_upgrade_path.call_args_list if c[1]["combat_style"] == "melee"
+        ][0]
         assert melee_call[1]["attack_type"] == "stab"
 
         # Check ranged call has no attack_type
-        ranged_call = [c for c in mock_get_upgrade_path.call_args_list if c[1]["combat_style"] == "ranged"][0]
+        ranged_call = [
+            c for c in mock_get_upgrade_path.call_args_list if c[1]["combat_style"] == "ranged"
+        ][0]
         assert ranged_call[1]["attack_type"] is None
 
     @patch("backend.services.gear.progression.account_progression.get_upgrade_path")
@@ -205,10 +202,13 @@ class TestGetGlobalUpgradePath:
         self, mock_get_upgrade_path, session: Session
     ):
         """Test get_global_upgrade_path handles exceptions gracefully."""
+
         def side_effect(session, current_loadout, combat_style, **kwargs):
             if combat_style == "melee":
                 raise ValueError("Test error")
-            return {"recommended_upgrades": [{"slot": "weapon", "cost": 1000000, "dps_per_gp": 0.5}]}
+            return {
+                "recommended_upgrades": [{"slot": "weapon", "cost": 1000000, "dps_per_gp": 0.5}]
+            }
 
         mock_get_upgrade_path.side_effect = side_effect
 
@@ -225,9 +225,7 @@ class TestGetGlobalUpgradePath:
         assert len(result["recommended_upgrades"]) == 1
 
     @patch("backend.services.gear.progression.account_progression.get_upgrade_path")
-    def test_get_global_upgrade_path_no_upgrades(
-        self, mock_get_upgrade_path, session: Session
-    ):
+    def test_get_global_upgrade_path_no_upgrades(self, mock_get_upgrade_path, session: Session):
         """Test get_global_upgrade_path with no upgrades."""
         mock_get_upgrade_path.return_value = {"recommended_upgrades": []}
 

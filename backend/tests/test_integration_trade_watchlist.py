@@ -197,7 +197,10 @@ class TestTradeServiceIntegration:
     """Test TradeService integration with database and other services."""
 
     def test_trade_service_with_price_updates(
-        self, session: Session, sample_items: list[Item], sample_price_snapshots: list[PriceSnapshot]
+        self,
+        session: Session,
+        sample_items: list[Item],
+        sample_price_snapshots: list[PriceSnapshot],
     ):
         """Test that TradeService correctly uses item prices from database."""
         service = TradeService(session)
@@ -224,9 +227,7 @@ class TestTradeServiceIntegration:
         assert db_trade is not None
         assert db_trade.item_name == item.name
 
-    def test_trade_stats_aggregation(
-        self, session: Session, sample_items: list[Item]
-    ):
+    def test_trade_stats_aggregation(self, session: Session, sample_items: list[Item]):
         """Test that trade stats correctly aggregate multiple trades."""
         service = TradeService(session)
         item = sample_items[0]

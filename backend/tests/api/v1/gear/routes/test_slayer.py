@@ -5,7 +5,6 @@ from unittest.mock import patch, MagicMock
 from sqlmodel import Session
 
 
-
 class TestSlayerGearEndpoint:
     """Test slayer gear suggestion endpoint."""
 
@@ -39,9 +38,7 @@ class TestSlayerGearEndpoint:
             assert "task_id" in data
             assert "monster_name" in data
 
-    def test_suggest_slayer_gear_task_not_found(
-        self, client: TestClient, session: Session
-    ):
+    def test_suggest_slayer_gear_task_not_found(self, client: TestClient, session: Session):
         """Test slayer gear suggestion with non-existent task."""
         with patch("backend.api.v1.gear.routes.slayer.GearService") as mock_service_class:
             mock_service = MagicMock()

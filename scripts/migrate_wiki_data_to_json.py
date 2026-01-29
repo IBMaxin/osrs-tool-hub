@@ -27,27 +27,27 @@ DATA_DIR = Path(__file__).parent.parent / "backend" / "data" / "wiki_progression
 def migrate():
     """Extract progression data from Python dict to JSON files."""
     print("🚀 Starting wiki progression data migration...\n")
-    
+
     # Ensure directory exists
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    
+
     total_size = 0
-    
+
     for style, data in WIKI_PROGRESSION.items():
         output_file = DATA_DIR / f"{style}.json"
-        
+
         # Write JSON with pretty formatting
-        with output_file.open('w', encoding='utf-8') as f:
+        with output_file.open("w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
-        
+
         file_size = output_file.stat().st_size
         total_size += file_size
-        
+
         print(f"✅ Created {output_file.name}")
         print(f"   Size: {file_size:,} bytes")
         print(f"   Slots: {len(data)} equipment slots")
         print()
-    
+
     print("\n✅ Migration complete!")
     print(f"📁 Data files created in: {DATA_DIR}")
     print(f"💾 Total size: {total_size:,} bytes ({total_size / 1024:.1f} KB)")
@@ -65,5 +65,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ Migration failed: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

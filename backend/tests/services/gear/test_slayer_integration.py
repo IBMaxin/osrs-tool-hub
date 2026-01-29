@@ -16,9 +16,7 @@ class TestSuggestSlayerGear:
         assert "error" in result
         assert result["error"] == "Task not found"
 
-    def test_suggest_slayer_gear_monster_not_found(
-        self, session: Session, sample_slayer_tasks
-    ):
+    def test_suggest_slayer_gear_monster_not_found(self, session: Session, sample_slayer_tasks):
         """Test suggest_slayer_gear returns error when monster not found."""
         task = sample_slayer_tasks[0]
         # Delete the monster
@@ -116,9 +114,7 @@ class TestSuggestSlayerGear:
         }
         mock_get_best_loadout.return_value = {"loadout": "test"}
 
-        result = suggest_slayer_gear(
-            session, task_id=task.id, stats={"magic": 70, "attack": 70}
-        )
+        result = suggest_slayer_gear(session, task_id=task.id, stats={"magic": 70, "attack": 70})
 
         assert result["combat_style"] == "magic"
 
@@ -138,9 +134,7 @@ class TestSuggestSlayerGear:
         mock_get_best_loadout.return_value = {"loadout": "test"}
 
         # Test with level 85
-        result = suggest_slayer_gear(
-            session, task_id=task.id, stats={"attack": 85, "strength": 85}
-        )
+        result = suggest_slayer_gear(session, task_id=task.id, stats={"attack": 85, "strength": 85})
 
         assert len(result["tier_loadouts"]) >= 3  # Should have 70+, 75+, 80+, 85+ tiers
         assert any(t["tier"] == "85+" for t in result["tier_loadouts"])
@@ -238,9 +232,7 @@ class TestSuggestSlayerGear:
         }
         mock_get_best_loadout.return_value = {"loadout": "test"}
 
-        result = suggest_slayer_gear(
-            session, task_id=task.id, stats={"attack": 70, "strength": 70}
-        )
+        result = suggest_slayer_gear(session, task_id=task.id, stats={"attack": 70, "strength": 70})
 
         assert "task_id" in result
         assert "monster_name" in result

@@ -212,15 +212,12 @@ class SlayerGearRequest(BaseModel):
     stats: dict[str, int] = Field(
         ..., description="Player stats: attack, strength, defence, ranged, magic, prayer"
     )
-    budget: int = Field(
-        default=100_000_000, ge=0, le=2_147_483_647, description="Budget in GP"
-    )
+    budget: int = Field(default=100_000_000, ge=0, le=2_147_483_647, description="Budget in GP")
     combat_style: Optional[str] = Field(
-        None, description="Combat style: melee, ranged, or magic (optional, will use task recommendation if not provided)"
+        None,
+        description="Combat style: melee, ranged, or magic (optional, will use task recommendation if not provided)",
     )
-    quests_completed: Optional[List[str]] = Field(
-        None, description="List of completed quests"
-    )
+    quests_completed: Optional[List[str]] = Field(None, description="List of completed quests")
     achievements_completed: Optional[List[str]] = Field(
         None, description="List of completed achievements"
     )

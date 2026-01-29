@@ -7,13 +7,13 @@ with Session(engine) as session:
     price_count = session.exec(select(PriceSnapshot)).all()
     print(f"Items in DB: {len(item_count)}")
     print(f"Prices in DB: {len(price_count)}")
-    
+
     # Show a few sample items if they exist
     if item_count:
         print("\nSample items (first 3):")
         for item in item_count[:3]:
             print(f"  - {item.name} (ID: {item.id}, Limit: {item.limit})")
-    
+
     # Show a few sample prices if they exist
     if price_count:
         print("\nSample prices (first 3):")

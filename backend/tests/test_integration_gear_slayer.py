@@ -54,7 +54,11 @@ class TestGearSlayerIntegration:
 
         # Step 3: Verify gear suggestion structure
         assert isinstance(gear_data, dict)
-        assert "tier_loadouts" in gear_data or "primary_loadout" in gear_data or "monster_name" in gear_data
+        assert (
+            "tier_loadouts" in gear_data
+            or "primary_loadout" in gear_data
+            or "monster_name" in gear_data
+        )
 
         # Step 4: Verify task still exists and is accessible
         tasks_response = client.get(f"/api/v1/slayer/tasks/{SlayerMaster.DURADEL.value}")
@@ -96,7 +100,14 @@ class TestGearSlayerIntegration:
             "/api/v1/gear/slayer-gear",
             json={
                 "task_id": task.id,
-                "stats": {"attack": 70, "strength": 70, "defence": 70, "ranged": 70, "magic": 70, "prayer": 50},
+                "stats": {
+                    "attack": 70,
+                    "strength": 70,
+                    "defence": 70,
+                    "ranged": 70,
+                    "magic": 70,
+                    "prayer": 50,
+                },
                 "budget": 10000000,
                 "combat_style": "melee",
             },
@@ -129,7 +140,14 @@ class TestGearSlayerIntegration:
         # Get slayer gear suggestion
         result = gear_service.suggest_slayer_gear(
             task_id=task.id,
-            stats={"attack": 70, "strength": 70, "defence": 70, "ranged": 70, "magic": 70, "prayer": 50},
+            stats={
+                "attack": 70,
+                "strength": 70,
+                "defence": 70,
+                "ranged": 70,
+                "magic": 70,
+                "prayer": 50,
+            },
             budget=10000000,
             combat_style="melee",
         )
@@ -156,7 +174,14 @@ class TestGearSlayerIntegration:
             12,
         )
 
-        stats = {"attack": 70, "strength": 70, "defence": 70, "ranged": 70, "magic": 70, "prayer": 50}
+        stats = {
+            "attack": 70,
+            "strength": 70,
+            "defence": 70,
+            "ranged": 70,
+            "magic": 70,
+            "prayer": 50,
+        }
 
         # Test melee
         melee_response = client.post(
@@ -223,9 +248,7 @@ class TestGearBossIntegration:
         assert "recommended_loadouts" in data
         assert isinstance(data["recommended_loadouts"], list)
 
-    def test_boss_list_with_gear_data(
-        self, client: TestClient, session: Session
-    ):
+    def test_boss_list_with_gear_data(self, client: TestClient, session: Session):
         """Test that boss list endpoint returns data usable by gear endpoints."""
         response = client.get("/api/v1/gear/bosses")
         assert response.status_code == 200

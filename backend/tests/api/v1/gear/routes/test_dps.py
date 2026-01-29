@@ -31,7 +31,7 @@ def create_test_item(
     attack_crush: int = 0,
     melee_strength: int = 0,
     attack_speed: int = 4,
-    **kwargs
+    **kwargs,
 ) -> Item:
     """Helper to create test items with all required fields."""
     defaults = {
@@ -66,7 +66,7 @@ def create_test_item(
         attack_crush=attack_crush,
         melee_strength=melee_strength,
         attack_speed=attack_speed,
-        **defaults
+        **defaults,
     )
 
 
@@ -102,7 +102,13 @@ def test_calculate_dps_with_valid_items(session: Session, client: TestClient):
     """Test DPS calculation with valid items."""
     # Create test items
     weapon = create_test_item(
-        4151, "Abyssal whip", "weapon", attack_stab=82, attack_slash=82, melee_strength=82, attack_speed=4
+        4151,
+        "Abyssal whip",
+        "weapon",
+        attack_stab=82,
+        attack_slash=82,
+        melee_strength=82,
+        attack_speed=4,
     )
     session.add(weapon)
     session.commit()
@@ -201,12 +207,26 @@ def test_compare_dps_endpoint_melee_success(session: Session, client: TestClient
     """Test successful DPS comparison with melee loadouts."""
     # Create test items in the same session that the endpoint will use
     whip = create_test_item(
-        4151, "Abyssal whip", "weapon", attack_stab=82, attack_slash=82, melee_strength=82, attack_speed=4,
-        attack_req=70, strength_req=70
+        4151,
+        "Abyssal whip",
+        "weapon",
+        attack_stab=82,
+        attack_slash=82,
+        melee_strength=82,
+        attack_speed=4,
+        attack_req=70,
+        strength_req=70,
     )
     dscim = create_test_item(
-        4587, "Dragon scimitar", "weapon", attack_stab=67, attack_slash=67, melee_strength=66, attack_speed=4,
-        attack_req=60, strength_req=60
+        4587,
+        "Dragon scimitar",
+        "weapon",
+        attack_stab=67,
+        attack_slash=67,
+        melee_strength=66,
+        attack_speed=4,
+        attack_req=60,
+        strength_req=60,
     )
     session.add(whip)
     session.add(dscim)
@@ -224,7 +244,9 @@ def test_compare_dps_endpoint_melee_success(session: Session, client: TestClient
 
     response = client.post("/api/v1/dps/compare", json=request.model_dump())
 
-    assert response.status_code == 200, f"Expected 200, got {response.status_code}: {response.json()}"
+    assert (
+        response.status_code == 200
+    ), f"Expected 200, got {response.status_code}: {response.json()}"
     data = response.json()
     assert "results" in data
     assert len(data["results"]) == 2
@@ -255,11 +277,17 @@ def test_compare_dps_endpoint_invalid_loadout():
         ("magic", None),
     ],
 )
-def test_compare_dps_endpoint_mixed_combat_styles(combat_style, attack_type, session: Session, client: TestClient):
+def test_compare_dps_endpoint_mixed_combat_styles(
+    combat_style, attack_type, session: Session, client: TestClient
+):
     """Test DPS comparison with different combat styles."""
     if combat_style == "melee":
-        item1 = create_test_item(4151, "Whip", "weapon", attack_slash=82, melee_strength=82, attack_speed=4)
-        item2 = create_test_item(4587, "D Scim", "weapon", attack_slash=67, melee_strength=66, attack_speed=4)
+        item1 = create_test_item(
+            4151, "Whip", "weapon", attack_slash=82, melee_strength=82, attack_speed=4
+        )
+        item2 = create_test_item(
+            4587, "D Scim", "weapon", attack_slash=67, melee_strength=66, attack_speed=4
+        )
     elif combat_style == "ranged":
         item1 = create_test_item(20997, "Twisted bow", "weapon", ranged_strength=70, attack_speed=5)
         item2 = create_test_item(12926, "Blowpipe", "weapon", ranged_strength=20, attack_speed=2)

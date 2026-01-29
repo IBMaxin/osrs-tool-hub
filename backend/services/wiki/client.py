@@ -60,10 +60,10 @@ class WikiAPIClient:
     async def fetch_24h_volume(self) -> dict[str, Any]:  # type: ignore[no-any-return]
         """
         Fetch 24-hour volume data from Wiki timeseries API.
-        
+
         Returns:
             Dictionary with 24h volume data for each item
-            
+
         Raises:
             httpx.HTTPStatusError: If the API request fails
         """

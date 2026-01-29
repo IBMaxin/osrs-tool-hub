@@ -85,11 +85,7 @@ def test_price_snapshot_creation_with_all_fields():
 def test_volume_independent_of_price_fields():
     """Test volume fields work independently of price fields."""
     snap = PriceSnapshot(
-        item_id=4151,
-        high_price=None,
-        low_price=None,
-        buy_volume_24h=1000,
-        sell_volume_24h=800
+        item_id=4151, high_price=None, low_price=None, buy_volume_24h=1000, sell_volume_24h=800
     )
     assert snap.total_volume_24h == 1800
     assert snap.has_volume_data()
