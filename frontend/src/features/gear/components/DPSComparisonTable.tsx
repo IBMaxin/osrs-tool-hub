@@ -25,18 +25,19 @@ export function DPSComparisonTable({ results }: DPSComparisonTableProps) {
 
   return (
     <Card withBorder shadow="sm" p="md">
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Loadout</Table.Th>
-            <Table.Th style={{ textAlign: 'right' }}>DPS</Table.Th>
-            <Table.Th style={{ textAlign: 'right' }}>Max Hit</Table.Th>
-            <Table.Th style={{ textAlign: 'right' }}>Accuracy</Table.Th>
-            <Table.Th style={{ textAlign: 'right' }}>Attack Speed</Table.Th>
-            <Table.Th style={{ textAlign: 'right' }}>DPS Increase</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
+      <Table.ScrollContainer minWidth={700} type="native">
+        <Table striped highlightOnHover stickyHeader>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Loadout</Table.Th>
+              <Table.Th style={{ textAlign: 'right' }}>DPS</Table.Th>
+              <Table.Th style={{ textAlign: 'right' }}>Max Hit</Table.Th>
+              <Table.Th style={{ textAlign: 'right' }}>Accuracy</Table.Th>
+              <Table.Th style={{ textAlign: 'right' }}>Attack Speed</Table.Th>
+              <Table.Th style={{ textAlign: 'right' }}>DPS Increase</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
           {results.map((result) => (
             <Table.Tr key={result.loadout_id}>
               <Table.Td>
@@ -79,8 +80,9 @@ export function DPSComparisonTable({ results }: DPSComparisonTableProps) {
               </Table.Td>
             </Table.Tr>
           ))}
-        </Table.Tbody>
-      </Table>
+          </Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
     </Card>
   );
 }

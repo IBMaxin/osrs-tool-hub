@@ -83,8 +83,8 @@ export function ResultsTable({
               w={200}
             />
           </Group>
-          <Table.ScrollContainer minWidth={900}>
-            <Table striped highlightOnHover verticalSpacing="md">
+          <Table.ScrollContainer minWidth={900} type="native">
+            <Table striped highlightOnHover verticalSpacing="md" stickyHeader>
               <ResultsTableHeader sortField={sortField} onSort={onSort} SortIcon={SortIcon} showLogTrade={!!userId} />
               <Table.Tbody>
                 {flips.map((flip) => (

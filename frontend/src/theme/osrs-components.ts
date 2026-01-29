@@ -6,6 +6,10 @@ export const osrsComponentOverrides: MantineThemeOverride['components'] = {
       root: {
         backgroundColor: '#1A0F08',
       },
+      header: {
+        backgroundColor: '#2B1B0E',
+        borderBottom: '3px solid #4A360C',
+      },
       navbar: {
         backgroundColor: '#2B1B0E',
         borderRight: '3px solid #4A360C',
@@ -16,14 +20,31 @@ export const osrsComponentOverrides: MantineThemeOverride['components'] = {
     },
   },
   
+  Burger: {
+    styles: {
+      root: {
+        color: '#D4AF37',
+        minHeight: '44px',
+        minWidth: '44px',
+        '&:focus-visible': {
+          outline: '3px solid #FFE799',
+          outlineOffset: '2px',
+        },
+      },
+    },
+  },
+  
   NavLink: {
     styles: {
       root: {
         color: '#D4AF37',
         fontWeight: 600,
-        padding: '12px 16px',
+        padding: '14px 16px',
+        minHeight: '44px',
         borderRadius: '4px',
         transition: 'all 0.2s ease',
+        display: 'flex',
+        alignItems: 'center',
         '&:hover': {
           backgroundColor: '#4A360C',
           color: '#FFE799',
@@ -32,6 +53,10 @@ export const osrsComponentOverrides: MantineThemeOverride['components'] = {
           backgroundColor: '#8B6914',
           color: '#FFF9E6',
           borderLeft: '4px solid #D4AF37',
+        },
+        '&:focus-visible': {
+          outline: '3px solid #FFE799',
+          outlineOffset: '2px',
         },
       },
     },
@@ -47,6 +72,10 @@ export const osrsComponentOverrides: MantineThemeOverride['components'] = {
         '&:hover': {
           borderColor: '#8B6914',
           boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)',
+        },
+        '&:focus-visible': {
+          outline: '3px solid #FFE799',
+          outlineOffset: '2px',
         },
       },
     },
@@ -67,14 +96,21 @@ export const osrsComponentOverrides: MantineThemeOverride['components'] = {
         fontWeight: 700,
         textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)',
         transition: 'all 0.2s ease',
+        minHeight: '44px',
+        minWidth: '44px',
         '&:hover': {
           transform: 'translateY(-1px)',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)',
+        },
+        '&:focus-visible': {
+          outline: '3px solid #FFE799',
+          outlineOffset: '2px',
         },
       },
     },
     defaultProps: {
       color: 'osrsOrange',
+      size: 'md',
     },
   },
   
@@ -148,6 +184,67 @@ export const osrsComponentOverrides: MantineThemeOverride['components'] = {
         '&::before': {
           backgroundColor: '#D4AF37',
         },
+      },
+    },
+  },
+
+  Select: {
+    styles: {
+      input: {
+        minHeight: '44px',
+      },
+    },
+  },
+
+  TextInput: {
+    styles: {
+      input: {
+        minHeight: '44px',
+      },
+    },
+  },
+
+  NumberInput: {
+    styles: {
+      input: {
+        minHeight: '44px',
+      },
+    },
+  },
+
+  Checkbox: {
+    styles: {
+      input: {
+        minHeight: '24px',
+        minWidth: '24px',
+      },
+      body: {
+        minHeight: '44px',
+        display: 'flex',
+        alignItems: 'center',
+      },
+    },
+  },
+
+  Radio: {
+    styles: {
+      radio: {
+        minHeight: '24px',
+        minWidth: '24px',
+      },
+      body: {
+        minHeight: '44px',
+        display: 'flex',
+        alignItems: 'center',
+      },
+    },
+  },
+
+  ActionIcon: {
+    styles: {
+      root: {
+        minHeight: '44px',
+        minWidth: '44px',
       },
     },
   },
