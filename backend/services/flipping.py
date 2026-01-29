@@ -79,9 +79,8 @@ class FlippingService:
         # Only apply volume filter if min_volume > 0 and volume data exists
         # Since volume data may not be available, we skip this filter if min_volume is 0
         if min_volume > 0:
-            total_volume = (
-                func.coalesce(PriceSnapshot.high_volume, 0)
-                + func.coalesce(PriceSnapshot.low_volume, 0)
+            total_volume = func.coalesce(PriceSnapshot.high_volume, 0) + func.coalesce(
+                PriceSnapshot.low_volume, 0
             )  # type: ignore[operator]
             query = query.where(total_volume >= min_volume)  # type: ignore
 

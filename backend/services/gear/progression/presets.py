@@ -56,7 +56,9 @@ def get_preset_loadout(session: Session, combat_style: str, tier: str) -> Dict:
                 select(PriceSnapshot).where(PriceSnapshot.item_id == item.id)
             ).first()
 
-            item_price = int(price_snapshot.high_price or 0) if price_snapshot else int(item.value or 0)
+            item_price = (
+                int(price_snapshot.high_price or 0) if price_snapshot else int(item.value or 0)
+            )
             total_cost += item_price
 
             # Build item details

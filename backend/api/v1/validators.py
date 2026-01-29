@@ -211,9 +211,7 @@ def VolumeQuery(default: int = 0, **kwargs: Any) -> Any:
     )
 
 
-def LevelQuery(
-    default: int = 1, min_level: int = 1, max_level: int = 99, **kwargs: Any
-) -> Any:
+def LevelQuery(default: int = 1, min_level: int = 1, max_level: int = 99, **kwargs: Any) -> Any:
     """Create a validated level query parameter."""
     return Query(
         default,

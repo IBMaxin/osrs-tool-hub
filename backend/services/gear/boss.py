@@ -145,7 +145,9 @@ class BossService:
         return {
             "boss_info": boss_data,
             "recommended_loadouts": recommended_loadouts,
-            "notes": boss_data.get("special_mechanics", [])
-            if isinstance(boss_data.get("special_mechanics", []), list)
-            else [],
+            "notes": (
+                boss_data.get("special_mechanics", [])
+                if isinstance(boss_data.get("special_mechanics", []), list)
+                else []
+            ),
         }

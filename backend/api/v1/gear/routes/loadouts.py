@@ -73,7 +73,9 @@ async def get_best_loadout(
 
 
 @router.post("/gear/upgrade-path")
-async def get_upgrade_path(request: UpgradePathRequest, session: Session = Depends(get_session)) -> dict:
+async def get_upgrade_path(
+    request: UpgradePathRequest, session: Session = Depends(get_session)
+) -> dict:
     """
     Find the next upgrade path with cost analysis.
 

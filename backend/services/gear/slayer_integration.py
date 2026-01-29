@@ -51,7 +51,9 @@ def suggest_slayer_gear(
 
     attack_style_str = str(task_data.get("attack_style", "Melee"))
     weakness_val = task_data.get("weakness", [])
-    weakness_list: List[str] = [str(w) for w in weakness_val] if isinstance(weakness_val, list) else []
+    weakness_list: List[str] = (
+        [str(w) for w in weakness_val] if isinstance(weakness_val, list) else []
+    )
 
     # Use provided combat style or parse from task data
     if combat_style:
