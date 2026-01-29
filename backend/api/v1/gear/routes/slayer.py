@@ -11,7 +11,9 @@ router = APIRouter()
 
 
 @router.post("/gear/slayer-gear")
-async def suggest_slayer_gear(request: SlayerGearRequest, session: Session = Depends(get_session)):
+async def suggest_slayer_gear(
+    request: SlayerGearRequest, session: Session = Depends(get_session)
+) -> dict:
     """
     Suggest optimal gear for a slayer task based on user levels.
 

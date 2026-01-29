@@ -1,6 +1,7 @@
 """Application lifespan management (startup/shutdown)."""
 
 import logging
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlmodel import Session, select, func
@@ -29,7 +30,7 @@ def create_db_and_tables() -> None:
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """
     Application lifespan context manager.
 
@@ -77,7 +78,7 @@ async def lifespan(app: FastAPI):
 
         # Check if items need stats populated
         items_without_stats_count = session.exec(
-            select(func.count(Item.id)).where(Item.slot.is_(None))
+            select(func.count()).select_from(Item).where(Item.slot.is_(None))  # type: ignore[union-attr]
         ).one()
 
         if items_without_stats_count > 0:
@@ -100,16 +101,16 @@ async def lifespan(app: FastAPI):
         try:
             seed_slayer_data()
             # Verify after seeding
-            slayer_task_count = session.exec(select(func.count(SlayerTask.id))).one()
-            monster_count = session.exec(select(func.count(Monster.id))).one()
+            slayer_task_count = session.exec(select(func.count()).select_from(SlayerTask)).one()
+            monster_count = session.exec(select(func.count()).select_from(Monster)).one()
             logger.info(
                 f"✅ Slayer data updated: {slayer_task_count} tasks, {monster_count} monsters"
             )
         except Exception as e:
             logger.error(f"Failed to seed slayer data: {e}")
             # If seeding fails, check if we have any data
-            slayer_task_count = session.exec(select(func.count(SlayerTask.id))).one()
-            monster_count = session.exec(select(func.count(Monster.id))).one()
+            slayer_task_count = session.exec(select(func.count()).select_from(SlayerTask)).one()
+            monster_count = session.exec(select(func.count()).select_from(Monster)).one()
             if slayer_task_count == 0 or monster_count == 0:
                 logger.warning("⚠️  No slayer data in database after failed seed attempt")
             else:

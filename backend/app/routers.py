@@ -67,7 +67,7 @@ def include_routers(app: FastAPI) -> None:
 
     # Admin endpoints
     @app.post("/api/v1/admin/sync-stats")
-    async def sync_stats(session: Session = Depends(get_session)):
+    async def sync_stats(session: Session = Depends(get_session)) -> dict[str, str]:
         """
         Sync item stats from OSRSBox.
 

@@ -18,7 +18,7 @@ def get_flips(
     min_roi: float = ROIQuery(0.0),
     min_volume: int = VolumeQuery(0),
     session: Session = Depends(get_session),
-):
+) -> List[FlipOpportunity]:
     """
     Get flip opportunities with validated parameters.
 
@@ -33,6 +33,5 @@ def get_flips(
         List of flip opportunities
     """
     service = FlippingService(session)
-    return service.get_flip_opportunities(
-        max_budget=max_budget, min_roi=min_roi, min_volume=min_volume
-    )
+    budget = max_budget if max_budget is not None else 2_147_483_647
+    return service.find_best_flips(budget=budget, min_roi=min_roi, min_volume=min_volume)
