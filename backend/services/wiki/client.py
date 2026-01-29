@@ -56,3 +56,19 @@ class WikiAPIClient:
             response = await client.get(url, headers=self.headers, timeout=10.0)
             response.raise_for_status()
             return response.json()
+
+    async def fetch_24h_volume(self) -> dict[str, Any]:  # type: ignore[no-any-return]
+        """
+        Fetch 24-hour volume data from Wiki timeseries API.
+        
+        Returns:
+            Dictionary with 24h volume data for each item
+            
+        Raises:
+            httpx.HTTPStatusError: If the API request fails
+        """
+        url = f"{self.base_url}/24h"
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, headers=self.headers, timeout=30.0)
+            response.raise_for_status()
+            return response.json()
