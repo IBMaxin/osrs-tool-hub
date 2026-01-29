@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 class WikiAPIClient:
     """Client for interacting with the OSRS Wiki API."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the Wiki API client."""
         self.base_url = settings.wiki_api_base
         self.headers = {"User-Agent": settings.user_agent, "Accept": "application/json"}
 
-    async def fetch_mapping(self) -> list[dict]:
+    async def fetch_mapping(self) -> list[dict[str, Any]]:
         """
         Fetch item mapping (ID, name, limit, value) from Wiki.
 
@@ -32,7 +32,8 @@ class WikiAPIClient:
             try:
                 response = await client.get(url, headers=self.headers, timeout=30.0)
                 response.raise_for_status()
-                return response.json()
+                data = response.json()
+                return data if isinstance(data, list) else []
             except httpx.HTTPStatusError as e:
                 if e.response.status_code == 403:
                     logger.error("403 Forbidden: Invalid User-Agent header")
@@ -41,7 +42,7 @@ class WikiAPIClient:
                 logger.error(f"Mapping fetch failed: {e}")
                 raise
 
-    async def fetch_latest_prices(self) -> dict[str, Any]:  # type: ignore[no-any-return]
+    async def fetch_latest_prices(self) -> dict[str, Any]:
         """
         Fetch latest high/low prices from Wiki.
 
@@ -55,9 +56,10 @@ class WikiAPIClient:
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=self.headers, timeout=10.0)
             response.raise_for_status()
-            return response.json()
+            data = response.json()
+            return data if isinstance(data, dict) else {}
 
-    async def fetch_24h_volume(self) -> dict[str, Any]:  # type: ignore[no-any-return]
+    async def fetch_24h_volume(self) -> dict[str, Any]:
         """
         Fetch 24-hour volume data from Wiki timeseries API.
 
@@ -71,4 +73,5 @@ class WikiAPIClient:
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=self.headers, timeout=30.0)
             response.raise_for_status()
-            return response.json()
+            data = response.json()
+            return data if isinstance(data, dict) else {}

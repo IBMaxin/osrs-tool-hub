@@ -126,7 +126,7 @@ class TradeService:
             query = query.where(Trade.created_at <= end_date)
 
         # Order by created_at descending (most recent first)
-        query = query.order_by(Trade.created_at.desc())
+        query = query.order_by(Trade.created_at.desc())  # type: ignore[attr-defined]
 
         # Apply limit
         query = query.limit(limit)
@@ -198,10 +198,11 @@ class TradeService:
             profit_by_item[item_name] += trade.profit
 
         # Get top 5 most profitable items
-        best_items = sorted(
-            [{"item_name": name, "profit": profit} for name, profit in profit_by_item.items()],
-            key=lambda x: int(x["profit"]),
-            reverse=True,
+        items_with_profit: list[dict[str, int | str]] = [
+            {"item_name": name, "profit": profit} for name, profit in profit_by_item.items()
+        ]
+        best_items: list[dict[str, int | str]] = sorted(
+            items_with_profit, key=lambda x: int(x["profit"]), reverse=True
         )[:5]
 
         return {

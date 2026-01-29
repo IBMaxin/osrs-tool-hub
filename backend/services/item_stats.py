@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-async def import_item_stats(session: Session):
+async def import_item_stats(session: Session) -> None:
     """Fetch item stats from OSRSBox and update DB."""
     url = "https://raw.githubusercontent.com/osrsbox/osrsbox-db/master/docs/items-complete.json"
 

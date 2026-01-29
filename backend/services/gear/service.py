@@ -69,7 +69,7 @@ class GearService:
         Returns:
             List of all gear sets
         """
-        statement = select(GearSet).order_by(GearSet.created_at.desc())
+        statement = select(GearSet).order_by(GearSet.created_at.desc())  # type: ignore[attr-defined]
         return list(self.session.exec(statement).all())
 
     def get_gear_set_by_id(self, gear_set_id: int) -> Optional[GearSet]:

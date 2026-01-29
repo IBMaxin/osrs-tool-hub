@@ -1,6 +1,6 @@
 """Slayer service logic."""
 
-from typing import List, Dict
+from typing import Dict, List
 from sqlmodel import Session, select
 
 from backend.models import Monster, SlayerTask, SlayerMaster
@@ -8,14 +8,14 @@ from backend.services.slayer_data import SLAYER_TASK_DATA
 
 
 class SlayerService:
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
     def get_masters(self) -> List[str]:
         """Get all slayer masters."""
         return [master.value for master in SlayerMaster]
 
-    def get_tasks(self, master: SlayerMaster) -> List[Dict]:
+    def get_tasks(self, master: SlayerMaster) -> list[dict[str, object]]:
         """Get all tasks assignable by a specific master.
 
         Args:
@@ -27,7 +27,7 @@ class SlayerService:
         query = select(SlayerTask, Monster).join(Monster).where(SlayerTask.master == master)
         results = self.session.exec(query).all()
 
-        tasks = []
+        tasks: list[dict[str, object]] = []
         for task, monster in results:
             tasks.append(
                 {
@@ -45,7 +45,13 @@ class SlayerService:
             )
 
         # Sort by weight descending (highest probability first)
-        tasks.sort(key=lambda x: x["weight"], reverse=True)
+        def task_weight(task_dict: dict[str, object]) -> int:
+            weight = task_dict.get("weight")
+            if isinstance(weight, (int, float, str)):
+                return int(weight)
+            return 0
+
+        tasks.sort(key=task_weight, reverse=True)
         return tasks
 
     def get_task_locations(self, task_id: int) -> Dict:
@@ -104,9 +110,11 @@ class SlayerService:
 
         # Extract location data with safe defaults
         locations = task_data.get("locations", [])
+        if not isinstance(locations, list):
+            locations = []
 
         # Handle legacy format (list of strings) vs new format (list of dicts)
-        formatted_locations = []
+        formatted_locations: list[dict[str, object]] = []
         for loc in locations:
             if isinstance(loc, str):
                 # Legacy format - convert to minimal dict
@@ -139,11 +147,7 @@ class SlayerService:
             "weakness": task_data.get("weakness", []),
             "items_needed": task_data.get("items_needed", []),
             "attack_style": task_data.get("attack_style", ""),
-            "has_detailed_data": (
-                len(formatted_locations) > 0 and isinstance(locations[0], dict)
-                if locations
-                else False
-            ),
+            "has_detailed_data": bool(locations) and isinstance(locations[0], dict),
         }
 
     def suggest_action(self, task_id: int, user_stats: Dict[str, int]) -> Dict:
@@ -163,6 +167,8 @@ class SlayerService:
             return {"error": "Task not found"}
 
         monster = self.session.get(Monster, task.monster_id)
+        if not monster:
+            return {"error": "Monster not found"}
 
         # Defaults
         recommendation = "DO"
@@ -170,20 +176,24 @@ class SlayerService:
         xp_rate = 0
         profit_rate = 0
         attack_style = "Generic Melee/Ranged"
-        items_needed = []
-        weakness = []
+        items_needed: list[object] = []
+        weakness: list[object] = []
 
         # Try to find data by Category first (usually matches wiki), then Monster Name
         task_data = SLAYER_TASK_DATA.get(task.category) or SLAYER_TASK_DATA.get(monster.name)
 
         if task_data:
-            recommendation = task_data.get("recommendation", recommendation)
-            reason = task_data.get("reason", reason)
-            xp_rate = task_data.get("xp_rate", 0)
-            profit_rate = task_data.get("profit_rate", 0)
-            attack_style = task_data.get("attack_style", attack_style)
-            items_needed = task_data.get("items_needed", [])
-            weakness = task_data.get("weakness", [])
+            recommendation = str(task_data.get("recommendation", recommendation))
+            reason = str(task_data.get("reason", reason))
+            xp_val = task_data.get("xp_rate", 0)
+            profit_val = task_data.get("profit_rate", 0)
+            xp_rate = int(xp_val) if isinstance(xp_val, (int, float, str)) else 0
+            profit_rate = int(profit_val) if isinstance(profit_val, (int, float, str)) else 0
+            attack_style = str(task_data.get("attack_style", attack_style))
+            items_val = task_data.get("items_needed", [])
+            weakness_val = task_data.get("weakness", [])
+            items_needed = list(items_val) if isinstance(items_val, list) else []
+            weakness = list(weakness_val) if isinstance(weakness_val, list) else []
         else:
             # Fallback Logic
             if task.weight > 8 and monster.slayer_xp < 50:

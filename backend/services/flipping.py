@@ -62,24 +62,28 @@ class FlippingService:
         Optimized to perform heavy filtering in SQL where possible.
         """
         # Start query
-        query = select(Item, PriceSnapshot).join(PriceSnapshot, Item.id == PriceSnapshot.item_id)
+        query = select(Item, PriceSnapshot).join(
+            PriceSnapshot,
+            Item.id == PriceSnapshot.item_id,  # type: ignore[arg-type]
+        )
 
         # Filter: Must have valid prices
-        query = query.where(PriceSnapshot.high_price.is_not(None))
-        query = query.where(PriceSnapshot.low_price.is_not(None))
+        query = query.where(PriceSnapshot.high_price.is_not(None))  # type: ignore[union-attr]
+        query = query.where(PriceSnapshot.low_price.is_not(None))  # type: ignore[union-attr]
 
         # Filter: Max Budget (using low_price as buy price)
-        if max_budget:
-            query = query.where(PriceSnapshot.low_price <= max_budget)
+        if max_budget is not None:
+            query = query.where(PriceSnapshot.low_price <= max_budget)  # type: ignore[operator]
 
         # Filter: Volume (sum of high/low volume)
         # Only apply volume filter if min_volume > 0 and volume data exists
         # Since volume data may not be available, we skip this filter if min_volume is 0
         if min_volume > 0:
-            total_volume = func.coalesce(PriceSnapshot.high_volume, 0) + func.coalesce(
-                PriceSnapshot.low_volume, 0
-            )
-            query = query.where(total_volume >= min_volume)
+            total_volume = (
+                func.coalesce(PriceSnapshot.high_volume, 0)
+                + func.coalesce(PriceSnapshot.low_volume, 0)
+            )  # type: ignore[operator]
+            query = query.where(total_volume >= min_volume)  # type: ignore
 
         results = self.session.exec(query).all()
         opportunities = []
@@ -258,28 +262,29 @@ class FlippingService:
         )
 
         # Execute query with parameters using bindparams
-        result = self.session.exec(
-            sql_query.bindparams(budget=budget, min_roi=min_roi, min_volume=min_volume)
+        result = self.session.execute(
+            sql_query,
+            {"budget": budget, "min_roi": min_roi, "min_volume": min_volume},
         )
 
         opportunities = []
-        for row in result:
-            margin_post_tax = float(row.margin_post_tax) if row.margin_post_tax else 0.0
-            roi = float(row.roi) if row.roi else 0.0
-            volume = int(row.volume) if row.volume else 0
-            buy_vol_24h = int(row.buy_volume_24h) if row.buy_volume_24h else None
-            sell_vol_24h = int(row.sell_volume_24h) if row.sell_volume_24h else None
-            total_vol_24h = int(row.total_volume_24h) if row.total_volume_24h else None
+        for row in result.mappings():
+            margin_post_tax = float(row["margin_post_tax"] or 0.0)
+            roi = float(row["roi"] or 0.0)
+            volume = int(row["volume"] or 0)
+            buy_vol_24h = int(row["buy_volume_24h"]) if row["buy_volume_24h"] else None
+            sell_vol_24h = int(row["sell_volume_24h"]) if row["sell_volume_24h"] else None
+            total_vol_24h = int(row["total_volume_24h"]) if row["total_volume_24h"] else None
             margin_x_volume = (
                 margin_post_tax * (total_vol_24h or 0) if total_vol_24h is not None else None
             )
 
             opportunities.append(
                 FlipOpportunity(
-                    item_id=int(row.item_id),
-                    item_name=str(row.name),
-                    buy_price=int(row.buy_price),
-                    sell_price=int(row.sell_price),
+                    item_id=int(row["item_id"]),
+                    item_name=str(row["name"]),
+                    buy_price=int(row["buy_price"]),
+                    sell_price=int(row["sell_price"]),
                     margin=round(margin_post_tax, 2),
                     roi=round(roi, 2),
                     volume=volume,
@@ -287,7 +292,7 @@ class FlippingService:
                     sell_volume_24h=sell_vol_24h,
                     total_volume_24h=total_vol_24h,
                     margin_x_volume=margin_x_volume,
-                    wiki_url=str(row.wiki_url) if row.wiki_url else None,
+                    wiki_url=str(row["wiki_url"]) if row["wiki_url"] else None,
                 )
             )
 

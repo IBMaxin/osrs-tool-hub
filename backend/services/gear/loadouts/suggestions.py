@@ -1,6 +1,6 @@
 """Gear suggestion utilities."""
 
-from typing import Dict, List
+from typing import Dict, List, cast
 from sqlmodel import Session, select
 
 from backend.models import Item
@@ -37,7 +37,7 @@ def suggest_gear(
     item_list = []
     for item in items:
         # Calculate relevance for sorting (but don't filter - include all items)
-        relevance = 0
+        relevance: float = 0.0
 
         if combat_style == "melee":
             relevance = item.melee_strength * 4 + max(
@@ -91,5 +91,5 @@ def suggest_gear(
         )
 
     # Sort by relevance descending and return top 100
-    item_list.sort(key=lambda x: x["relevance"], reverse=True)
+    item_list.sort(key=lambda x: cast(float, x["relevance"]), reverse=True)
     return item_list[:100]
