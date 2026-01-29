@@ -1,7 +1,5 @@
 """Tests for PriceSnapshot 24h volume tracking."""
 
-import pytest
-from datetime import datetime, timezone
 from backend.models.items import PriceSnapshot
 
 

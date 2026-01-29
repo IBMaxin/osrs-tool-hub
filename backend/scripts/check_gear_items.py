@@ -1,5 +1,7 @@
 """Script to check if commonly used gear items are present in the database."""
 
+# ruff: noqa: E402
+
 import sys
 from pathlib import Path
 

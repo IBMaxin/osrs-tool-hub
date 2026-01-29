@@ -10,12 +10,12 @@ with Session(engine) as session:
     
     # Show a few sample items if they exist
     if item_count:
-        print(f"\nSample items (first 3):")
+        print("\nSample items (first 3):")
         for item in item_count[:3]:
             print(f"  - {item.name} (ID: {item.id}, Limit: {item.limit})")
     
     # Show a few sample prices if they exist
     if price_count:
-        print(f"\nSample prices (first 3):")
+        print("\nSample prices (first 3):")
         for price in price_count[:3]:
             print(f"  - Item ID: {price.item_id}, Low: {price.low_price}, High: {price.high_price}")

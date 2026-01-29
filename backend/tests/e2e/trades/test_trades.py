@@ -1,7 +1,6 @@
 """E2E tests for Trades endpoints."""
 
 import pytest
-from datetime import datetime, timedelta
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 

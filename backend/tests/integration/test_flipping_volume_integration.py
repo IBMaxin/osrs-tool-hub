@@ -1,11 +1,10 @@
 """Integration tests for flipping feature with 24h volume tracking."""
 
 import pytest
-from sqlmodel import Session
 from backend.db.session import get_session
 from backend.services.wiki.client import WikiAPIClient
 from backend.services.wiki.sync import sync_items_to_db, sync_prices_to_db, sync_24h_volume_to_db
-from backend.services.flipping import FlippingService, FlipOpportunity
+from backend.services.flipping import FlippingService
 from backend.models import Item, PriceSnapshot
 
 

@@ -6,8 +6,6 @@ from pydantic import ValidationError
 from backend.api.v1.gear.schemas import (
     GearSetCreate,
     BestLoadoutRequest,
-    UpgradePathRequest,
-    DPSRequest,
     DPSComparisonRequest,
     LoadoutInput,
     SlayerGearRequest,

@@ -4,9 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from backend.models import Item, PriceSnapshot, Trade, WatchlistItem
+from backend.models import Item, PriceSnapshot, Trade
 from backend.services.trade import TradeService
-from backend.services.watchlist import WatchlistService
 
 
 @pytest.mark.integration

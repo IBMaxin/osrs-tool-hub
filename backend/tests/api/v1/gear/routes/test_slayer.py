@@ -1,11 +1,9 @@
 """Tests for slayer gear suggestion endpoints."""
 
-import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 from sqlmodel import Session
 
-from backend.models import Monster, SlayerTask, SlayerMaster
 
 
 class TestSlayerGearEndpoint:

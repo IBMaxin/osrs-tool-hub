@@ -1,7 +1,6 @@
 """Unit tests for account progression utilities."""
 
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from sqlmodel import Session
 
 from backend.services.gear.progression.account_progression import get_global_upgrade_path
@@ -190,7 +189,7 @@ class TestGetGlobalUpgradePath:
         self, mock_get_upgrade_path, session: Session
     ):
         """Test get_global_upgrade_path skips styles with empty loadouts."""
-        result = get_global_upgrade_path(
+        get_global_upgrade_path(
             session=session,
             current_gear={"melee": {}, "ranged": {"weapon": 1}},  # melee is empty
             bank_value=1000000,

@@ -1,11 +1,10 @@
 """Unit tests for slayer gear integration."""
 
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from sqlmodel import Session
 
 from backend.services.gear.slayer_integration import suggest_slayer_gear, _parse_attack_style
-from backend.models import Monster, SlayerTask, SlayerMaster
+from backend.models import Monster
 
 
 class TestSuggestSlayerGear:

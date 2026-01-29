@@ -4,8 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from backend.models import Item, PriceSnapshot, Monster, SlayerTask, SlayerMaster
-from backend.tests.e2e.helpers import create_test_monster, create_test_slayer_task
+from backend.models import Item, PriceSnapshot, Monster, SlayerTask
 
 
 @pytest.mark.integration
@@ -21,7 +20,7 @@ class TestCompleteFlippingWorkflow:
 
         # Step 1: Discover flip opportunity
         flip_response = client.get(
-            f"/api/v1/flips/opportunities?max_budget=10000000&min_roi=1.0&min_volume=100"
+            "/api/v1/flips/opportunities?max_budget=10000000&min_roi=1.0&min_volume=100"
         )
         assert flip_response.status_code == 200
         opportunities = flip_response.json()
@@ -92,8 +91,6 @@ class TestCompleteGearProgressionWorkflow:
         self, client: TestClient, session: Session, sample_items: list[Item]
     ):
         """Test workflow: get progression -> get suggestions -> create gear set -> get upgrade path."""
-        user_id = "test-user-gear-workflow"
-
         # Step 1: Get gear progression
         progression_response = client.get("/api/v1/gear/progression/melee")
         assert progression_response.status_code == 200
@@ -121,7 +118,7 @@ class TestCompleteGearProgressionWorkflow:
                     }
                     gear_set_response = client.post("/api/v1/gear", json=gear_set_payload)
                     assert gear_set_response.status_code == 201
-                    gear_set_id = gear_set_response.json()["id"]
+                    gear_set_response.json()["id"]
 
                     # Step 4: Get upgrade path
                     upgrade_payload = {

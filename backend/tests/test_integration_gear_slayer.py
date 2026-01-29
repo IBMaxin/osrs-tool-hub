@@ -4,10 +4,9 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from backend.models import Item, Monster, SlayerTask, SlayerMaster
+from backend.models import Item, Monster, SlayerMaster
 from backend.services.gear import GearService
-from backend.services.slayer import SlayerService
-from backend.tests.e2e.helpers import create_test_monster, create_test_slayer_task
+from backend.tests.e2e.helpers import create_test_slayer_task
 
 
 @pytest.mark.integration

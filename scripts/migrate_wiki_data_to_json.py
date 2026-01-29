@@ -48,7 +48,7 @@ def migrate():
         print(f"   Slots: {len(data)} equipment slots")
         print()
     
-    print(f"\n✅ Migration complete!")
+    print("\n✅ Migration complete!")
     print(f"📁 Data files created in: {DATA_DIR}")
     print(f"💾 Total size: {total_size:,} bytes ({total_size / 1024:.1f} KB)")
     print("\n📝 Next steps:")

@@ -1,5 +1,7 @@
 """Script to sync all items and their stats from Wiki API and OSRSBox."""
 
+# ruff: noqa: E402
+
 import sys
 import asyncio
 from pathlib import Path
@@ -28,7 +30,7 @@ async def sync_all():
         item_count = len(list(session.exec(select(Item)).all()))
         items_with_stats = len(list(session.exec(select(Item).where(Item.slot.isnot(None))).all()))
         
-        print(f"\nCurrent state:")
+        print("\nCurrent state:")
         print(f"  Total items: {item_count}")
         print(f"  Items with stats: {items_with_stats}")
         print(f"  Items without stats: {item_count - items_with_stats}")
@@ -48,7 +50,7 @@ async def sync_all():
         ).one()
         
         if items_without_stats_count > 0:
-            print(f"\n📊 Importing equipment stats from OSRSBox...")
+            print("\n📊 Importing equipment stats from OSRSBox...")
             print(f"   (This may take 10-20 seconds for {items_without_stats_count} items)")
             await import_item_stats(session)
             
