@@ -35,6 +35,10 @@ class FlipOpportunity(BaseModel):
     margin: float
     roi: float
     volume: int
+    buy_volume_24h: Optional[int] = None
+    sell_volume_24h: Optional[int] = None
+    total_volume_24h: Optional[int] = None
+    margin_x_volume: Optional[float] = None
     potential_profit: Optional[float] = None
     limit: Optional[int] = None
     tax: Optional[int] = None
@@ -93,11 +97,19 @@ class FlippingService:
             post_tax_revenue = sell_price - tax
             margin = post_tax_revenue - buy_price
 
-            # Calculate ROI
-            roi = margin / buy_price * 100
+            # Calculate ROI (GE Tracker style: margin / sell_price)
+            roi = margin / sell_price * 100
 
             if roi < min_roi:
                 continue
+
+            # Volume calculations
+            buy_vol_24h = price.buy_volume_24h
+            sell_vol_24h = price.sell_volume_24h
+            total_vol_24h = (buy_vol_24h or 0) + (sell_vol_24h or 0) if (buy_vol_24h is not None or sell_vol_24h is not None) else None
+            
+            # Margin x Volume (GE Tracker style)
+            margin_x_volume = margin * (total_vol_24h or 0) if total_vol_24h is not None else None
 
             # Potential Profit - use MIN(limit, volume) since you can't flip more than available volume
             item_limit = item.limit or 0
@@ -116,6 +128,10 @@ class FlippingService:
                     "sell_price": sell_price,
                     "limit": item_limit,
                     "volume": (price.high_volume or 0) + (price.low_volume or 0),
+                    "buy_volume_24h": buy_vol_24h,
+                    "sell_volume_24h": sell_vol_24h,
+                    "total_volume_24h": total_vol_24h,
+                    "margin_x_volume": margin_x_volume,
                     "margin": margin,
                     "tax": tax,
                     "roi": round(roi, 2),
@@ -123,8 +139,11 @@ class FlippingService:
                 }
             )
 
-        # Sort by Potential Profit descending
-        opportunities.sort(key=lambda x: x["potential_profit"] or 0, reverse=True)
+        # Sort by Margin x Volume descending (GE Tracker style), then by potential_profit
+        opportunities.sort(
+            key=lambda x: (x["margin_x_volume"] if x["margin_x_volume"] is not None else 0, x["potential_profit"] or 0), 
+            reverse=True
+        )
 
         return opportunities[:limit]
 
@@ -144,7 +163,7 @@ class FlippingService:
             exclude_members: If True, exclude members-only items
 
         Returns:
-            List of FlipOpportunity models sorted by potential profit
+            List of FlipOpportunity models sorted by margin x volume
         """
         # Build optimized SQL query that does all calculations in the database
         # Using raw SQL for maximum performance and to avoid Python loops
@@ -172,6 +191,8 @@ class FlippingService:
         # Use MIN instead of LEAST for SQLite compatibility
         # Note: "limit" is a reserved keyword in SQLite, so we need to escape it with quotes
         # Tax calculation: 2% of sell price, capped at 5M, exempt for items under 50gp
+        # ROI calculation: margin / sell_price * 100 (GE Tracker style)
+        # Margin x Volume: margin * (buy_volume_24h + sell_volume_24h)
         sql_query = text(
             f"""
             SELECT
@@ -188,8 +209,11 @@ class FlippingService:
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
                     ELSE CAST(i.high_price * 0.02 AS INTEGER)
-                END) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) as roi,
+                END) - i.low_price) * 100.0 / NULLIF(i.high_price, 0) as roi,
                 COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0) as volume,
+                COALESCE(ps.buy_volume_24h, 0) as buy_volume_24h,
+                COALESCE(ps.sell_volume_24h, 0) as sell_volume_24h,
+                COALESCE(ps.buy_volume_24h, 0) + COALESCE(ps.sell_volume_24h, 0) as total_volume_24h,
                 COALESCE(i."limit", 0) as buy_limit,
                 CASE
                     WHEN i.name IS NOT NULL THEN
@@ -199,13 +223,19 @@ class FlippingService:
             FROM item i
             LEFT JOIN pricesnapshot ps ON i.id = ps.item_id
             WHERE {where_clause}
-                AND (COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0)) >= :min_volume
+                AND (COALESCE(ps.buy_volume_24h, 0) + COALESCE(ps.sell_volume_24h, 0)) >= :min_volume
                 AND ((i.high_price - CASE
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
                     ELSE CAST(i.high_price * 0.02 AS INTEGER)
-                END) - i.low_price) * 100.0 / NULLIF(i.low_price, 0) >= :min_roi
+                END) - i.low_price) * 100.0 / NULLIF(i.high_price, 0) >= :min_roi
             ORDER BY
+                ((i.high_price - CASE
+                    WHEN i.high_price < 50 THEN 0
+                    WHEN i.high_price * 0.02 > 5000000 THEN 5000000
+                    ELSE CAST(i.high_price * 0.02 AS INTEGER)
+                END) - i.low_price) *
+                (COALESCE(ps.buy_volume_24h, 0) + COALESCE(ps.sell_volume_24h, 0)) DESC,
                 ((i.high_price - CASE
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
@@ -230,6 +260,10 @@ class FlippingService:
             margin_post_tax = float(row.margin_post_tax) if row.margin_post_tax else 0.0
             roi = float(row.roi) if row.roi else 0.0
             volume = int(row.volume) if row.volume else 0
+            buy_vol_24h = int(row.buy_volume_24h) if row.buy_volume_24h else None
+            sell_vol_24h = int(row.sell_volume_24h) if row.sell_volume_24h else None
+            total_vol_24h = int(row.total_volume_24h) if row.total_volume_24h else None
+            margin_x_volume = margin_post_tax * (total_vol_24h or 0) if total_vol_24h is not None else None
 
             opportunities.append(
                 FlipOpportunity(
@@ -240,6 +274,10 @@ class FlippingService:
                     margin=round(margin_post_tax, 2),
                     roi=round(roi, 2),
                     volume=volume,
+                    buy_volume_24h=buy_vol_24h,
+                    sell_volume_24h=sell_vol_24h,
+                    total_volume_24h=total_vol_24h,
+                    margin_x_volume=margin_x_volume,
                     wiki_url=str(row.wiki_url) if row.wiki_url else None,
                 )
             )
