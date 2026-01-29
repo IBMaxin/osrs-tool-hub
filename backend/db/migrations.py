@@ -58,7 +58,25 @@ def migrate_tables() -> None:
                 except Exception as e:
                     print(f"⚠ Could not sync price data: {e}")
 
-        # 2. Trade table migration
+        # 2. PriceSnapshot table migrations (NEW)
+        if "pricesnapshot" in table_names:
+            existing_columns = [col["name"] for col in inspector.get_columns("pricesnapshot")]
+            new_snapshot_columns = {
+                "buy_volume_24h": "INTEGER",
+                "sell_volume_24h": "INTEGER",
+            }
+            with engine.begin() as conn:
+                for col, dtype in new_snapshot_columns.items():
+                    if col not in existing_columns:
+                        try:
+                            conn.execute(text(f"ALTER TABLE pricesnapshot ADD COLUMN {col} {dtype}"))
+                            print(f"✓ Added column: pricesnapshot.{col}")
+                        except Exception as e:
+                            print(f"⚠ Could not add column pricesnapshot.{col}: {e}")
+        else:
+            print("✓ PriceSnapshot table will be created by SQLModel")
+
+        # 3. Trade table migration
         if "trade" not in table_names:
             # Trade table will be created by SQLModel.metadata.create_all
             # This is just a placeholder for future column additions
@@ -68,7 +86,7 @@ def migrate_tables() -> None:
             # Future column additions would go here
             print("✓ Trade table exists")
 
-        # 3. Watchlist table migrations
+        # 4. Watchlist table migrations
         if "watchlistitem" not in table_names:
             print("✓ WatchlistItem table will be created by SQLModel")
         else:
@@ -79,7 +97,7 @@ def migrate_tables() -> None:
         else:
             print("✓ WatchlistAlert table exists")
 
-        # 3. Monster/Slayer Table checks
+        # 5. Monster/Slayer Table checks
         # Since SQLModel.metadata.create_all handles creation, we just need to verify
         # manual migrations if we were modifying existing tables.
         # For new tables (Monster, SlayerTask), create_all is sufficient.
