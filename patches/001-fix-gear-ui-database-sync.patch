@@ -1,0 +1,249 @@
+From: OSRS Tool Hub Bot <bot@osrs-tool-hub.local>
+Date: Thu, 29 Jan 2026 06:07:00 -0800
+Subject: [PATCH] Fix gear UI not showing items - improve database sync and setup docs
+
+This patch fixes the issue where LoadoutBuilder shows item IDs instead of names/icons.
+Root cause: Database items not synced from Wiki API on initial setup.
+
+Changes:
+1. Update README with required item sync step
+2. Improve lifespan.py logging for item sync status
+3. Add helpful error state in LoadoutItemDisplay when items are missing
+4. Create setup verification script
+
+---
+ README.md                                          | 24 ++++++++++-
+ backend/app/lifespan.py                           | 13 ++++--
+ backend/scripts/verify_setup.py                   | 51 ++++++++++++++++++++++
+ frontend/src/features/gear/components/LoadoutItemDisplay.tsx | 23 ++++++++--
+ 4 files changed, 103 insertions(+), 8 deletions(-)
+ create mode 100644 backend/scripts/verify_setup.py
+
+diff --git a/README.md b/README.md
+index f4fd7e3..a8c9f4e 100644
+--- a/README.md
++++ b/README.md
+@@ -18,6 +18,7 @@ git clone https://github.com/YOUR_USERNAME/osrs-tool-hub.git
+ cd osrs-tool-hub
+ 
+ # Backend setup
++poetry install
+ cp .env.example .env
+ poetry run uvicorn backend.main:app --reload
+ 
+@@ -101,6 +102,27 @@ cp .env.example .env
+ Edit `.env` and update:
+ - `USER_AGENT` - Replace with your GitHub repository URL
+ - `CORS_ORIGINS` - Add production domains if deploying
+ - `DATABASE_URL` - Change to PostgreSQL URL for production
+ 
+ ### 2. Backend Setup
+ 
+@@ -109,12 +131,30 @@ Install dependencies:
+ poetry install
+ ```
+ 
+-### 3. Frontend Setup
++### 3. Initialize Database with Items
++
++**IMPORTANT**: Before using gear/DPS features, you must sync items from OSRS Wiki:
++
++```bash
++# Option 1: Run sync script manually (recommended for first-time setup)
++poetry run python backend/scripts/sync_all_items.py
++
++# Option 2: Start backend and it will auto-sync on first run
++poetry run uvicorn backend.main:app --reload
++```
++
++This syncs ~28,000 items from OSRS Wiki API and equipment stats from OSRSBox.
++**First sync takes 10-20 seconds**. Data is cached in SQLite (`osrs-tool-hub.db`).
++
++**Verify setup**:
++```bash
++poetry run python backend/scripts/verify_setup.py
++```
++
++### 4. Frontend Setup
+ 
+ Install dependencies:
+ 
+ ```bash
+ cd frontend
+ npm install
+ ```
+@@ -122,7 +162,7 @@ npm install
+ ## Running the Application
+ 
+ ### Development Mode
+ 
+ **Backend** (runs on port 8000):
+ ```bash
+diff --git a/backend/app/lifespan.py b/backend/app/lifespan.py
+index 26146cb..8f7a2d9 100644
+--- a/backend/app/lifespan.py
++++ b/backend/app/lifespan.py
+@@ -45,14 +45,21 @@ async def lifespan(app: FastAPI):
+ 
+     # Run initial item sync
+     with Session(engine) as session:
+-        # Check if DB is empty
+-        item_count = session.exec(select(Item)).first()
+-        logger.info(f"Current item count in DB: {item_count}")
+-        if not item_count:
+-            logger.info("Database is empty, starting initial sync...")
++        # Check if DB has items
++        item_count = session.exec(select(func.count(Item.id))).one()
++        logger.info(f"📊 Current items in database: {item_count:,}")
++        
++        if item_count == 0:
++            logger.info("📥 Database is empty, starting initial item sync from OSRS Wiki...")
++            logger.info("⏱️  This will take 10-20 seconds on first run...")
+             await wiki_client.sync_items_to_db(session)
+-            logger.info("Items synced, now importing equipment stats from OSRSBox...")
++            
++            new_item_count = session.exec(select(func.count(Item.id))).one()
++            logger.info(f"✅ Synced {new_item_count:,} items from OSRS Wiki")
++            
++            logger.info("📊 Now importing equipment stats from OSRSBox...")
+             # After syncing items, import their stats
+             try:
+                 from backend.services.item_stats import import_item_stats
+                 await import_item_stats(session)
+-                logger.info("✅ Item stats imported successfully")
++                items_with_stats = session.exec(
++                    select(func.count(Item.id)).where(Item.slot.isnot(None))
++                ).one()
++                logger.info(f"✅ Equipment stats imported for {items_with_stats:,} items")
++                logger.info("🎮 Gear and DPS features are now ready!")
+             except Exception as e:
+                 logger.error(f"Failed to import item stats: {e}")
+-                logger.warning("Items may be missing equipment stats. Run POST /api/v1/admin/sync-stats manually.")
++                logger.warning("⚠️  Items may be missing equipment stats.")
++                logger.warning("Run: poetry run python backend/scripts/sync_all_items.py")
+         else:
+-            logger.info("Database already has items, skipping initial sync")
++            logger.info("✅ Database already populated, skipping initial sync")
+ 
+         # Always sync prices on startup to ensure we have current data
+         logger.info("Running initial price sync...")
+diff --git a/backend/scripts/verify_setup.py b/backend/scripts/verify_setup.py
+new file mode 100644
+index 0000000..9c8e742
+--- /dev/null
++++ b/backend/scripts/verify_setup.py
+@@ -0,0 +1,51 @@
++#!/usr/bin/env python3
++"""Verify that OSRS Tool Hub is set up correctly."""
++
++import sys
++from pathlib import Path
++
++# Add project root to path
++project_root = Path(__file__).parent.parent
++sys.path.insert(0, str(project_root))
++
++from sqlmodel import Session, select, func
++from backend.db.engine import engine
++from backend.models import Item, SlayerTask, Monster, GEPrice
++
++
++def verify_setup():
++    """Check database setup and provide feedback."""
++    print("=" * 70)
++    print("OSRS Tool Hub - Setup Verification")
++    print("=" * 70)
++    
++    with Session(engine) as session:
++        # Check items
++        item_count = session.exec(select(func.count(Item.id))).one()
++        items_with_stats = session.exec(
++            select(func.count(Item.id)).where(Item.slot.isnot(None))
++        ).one()
++        
++        print(f"\n📦 Items:")
++        print(f"   Total items: {item_count:,}")
++        print(f"   Items with equipment stats: {items_with_stats:,}")
++        
++        if item_count == 0:
++            print("   ❌ NO ITEMS FOUND - Run: poetry run python backend/scripts/sync_all_items.py")
++            return False
++        elif items_with_stats == 0:
++            print("   ⚠️  No equipment stats - Gear features won't work properly")
++        else:
++            print("   ✅ Items synced and ready")
++        
++        # Check prices
++        price_count = session.exec(select(func.count(GEPrice.id))).one()
++        print(f"\n💰 GE Prices: {price_count:,}")
++        print("   ✅ Prices synced" if price_count > 0 else "   ⚠️  No prices (will sync on backend start)")
++        
++        # Check slayer data
++        task_count = session.exec(select(func.count(SlayerTask.id))).one()
++        monster_count = session.exec(select(func.count(Monster.id))).one()
++        print(f"\n⚔️  Slayer Data:")
++        print(f"   Tasks: {task_count:,}")
++        print(f"   Monsters: {monster_count:,}")
++        print("   ✅ Slayer data loaded" if task_count > 0 else "   ⚠️  No slayer data")
++        
++        print("\n" + "=" * 70)
++        if item_count > 0 and items_with_stats > 0:
++            print("✅ Setup is complete! You can start using OSRS Tool Hub.")
++            print("=" * 70)
++            return True
++        else:
++            print("⚠️  Setup incomplete. See messages above for required actions.")
++            print("=" * 70)
++            return False
++
++
++if __name__ == "__main__":
++    success = verify_setup()
++    sys.exit(0 if success else 1)
+diff --git a/frontend/src/features/gear/components/LoadoutItemDisplay.tsx b/frontend/src/features/gear/components/LoadoutItemDisplay.tsx
+index fccf465..8b9e2d7 100644
+--- a/frontend/src/features/gear/components/LoadoutItemDisplay.tsx
++++ b/frontend/src/features/gear/components/LoadoutItemDisplay.tsx
+@@ -1,5 +1,5 @@
+-import { Card, Group, Text, ActionIcon } from '@mantine/core';
+-import { IconX } from '@tabler/icons-react';
++import { Card, Group, Text, ActionIcon, Tooltip, Alert } from '@mantine/core';
++import { IconX, IconAlertCircle } from '@tabler/icons-react';
+ import { useQuery } from '@tanstack/react-query';
+ import { GearApi } from '../../../lib/api/gear';
+ 
+@@ -57,11 +57,28 @@ export function LoadoutItemDisplay({
+   if (error) {
+     return (
+       <Card p="xs" withBorder style={{ minHeight: 60 }}>
+-        <Text size="sm" c="red">
+-          Error loading item
+-        </Text>
++        <Tooltip
++          multiline
++          w={300}
++          label={
++            <Alert icon={<IconAlertCircle size={16} />} title="Database Not Synced" color="red">
++              <Text size="xs">
++                Items not found in database. Run this command to sync from OSRS Wiki:
++              </Text>
++              <Text size="xs" mt="xs" style={{ fontFamily: 'monospace' }}>
++                poetry run python backend/scripts/sync_all_items.py
++              </Text>
++            </Alert>
++          }
++        >
++          <Group gap="xs">
++            <IconAlertCircle size={16} color="red" />
++            <Text size="sm" c="red">
++              Item {itemId}
++            </Text>
++          </Group>
++        </Tooltip>
+       </Card>
+     );
+   }
+ 
+   if (!item) {
+-- 
+2.39.2
