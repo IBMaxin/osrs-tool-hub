@@ -40,6 +40,7 @@ class TestFullFlippingWorkflow:
             session.add(item)
 
         # Step 2: Create price snapshots for volume data
+        # Note: find_best_flips filters by buy_volume_24h + sell_volume_24h
         snapshots = [
             PriceSnapshot(
                 item_id=4151,
@@ -47,6 +48,8 @@ class TestFullFlippingWorkflow:
                 low_price=1400000,
                 high_volume=5000,
                 low_volume=4000,
+                buy_volume_24h=5000,  # Required for find_best_flips volume filter
+                sell_volume_24h=4000,
             ),
             PriceSnapshot(
                 item_id=11802,
@@ -54,6 +57,8 @@ class TestFullFlippingWorkflow:
                 low_price=50_000_000,
                 high_volume=200,
                 low_volume=150,
+                buy_volume_24h=200,  # Required for find_best_flips volume filter
+                sell_volume_24h=150,
             ),
         ]
         for snapshot in snapshots:

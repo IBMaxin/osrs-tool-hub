@@ -20,6 +20,11 @@ class Settings(BaseSettings):
     # CORS settings
     cors_origins: str = "http://localhost:5173,http://localhost:3000"
 
+    # Production settings
+    environment: str = "development"  # Options: development, production
+    log_level: str = "info"  # Options: debug, info, warning, error
+    sentry_dsn: str | None = None  # Optional: Sentry DSN for error tracking
+
     def get_cors_origins(self) -> List[str]:
         """Parse CORS origins from comma-separated string."""
         return [origin.strip() for origin in self.cors_origins.split(",")]

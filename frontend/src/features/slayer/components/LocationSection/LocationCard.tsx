@@ -10,14 +10,14 @@ import {
   Box,
 } from '@mantine/core';
 import {
+  IconUsers,
+  IconFlame,
+  IconShield,
   IconCheck,
   IconX,
-  IconShield,
-  IconFlame,
-  IconUsers,
 } from '@tabler/icons-react';
 
-interface Location {
+export interface Location {
   name: string;
   requirements: string[];
   multi_combat: boolean | null;
@@ -31,13 +31,11 @@ interface Location {
 
 interface LocationCardProps {
   location: Location;
-  index: number;
 }
 
-export function LocationCard({ location, index }: LocationCardProps) {
+export function LocationCard({ location }: LocationCardProps) {
   return (
     <Card
-      key={index}
       padding="md"
       radius="md"
       withBorder

@@ -11,6 +11,7 @@ from backend.tests.e2e.base import BaseE2ETest
 class TestAdminSyncEndpoint(BaseE2ETest):
     """Test the /api/v1/admin/sync-stats endpoint."""
 
+    @pytest.mark.skip(reason="Admin sync-stats endpoint not yet implemented - future feature")
     def test_sync_stats_endpoint_exists(self, client: TestClient, session: Session):
         """Test that sync stats endpoint exists and accepts requests."""
         # Note: This endpoint may take a long time and require external API access

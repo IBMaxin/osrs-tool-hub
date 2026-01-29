@@ -100,8 +100,8 @@ class FlippingService:
             post_tax_revenue = sell_price - tax
             margin = post_tax_revenue - buy_price
 
-            # Calculate ROI (GE Tracker style: margin / sell_price)
-            roi = margin / sell_price * 100
+            # Calculate ROI (Return on Investment: margin / buy_price * 100)
+            roi = margin / buy_price * 100 if buy_price > 0 else 0
 
             if roi < min_roi:
                 continue

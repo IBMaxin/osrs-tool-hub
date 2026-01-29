@@ -56,12 +56,12 @@ export function WikiGearTable() {
       </Group>
 
       <Card withBorder padding={0} radius="md" style={{ overflow: 'hidden' }}>
-        <Table.ScrollContainer minWidth={800}>
-          <Table striped highlightOnHover verticalSpacing="md">
+        <Table.ScrollContainer minWidth={800} type="native">
+          <Table striped highlightOnHover verticalSpacing="md" stickyHeader>
             <Table.Thead bg="gray.1">
               <Table.Tr>
-                <Table.Th w={120}>Slot</Table.Th>
-                <Table.Th>Progression Path (Best → Worst)</Table.Th>
+                <Table.Th w={120} scope="col">Slot</Table.Th>
+                <Table.Th scope="col">Progression Path (Best → Worst)</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>

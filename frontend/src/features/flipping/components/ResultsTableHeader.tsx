@@ -18,34 +18,34 @@ export function ResultsTableHeader({
   return (
     <Table.Thead>
       <Table.Tr>
-        <Table.Th>Item</Table.Th>
-        <Table.Th style={{ textAlign: 'right' }}>
-          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('buy_price')}>
+        <Table.Th scope="col">Item</Table.Th>
+        <Table.Th scope="col" style={{ textAlign: 'right' }}>
+          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('buy_price')} role="button" tabIndex={0} aria-label="Sort by buy price">
             <Text size="sm">Buy Price</Text>
             <SortIcon field="buy_price" />
           </Group>
         </Table.Th>
-        <Table.Th style={{ textAlign: 'right' }}>Sell Price</Table.Th>
-        <Table.Th style={{ textAlign: 'right' }}>
-          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('margin')}>
+        <Table.Th scope="col" style={{ textAlign: 'right' }}>Sell Price</Table.Th>
+        <Table.Th scope="col" style={{ textAlign: 'right' }}>
+          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('margin')} role="button" tabIndex={0} aria-label="Sort by margin">
             <Text size="sm">Margin</Text>
             <SortIcon field="margin" />
           </Group>
         </Table.Th>
-        <Table.Th style={{ textAlign: 'right' }}>
-          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('roi')}>
+        <Table.Th scope="col" style={{ textAlign: 'right' }}>
+          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('roi')} role="button" tabIndex={0} aria-label="Sort by ROI">
             <Text size="sm">ROI</Text>
             <SortIcon field="roi" />
           </Group>
         </Table.Th>
-        <Table.Th style={{ textAlign: 'right' }}>
-          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('potential_profit')}>
+        <Table.Th scope="col" style={{ textAlign: 'right' }}>
+          <Group gap={4} justify="flex-end" style={{ cursor: 'pointer' }} onClick={() => onSort('potential_profit')} role="button" tabIndex={0} aria-label="Sort by potential profit">
             <Text size="sm">Potential Profit</Text>
             <SortIcon field="potential_profit" />
           </Group>
         </Table.Th>
-        <Table.Th style={{ textAlign: 'center' }}>Volume</Table.Th>
-        {showLogTrade && <Table.Th style={{ textAlign: 'center' }}>Actions</Table.Th>}
+        <Table.Th scope="col" style={{ textAlign: 'center' }}>Volume</Table.Th>
+        {showLogTrade && <Table.Th scope="col" style={{ textAlign: 'center' }}>Actions</Table.Th>}
       </Table.Tr>
     </Table.Thead>
   );

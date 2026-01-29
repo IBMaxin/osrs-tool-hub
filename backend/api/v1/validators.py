@@ -191,8 +191,8 @@ def BudgetQuery(default: Optional[int] = None, **kwargs: Any) -> Any:
     return Query(
         default,
         ge=0,
-        le=2_147_483_647,
-        description="Max budget in GP (0 to 2,147,483,647)",
+        le=100_000_000_000,  # 100 billion GP - realistic for high-wealth players
+        description="Max budget in GP (0 to 100,000,000,000)",
         **kwargs,
     )
 

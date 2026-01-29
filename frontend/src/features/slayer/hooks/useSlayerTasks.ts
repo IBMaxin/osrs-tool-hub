@@ -21,8 +21,8 @@ export function useSlayerTasks(options: UseSlayerTasksOptions): UseSlayerTasksRe
       }
     },
     enabled: !!selectedMaster,
-    staleTime: 0,
-    gcTime: 0,
+    staleTime: 5 * 60 * 1000, // 5 minutes - data is considered fresh for 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes - cache persists for 10 minutes after unused
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     retry: 1
