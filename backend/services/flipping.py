@@ -221,9 +221,9 @@ class FlippingService:
                     ELSE CAST(i.high_price * 0.02 AS INTEGER)
                 END) - i.low_price) * 100.0 / NULLIF(i.high_price, 0) as roi,
                 COALESCE(ps.high_volume, 0) + COALESCE(ps.low_volume, 0) as volume,
-                COALESCE(ps.buy_volume_24h, 0) as buy_volume_24h,
-                COALESCE(ps.sell_volume_24h, 0) as sell_volume_24h,
-                COALESCE(ps.buy_volume_24h, 0) + COALESCE(ps.sell_volume_24h, 0) as total_volume_24h,
+                COALESCE(ps.buy_volume_24h, ps.low_volume, 0) as buy_volume_24h,
+                COALESCE(ps.sell_volume_24h, ps.high_volume, 0) as sell_volume_24h,
+                COALESCE(ps.buy_volume_24h, ps.low_volume, 0) + COALESCE(ps.sell_volume_24h, ps.high_volume, 0) as total_volume_24h,
                 COALESCE(i."limit", 0) as buy_limit,
                 CASE
                     WHEN i.name IS NOT NULL THEN
@@ -233,7 +233,7 @@ class FlippingService:
             FROM item i
             LEFT JOIN pricesnapshot ps ON i.id = ps.item_id
             WHERE {where_clause}
-                AND (COALESCE(ps.buy_volume_24h, 0) + COALESCE(ps.sell_volume_24h, 0)) >= :min_volume
+                AND (COALESCE(ps.buy_volume_24h, ps.low_volume, 0) + COALESCE(ps.sell_volume_24h, ps.high_volume, 0)) >= :min_volume
                 AND ((i.high_price - CASE
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
@@ -245,7 +245,7 @@ class FlippingService:
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
                     ELSE CAST(i.high_price * 0.02 AS INTEGER)
                 END) - i.low_price) *
-                (COALESCE(ps.buy_volume_24h, 0) + COALESCE(ps.sell_volume_24h, 0)) DESC,
+                (COALESCE(ps.buy_volume_24h, ps.low_volume, 0) + COALESCE(ps.sell_volume_24h, ps.high_volume, 0)) DESC,
                 ((i.high_price - CASE
                     WHEN i.high_price < 50 THEN 0
                     WHEN i.high_price * 0.02 > 5000000 THEN 5000000
