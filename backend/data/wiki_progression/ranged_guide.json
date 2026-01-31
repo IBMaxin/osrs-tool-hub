@@ -1,0 +1,623 @@
+{
+  "style": "ranged",
+  "cost_per_hour_label": "Cost (Ammo, 1 hour, no pickup)",
+  "slot_order": [
+    "head",
+    "cape",
+    "neck",
+    "ammo",
+    "weapon",
+    "body",
+    "shield",
+    "legs",
+    "hands",
+    "feet",
+    "ring"
+  ],
+  "game_stages": [
+    {
+      "id": "free_to_play",
+      "title": "Free-to-play",
+      "tiers": [
+        {
+          "label": "Level 1",
+          "total_cost": 2694,
+          "slots": {
+            "head": { "name": "Leather cowl" },
+            "cape": { "name": "Black cape" },
+            "neck": { "name": "Amulet of power" },
+            "ammo": { "name": "Iron arrow" },
+            "weapon": { "name": "Shortbow" },
+            "body": { "name": "Leather body" },
+            "shield": null,
+            "legs": { "name": "Leather chaps" },
+            "hands": { "name": "Leather vambraces" },
+            "feet": { "name": "Leather boots" },
+            "ring": null
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Shortbow + Iron arrow (Training)",
+          "equipment": null,
+          "use_case": "Training",
+          "cost_buy": 50,
+          "cost_per_hour": 20000
+        },
+        {
+          "name": "Oak shortbow + Steel arrow (Training)",
+          "equipment": null,
+          "use_case": "Training",
+          "cost_buy": 42,
+          "cost_per_hour": 54000
+        },
+        {
+          "name": "Willow shortbow + Mithril arrow (Training)",
+          "equipment": null,
+          "use_case": "Training",
+          "cost_buy": 92,
+          "cost_per_hour": 36000
+        },
+        {
+          "name": "Maple shortbow + Adamant arrow (Training)",
+          "equipment": null,
+          "use_case": "Training",
+          "cost_buy": 175,
+          "cost_per_hour": 164000
+        }
+      ]
+    },
+    {
+      "id": "mid_game",
+      "title": "Mid Game / Members",
+      "tiers": [
+        {
+          "label": "Level 40 (Pre-Recipe for Disaster)",
+          "total_cost": 18201,
+          "slots": {
+            "head": { "name": "Leather cowl" },
+            "cape": { "name": "Camel cape" },
+            "neck": { "name": "Amulet of power" },
+            "ammo": { "name": "Iron arrow" },
+            "weapon": { "name": "Oak shortbow" },
+            "body": { "name": "Leather body" },
+            "shield": null,
+            "legs": { "name": "Leather chaps" },
+            "hands": { "name": "Leather vambraces" },
+            "feet": { "name": "Leather boots" },
+            "ring": { "name": "Ring of pursuit" }
+          }
+        },
+        {
+          "label": "Level 50 (Post-Recipe for Disaster)",
+          "total_cost": 3447,
+          "slots": {
+            "head": { "name": "Coif" },
+            "cape": { "name": "Camel cape" },
+            "neck": { "name": "Amulet of power" },
+            "ammo": { "name": "Steel arrow" },
+            "weapon": { "name": "Willow shortbow" },
+            "body": { "name": "Hard leather body" },
+            "shield": null,
+            "legs": { "name": "Hard leather chaps" },
+            "hands": { "name": "Leather vambraces" },
+            "feet": { "name": "Leather boots" },
+            "ring": { "name": "Ring of pursuit" }
+          }
+        },
+        {
+          "label": "Level 60",
+          "total_cost": 194615,
+          "slots": {
+            "head": { "name": "Green d'hide coif", "icon_override": "Coif" },
+            "cape": { "name": "Cape of legends" },
+            "neck": { "name": "Amulet of power" },
+            "ammo": { "name": "Mithril arrow" },
+            "weapon": { "name": "Magic shortbow" },
+            "body": { "name": "Green d'hide body" },
+            "shield": null,
+            "legs": { "name": "Green d'hide chaps" },
+            "hands": { "name": "Green d'hide vambraces" },
+            "feet": { "name": "Leather boots" },
+            "ring": { "name": "Ring of life" }
+          }
+        },
+        {
+          "label": "Level 70",
+          "total_cost": 249321,
+          "slots": {
+            "head": { "name": "Blue d'hide coif", "icon_override": "Coif" },
+            "cape": { "name": "Ava's attractor" },
+            "neck": { "name": "Amulet of power" },
+            "ammo": { "name": "Rune arrow" },
+            "weapon": { "name": "Magic shortbow" },
+            "body": { "name": "Blue d'hide body" },
+            "shield": null,
+            "legs": { "name": "Blue d'hide chaps" },
+            "hands": { "name": "Blue d'hide vambraces" },
+            "feet": { "name": "Leather boots" },
+            "ring": { "name": "Ring of life" }
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Dorgeshuun crossbow + Bone bolts (Training)",
+          "equipment": null,
+          "use_case": "Training",
+          "cost_buy": 2554,
+          "cost_per_hour": 2940
+        },
+        {
+          "name": "Magic shortbow + Rune arrow (Training / Slayer)",
+          "equipment": null,
+          "use_case": "Training / Slayer",
+          "cost_buy": 790,
+          "cost_per_hour": 76160
+        },
+        {
+          "name": "Magic shortbow (i) + Amethyst arrow (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 38956,
+          "cost_per_hour": 100240
+        },
+        {
+          "name": "Hunters' sunlight crossbow + Sunlight antler bolts (Slayer)",
+          "equipment": null,
+          "use_case": "Slayer",
+          "cost_buy": 5714,
+          "cost_per_hour": 76160
+        },
+        {
+          "name": "Hunters' sunlight crossbow + Moonlight antler bolts (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 5714,
+          "cost_per_hour": 85680
+        },
+        {
+          "name": "Rune crossbow + Broad bolts (Slayer)",
+          "equipment": null,
+          "use_case": "Slayer",
+          "cost_buy": 9623,
+          "cost_per_hour": 20832
+        },
+        {
+          "name": "Rune crossbow + Diamond bolts (e) (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 9623,
+          "cost_per_hour": 97440
+        },
+        {
+          "name": "Rune crossbow + Ruby bolts (e) (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 9623,
+          "cost_per_hour": 53424
+        },
+        {
+          "name": "Dwarf multicannon + Steel cannonball (Slayer/Training)",
+          "equipment": null,
+          "use_case": "Slayer/Training",
+          "cost_buy": 752378,
+          "cost_per_hour": 162000
+        }
+      ]
+    },
+    {
+      "id": "late_game",
+      "title": "Late Game / Bossing & Raiding",
+      "tiers": [
+        {
+          "label": "Level 70 (Elite void)",
+          "total_cost": 1024959,
+          "slots": {
+            "head": { "name": "Void ranger helm" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Amethyst arrow" },
+            "weapon": { "name": "Toxic blowpipe" },
+            "body": { "name": "Elite void ranger top" },
+            "shield": null,
+            "legs": { "name": "Elite void ranger robe" },
+            "hands": { "name": "Void knight gloves" },
+            "feet": { "name": "Blessed boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        },
+        {
+          "label": "Level 70 (Dragonhide)",
+          "total_cost": 2269898,
+          "slots": {
+            "head": { "name": "Serpentine helm" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Rune arrow" },
+            "weapon": { "name": "Dragon crossbow" },
+            "body": { "name": "Royal d'hide body" },
+            "shield": { "name": "Twisted buckler" },
+            "legs": { "name": "Royal d'hide chaps" },
+            "hands": { "name": "Barrows gloves" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        },
+        {
+          "label": "Level 75",
+          "total_cost": 37677826,
+          "slots": {
+            "head": { "name": "Masori mask" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Dragon arrow" },
+            "weapon": { "name": "Twisted bow" },
+            "body": { "name": "Masori body" },
+            "shield": { "name": "Twisted buckler" },
+            "legs": { "name": "Masori chaps" },
+            "hands": { "name": "Zaryte vambraces" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Archers ring (i)" }
+          }
+        },
+        {
+          "label": "Level 80",
+          "total_cost": 147662769,
+          "slots": {
+            "head": { "name": "Masori mask" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Dragon arrow" },
+            "weapon": { "name": "Twisted bow" },
+            "body": { "name": "Masori body" },
+            "shield": { "name": "Twisted buckler" },
+            "legs": { "name": "Masori chaps" },
+            "hands": { "name": "Zaryte vambraces" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        },
+        {
+          "label": "Level 85+",
+          "total_cost": 222662984,
+          "slots": {
+            "head": { "name": "Masori mask" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Dragon arrow" },
+            "weapon": { "name": "Twisted bow" },
+            "body": { "name": "Masori body" },
+            "shield": { "name": "Twisted buckler" },
+            "legs": { "name": "Masori chaps" },
+            "hands": { "name": "Zaryte vambraces" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Red chinchompa (Training)",
+          "equipment": null,
+          "use_case": "Training",
+          "cost_buy": 1035,
+          "cost_per_hour": 2070000
+        },
+        {
+          "name": "Black chinchompa (Training)",
+          "equipment": null,
+          "use_case": "Training",
+          "cost_buy": 2430,
+          "cost_per_hour": 4860000
+        },
+        {
+          "name": "Dragon crossbow + Ruby dragon bolts (e) (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 798892,
+          "cost_per_hour": 806880
+        },
+        {
+          "name": "Dragon crossbow + Diamond dragon bolts (e) (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 798892,
+          "cost_per_hour": 791040
+        },
+        {
+          "name": "Eclipse atlatl + Atlatl dart + Eclipse moon armour (Hybrid)",
+          "equipment": null,
+          "use_case": "Hybrid",
+          "cost_buy": 7078161,
+          "cost_per_hour": 171999
+        },
+        {
+          "name": "Toxic blowpipe + Adamant darts (Slayer)",
+          "equipment": null,
+          "use_case": "Slayer",
+          "cost_buy": 9850232,
+          "cost_per_hour": 388000
+        },
+        {
+          "name": "Toxic blowpipe + Rune darts (Slayer/Bossing)",
+          "equipment": null,
+          "use_case": "Slayer/Bossing",
+          "cost_buy": null,
+          "cost_per_hour": 467800
+        },
+        {
+          "name": "Toxic blowpipe + Amethyst darts (Slayer/Bossing)",
+          "equipment": null,
+          "use_case": "Slayer/Bossing",
+          "cost_buy": null,
+          "cost_per_hour": 510400
+        },
+        {
+          "name": "Toxic blowpipe + Dragon darts (Bossing/Raids)",
+          "equipment": null,
+          "use_case": "Bossing/Raids",
+          "cost_buy": null,
+          "cost_per_hour": 1135000
+        },
+        {
+          "name": "Masori armour set",
+          "equipment": null,
+          "use_case": null,
+          "cost_buy": 113417127,
+          "cost_per_hour": null
+        },
+        {
+          "name": "Webweaver bow + Revenant ether (Wilderness)",
+          "equipment": null,
+          "use_case": "Wilderness",
+          "cost_buy": 14310704,
+          "cost_per_hour": 350000
+        },
+        {
+          "name": "Scorching bow + Dragon arrow (Demons)",
+          "equipment": null,
+          "use_case": "Demons",
+          "cost_buy": 34659292,
+          "cost_per_hour": 678000
+        }
+      ]
+    },
+    {
+      "id": "end_game",
+      "title": "End Game",
+      "tiers": [
+        {
+          "label": "Endgame Crossbow",
+          "total_cost": 1003189035,
+          "slots": {
+            "head": { "name": "Masori mask" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Dragon diamond bolts (e)" },
+            "weapon": { "name": "Zaryte crossbow" },
+            "body": { "name": "Masori body" },
+            "shield": { "name": "Twisted buckler" },
+            "legs": { "name": "Masori chaps" },
+            "hands": { "name": "Zaryte vambraces" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        },
+        {
+          "label": "Endgame Blowpipe",
+          "total_cost": 611623198,
+          "slots": {
+            "head": { "name": "Masori mask" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Dragon dart" },
+            "weapon": { "name": "Toxic blowpipe" },
+            "body": { "name": "Masori body" },
+            "shield": null,
+            "legs": { "name": "Masori chaps" },
+            "hands": { "name": "Zaryte vambraces" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        },
+        {
+          "label": "Endgame Bow",
+          "total_cost": 677065989,
+          "slots": {
+            "head": { "name": "Masori mask" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Dragon arrow" },
+            "weapon": { "name": "Twisted bow" },
+            "body": { "name": "Masori body" },
+            "shield": { "name": "Twisted buckler" },
+            "legs": { "name": "Masori chaps" },
+            "hands": { "name": "Zaryte vambraces" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        },
+        {
+          "label": "Endgame Megarare",
+          "total_cost": 2216929226,
+          "slots": {
+            "head": { "name": "Masori mask (f)" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish (or)" },
+            "ammo": { "name": "Dragon arrow" },
+            "weapon": { "name": "Twisted bow" },
+            "body": { "name": "Masori body (f)" },
+            "shield": { "name": "Twisted buckler" },
+            "legs": { "name": "Masori chaps (f)" },
+            "hands": { "name": "Zaryte vambraces" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        },
+        {
+          "label": "Elite Void",
+          "total_cost": 339199673,
+          "slots": {
+            "head": { "name": "Void ranger helm" },
+            "cape": { "name": "Ava's assembler" },
+            "neck": { "name": "Necklace of anguish" },
+            "ammo": { "name": "Dragon arrow" },
+            "weapon": { "name": "Twisted bow" },
+            "body": { "name": "Elite void ranger top" },
+            "shield": null,
+            "legs": { "name": "Elite void ranger robe" },
+            "hands": { "name": "Void knight gloves" },
+            "feet": { "name": "Primordial boots" },
+            "ring": { "name": "Ring of endurance" }
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Toxic blowpipe + Dragon darts (Slayer/Bossing)",
+          "equipment": null,
+          "use_case": "Slayer/Bossing",
+          "cost_buy": 9850232,
+          "cost_per_hour": 1135000
+        },
+        {
+          "name": "Venator bow + Dragon arrow (Slayer)",
+          "equipment": null,
+          "use_case": "Slayer",
+          "cost_buy": 75293023,
+          "cost_per_hour": 706500
+        },
+        {
+          "name": "Zaryte crossbow + Ruby dragon bolts (e) (Nex / Special attacks)",
+          "equipment": null,
+          "use_case": "Nex / Special attacks",
+          "cost_buy": 401416069,
+          "cost_per_hour": 791040
+        },
+        {
+          "name": "Twisted bow + Dragon arrow (Bossing / Raids)",
+          "equipment": null,
+          "use_case": "Bossing / Raids",
+          "cost_buy": 1615156260,
+          "cost_per_hour": 542400
+        }
+      ]
+    }
+  ],
+  "bonus_table": [
+    {
+      "item": "Range Void set",
+      "bonus": "+10%",
+      "cost": null,
+      "delta": "+10%",
+      "cost_per_delta": "N/A"
+    },
+    {
+      "item": "Elite Range Void set",
+      "bonus": "+12.5%",
+      "cost": null,
+      "delta": "+2.5%",
+      "cost_per_delta": "N/A"
+    },
+    {
+      "item": "Ava's assembler",
+      "bonus": "+27",
+      "cost": 23524,
+      "delta": "+27",
+      "cost_per_delta": "23,512.00"
+    },
+    {
+      "item": "Antler guard",
+      "bonus": "+2",
+      "cost": 5467,
+      "delta": "+2",
+      "cost_per_delta": "2,733.50"
+    },
+    {
+      "item": "Odium ward",
+      "bonus": "+43",
+      "cost": 967260,
+      "delta": "+43",
+      "cost_per_delta": "21,700,896.50"
+    },
+    {
+      "item": "Necklace of anguish",
+      "bonus": "+52",
+      "cost": 944338,
+      "delta": "+52",
+      "cost_per_delta": "54,786,383.60"
+    },
+    {
+      "item": "Dragonfire ward",
+      "bonus": "+81",
+      "cost": 1686001,
+      "delta": "+81",
+      "cost_per_delta": "43,008,606.50"
+    },
+    {
+      "item": "Twisted buckler",
+      "bonus": "+10",
+      "cost": 1782736,
+      "delta": "+10",
+      "cost_per_delta": "2940,525.00"
+    },
+    {
+      "item": "Masori mask",
+      "bonus": "+21",
+      "cost": 7564482,
+      "delta": "+21",
+      "cost_per_delta": "28,286,025.50"
+    },
+    {
+      "item": "Masori chaps",
+      "bonus": "+23",
+      "cost": 8058713,
+      "delta": "+23",
+      "cost_per_delta": "218,534,668.00"
+    },
+    {
+      "item": "Masori body",
+      "bonus": "+45",
+      "cost": 7793932,
+      "delta": "+45",
+      "cost_per_delta": "414,085,889.00"
+    },
+    {
+      "item": "Dizana's quiver",
+      "bonus": "+3/4",
+      "cost": null,
+      "delta": "+1/+2",
+      "cost_per_delta": "N/A"
+    },
+    {
+      "item": "Venator ring",
+      "bonus": "+2",
+      "cost": 5367367,
+      "delta": "+2",
+      "cost_per_delta": "226,878,683.50"
+    },
+    {
+      "item": "Zaryte vambraces",
+      "bonus": "+2",
+      "cost": 1387180,
+      "delta": "+2",
+      "cost_per_delta": "245,693,590.00"
+    },
+    {
+      "item": "Avernic treads",
+      "bonus": "+22",
+      "cost": 2452081,
+      "delta": "+22",
+      "cost_per_delta": "113,726,040.50"
+    },
+    {
+      "item": "Avernic treads (pe)",
+      "bonus": "+32",
+      "cost": 25164736,
+      "delta": "+10",
+      "cost_per_delta": "124,195,655"
+    }
+  ]
+}

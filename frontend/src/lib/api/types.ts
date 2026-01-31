@@ -170,3 +170,84 @@ export interface SlotProgressionResponse {
   slot: string;
   tiers: ProgressionTier[];
 }
+
+// ============================================================================
+// Wiki Guide Types (Exact Match)
+// ============================================================================
+
+/**
+ * Slot data from wiki guide - null (empty) or object with name and optional override.
+ */
+export interface WikiGuideSlot {
+  name: string;
+  icon_override?: string;
+}
+
+/**
+ * Full loadout for a tier - one slot per canonical slot.
+ */
+export interface WikiGuideTierSlots {
+  head: WikiGuideSlot | null;
+  cape: WikiGuideSlot | null;
+  neck: WikiGuideSlot | null;
+  ammo: WikiGuideSlot | null;
+  weapon: WikiGuideSlot | null;
+  body: WikiGuideSlot | null;
+  shield: WikiGuideSlot | null;
+  legs: WikiGuideSlot | null;
+  hands: WikiGuideSlot | null;
+  feet: WikiGuideSlot | null;
+  ring: WikiGuideSlot | null;
+}
+
+/**
+ * A tier with label, total cost, and full loadout.
+ */
+export interface WikiGuideTier {
+  label: string;
+  total_cost: number;
+  slots: WikiGuideTierSlots;
+}
+
+/**
+ * Content-specific equipment row (e.g., weapon+ammo combo with costs).
+ */
+export interface WikiGuideContentSpecific {
+  name: string;
+  equipment?: string;
+  use_case?: string;
+  cost_buy: number | null;
+  cost_per_hour: number | null;
+}
+
+/**
+ * Bonus comparison table row.
+ */
+export interface WikiGuideBonusRow {
+  item_name: string;
+  bonus: string;
+  cost: number | null;
+  delta: string | null;
+  cost_per_delta: number | null;
+}
+
+/**
+ * A game stage (e.g., Early Game, Mid Game) with tiers and content.
+ */
+export interface WikiGuideGameStage {
+  id: string;
+  title: string;
+  tiers: WikiGuideTier[];
+  content_specific: WikiGuideContentSpecific[];
+}
+
+/**
+ * Full wiki guide response for a combat style.
+ */
+export interface WikiGuideResponse {
+  style: string;
+  cost_per_hour_label: string;
+  slot_order: string[];
+  game_stages: WikiGuideGameStage[];
+  bonus_table: WikiGuideBonusRow[];
+}

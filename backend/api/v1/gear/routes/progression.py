@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from backend.db.session import get_session
 from backend.services.gear import GearService
 from backend.services.gear.progression import get_global_upgrade_path
+from backend.services.wiki_data import get_wiki_guide
 from backend.api.v1.gear.mappers import (
     transform_progression_data,
     transform_slot_progression_data,
@@ -84,6 +85,33 @@ async def get_slot_progression_data(
     transformed_tiers = transform_slot_progression_data(enriched_data, slot)
 
     return {"combat_style": combat_style, "slot": slot, "tiers": transformed_tiers}
+
+
+@router.get("/gear/wiki-guide/{style}")
+async def get_wiki_guide_data(style: str) -> dict:
+    """
+    Get wiki guide data for a combat style - exact mirror of the wiki page.
+
+    Returns the guide data exactly as written in JSON with no transformation,
+    reordering, substitution, or "fixing" of names. The guide is the source
+    of truth for slot-for-slot, tier-for-tier, item-for-item matching.
+
+    Args:
+        style: Combat style (melee, ranged, magic)
+
+    Returns:
+        Guide data with game_stages (tiers + full loadouts), slot_order, bonus_table
+    """
+    validate_combat_style(style)
+
+    guide_data = get_wiki_guide(style)
+
+    if not guide_data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"No guide data found for style '{style}'"
+        )
+
+    return guide_data
 
 
 @router.get("/gear/wiki-progression/{style}")

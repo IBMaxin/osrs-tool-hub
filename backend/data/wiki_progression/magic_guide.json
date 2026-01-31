@@ -1,0 +1,617 @@
+{
+  "style": "magic",
+  "cost_per_hour_label": "Cost (Runes, 1 Hour)",
+  "slot_order": [
+    "head",
+    "cape",
+    "neck",
+    "ammo",
+    "weapon",
+    "body",
+    "shield",
+    "legs",
+    "hands",
+    "feet",
+    "ring"
+  ],
+  "game_stages": [
+    {
+      "id": "early_game",
+      "title": "Early Game / Free-to-play",
+      "tiers": [
+        {
+          "label": "Level 1",
+          "total_cost": 9135,
+          "slots": {
+            "head": { "name": "Blue wizard hat" },
+            "cape": { "name": "Black cape" },
+            "neck": { "name": "Amulet of magic" },
+            "ammo": null,
+            "weapon": { "name": "Staff of air" },
+            "body": { "name": "Blue wizard robe" },
+            "shield": null,
+            "legs": { "name": "Zamorak monk bottom" },
+            "hands": { "name": "Leather gloves" },
+            "feet": { "name": "Leather boots" },
+            "ring": null
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Elemental spells (Elemental weakness)",
+          "equipment": "Strike spells",
+          "use_case": "Elemental weakness",
+          "cost_buy": 2388,
+          "cost_per_hour": 3600
+        },
+        {
+          "name": "Elemental spells (Elemental weakness)",
+          "equipment": "Bolt spells",
+          "use_case": "Elemental weakness",
+          "cost_buy": null,
+          "cost_per_hour": 81600
+        },
+        {
+          "name": "Elemental spells (Elemental weakness)",
+          "equipment": "Blast spells",
+          "use_case": "Elemental weakness",
+          "cost_buy": null,
+          "cost_per_hour": 162000
+        },
+        {
+          "name": "Elemental spells (Elemental weakness)",
+          "equipment": "Wave spells",
+          "use_case": "Elemental weakness",
+          "cost_buy": null,
+          "cost_per_hour": 256800
+        }
+      ]
+    },
+    {
+      "id": "mid_game",
+      "title": "Mid game / Members",
+      "tiers": [
+        {
+          "label": "Level 20",
+          "total_cost": 59947,
+          "slots": {
+            "head": { "name": "Xerician hat" },
+            "cape": { "name": "Ardougne cloak 1" },
+            "neck": { "name": "Amulet of magic" },
+            "ammo": { "name": "Peaceful blessing" },
+            "weapon": { "name": "Staff of air" },
+            "body": { "name": "Xerician top" },
+            "shield": null,
+            "legs": { "name": "Xerician robe" },
+            "hands": { "name": "Combat bracelet", "icon_override": "Combat_bracelet" },
+            "feet": { "name": "Leather boots" },
+            "ring": { "name": "Explorer's ring 1" }
+          }
+        },
+        {
+          "label": "Level 40",
+          "total_cost": 165906,
+          "slots": {
+            "head": { "name": "Mystic hat" },
+            "cape": { "name": "Ardougne cloak 1" },
+            "neck": { "name": "Amulet of magic" },
+            "ammo": { "name": "Peaceful blessing" },
+            "weapon": { "name": "Staff of air" },
+            "body": { "name": "Mystic robe top" },
+            "shield": { "name": "Book of darkness" },
+            "legs": { "name": "Mystic robe bottom" },
+            "hands": { "name": "Combat bracelet", "icon_override": "Combat_bracelet" },
+            "feet": { "name": "Mystic boots" },
+            "ring": { "name": "Explorer's ring 1" }
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Iban's staff (u) (Questing / Bossing)",
+          "equipment": "Iban Blast",
+          "use_case": "Questing / Bossing",
+          "cost_buy": 200000,
+          "cost_per_hour": 192000
+        },
+        {
+          "name": "Infinity robes",
+          "equipment": null,
+          "use_case": null,
+          "cost_buy": 5418073,
+          "cost_per_hour": null
+        }
+      ]
+    },
+    {
+      "id": "late_game",
+      "title": "Late game / Bossing & Raiding",
+      "tiers": [
+        {
+          "label": "Level 75+ (Ancient magicks)",
+          "total_cost": 5493911,
+          "slots": {
+            "head": { "name": "Ahrim's hood" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Ancient sceptre" },
+            "body": { "name": "Ahrim's robetop" },
+            "shield": { "name": "Mage's book" },
+            "legs": { "name": "Ahrim's robeskirt" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Level 78+ (Powered stave)",
+          "total_cost": 8996268,
+          "slots": {
+            "head": { "name": "Ahrim's hood" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Trident of the swamp" },
+            "body": { "name": "Ahrim's robetop" },
+            "shield": { "name": "Mage's book" },
+            "legs": { "name": "Ahrim's robeskirt" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Level 80+ (Ancient Magicks)",
+          "total_cost": 49358208,
+          "slots": {
+            "head": { "name": "Virtus mask" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Sanguinesti staff" },
+            "body": { "name": "Virtus robe top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Virtus robe bottom" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Level 80+ (Powered stave)",
+          "total_cost": 37246618,
+          "slots": {
+            "head": { "name": "Virtus mask" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Harmonised nightmare staff" },
+            "body": { "name": "Virtus robe top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Virtus robe bottom" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Level 85+ (Powered stave)",
+          "total_cost": 172800050,
+          "slots": {
+            "head": { "name": "Virtus mask" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Tumeken's shadow" },
+            "body": { "name": "Virtus robe top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Virtus robe bottom" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Trident of the seas (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 60067,
+          "cost_per_hour": 364500
+        },
+        {
+          "name": "Trident of the swamp (Bossing)",
+          "equipment": null,
+          "use_case": "Bossing",
+          "cost_buy": 3563790,
+          "cost_per_hour": 613500
+        },
+        {
+          "name": "Ancient sceptre (Slayer / Ancients)",
+          "equipment": "Ice Burst",
+          "use_case": "Slayer / Ancients",
+          "cost_buy": 61433,
+          "cost_per_hour": 686400
+        },
+        {
+          "name": "Ancient sceptre (Slayer / Ancients)",
+          "equipment": "Ice Barrage",
+          "use_case": "Slayer / Ancients",
+          "cost_buy": 61433,
+          "cost_per_hour": 1190400
+        },
+        {
+          "name": "Ahrim's robes",
+          "equipment": null,
+          "use_case": null,
+          "cost_buy": 4742417,
+          "cost_per_hour": 16000
+        },
+        {
+          "name": "Blue moon armour",
+          "equipment": null,
+          "use_case": null,
+          "cost_buy": 7354690,
+          "cost_per_hour": 100000
+        },
+        {
+          "name": "Purging staff (Yama / Demons)",
+          "equipment": "Dark Demonbane + Mark of Darkness",
+          "use_case": "Yama / Demons",
+          "cost_buy": 34666348,
+          "cost_per_hour": 644112
+        },
+        {
+          "name": "Dragon hunter wand (Dragons / Ancients / Chambers of Xeric)",
+          "equipment": "Surge spells",
+          "use_case": "Dragons / Ancients / Chambers of Xeric",
+          "cost_buy": 15675380,
+          "cost_per_hour": 426000
+        },
+        {
+          "name": "Toxic staff of the dead (Inferno / Theatre of Blood)",
+          "equipment": "Blood Barrage",
+          "use_case": "Inferno / Theatre of Blood",
+          "cost_buy": 12252066,
+          "cost_per_hour": 1880914
+        },
+        {
+          "name": "Toxic staff of the dead (Inferno / Theatre of Blood)",
+          "equipment": "Ice Barrage",
+          "use_case": "Inferno / Theatre of Blood",
+          "cost_buy": null,
+          "cost_per_hour": 1125943
+        },
+        {
+          "name": "Sanguinesti staff (Bossing / Raiding)",
+          "equipment": null,
+          "use_case": "Bossing / Raiding",
+          "cost_buy": 19247540,
+          "cost_per_hour": 972000
+        },
+        {
+          "name": "Eye of ayak (Bossing / Raiding)",
+          "equipment": null,
+          "use_case": "Bossing / Raiding",
+          "cost_buy": 61607595,
+          "cost_per_hour": 818000
+        }
+      ]
+    },
+    {
+      "id": "end_game",
+      "title": "End Game",
+      "tiers": [
+        {
+          "label": "Endgame Ancient Magicks",
+          "total_cost": 652457015,
+          "slots": {
+            "head": { "name": "Ancestral hat" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Kodai wand" },
+            "body": { "name": "Ancestral robe top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Ancestral robe bottom" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Endgame Elemental Spells",
+          "total_cost": 908011368,
+          "slots": {
+            "head": { "name": "Ancestral hat" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Harmonised nightmare staff" },
+            "body": { "name": "Ancestral robe top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Ancestral robe bottom" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Endgame Demonbane Spells",
+          "total_cost": 819990734,
+          "slots": {
+            "head": { "name": "Ancestral hat" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Harmonised nightmare staff" },
+            "body": { "name": "Ancestral robe top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Ancestral robe bottom" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Endgame Megarare",
+          "total_cost": 1591989255,
+          "slots": {
+            "head": { "name": "Ancestral hat" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Tumeken's shadow" },
+            "body": { "name": "Ancestral robe top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Ancestral robe bottom" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        },
+        {
+          "label": "Elite void",
+          "total_cost": 397617710,
+          "slots": {
+            "head": { "name": "Void mage helm" },
+            "cape": { "name": "Imbued god cape" },
+            "neck": { "name": "Occult necklace" },
+            "ammo": { "name": "Unholy blessing" },
+            "weapon": { "name": "Tumeken's shadow" },
+            "body": { "name": "Elite void mage top" },
+            "shield": { "name": "Elidinis' ward" },
+            "legs": { "name": "Elite void mage robe" },
+            "hands": { "name": "Tormented bracelet" },
+            "feet": { "name": "Eternal boots" },
+            "ring": { "name": "Seers ring (i)" }
+          }
+        }
+      ],
+      "content_specific": [
+        {
+          "name": "Virtus robes",
+          "equipment": null,
+          "use_case": null,
+          "cost_buy": 99156993,
+          "cost_per_hour": null
+        },
+        {
+          "name": "Kodai wand (Slayer)",
+          "equipment": "Blood Barrage",
+          "use_case": "Slayer",
+          "cost_buy": 86903627,
+          "cost_per_hour": 1760520
+        },
+        {
+          "name": "Kodai wand (Slayer)",
+          "equipment": "Ice Barrage",
+          "use_case": "Slayer",
+          "cost_buy": null,
+          "cost_per_hour": 1011840
+        },
+        {
+          "name": "Ancestral robes",
+          "equipment": null,
+          "use_case": null,
+          "cost_buy": 318927991,
+          "cost_per_hour": null
+        },
+        {
+          "name": "Harmonised nightmare staff",
+          "equipment": "Fire Surge + Tome of fire",
+          "use_case": null,
+          "cost_buy": 223751325,
+          "cost_per_hour": 396927000
+        },
+        {
+          "name": "Tumeken's shadow (Bossing / Raiding)",
+          "equipment": null,
+          "use_case": "Bossing / Raiding",
+          "cost_buy": 907720906,
+          "cost_per_hour": 1132800
+        }
+      ]
+    }
+  ],
+  "bonus_table": [
+    {
+      "item": "Elite Mage Void set",
+      "bonus": "+5%",
+      "cost": null,
+      "delta": "+5%",
+      "cost_per_delta": "N/A"
+    },
+    {
+      "item": "Imbued god cape",
+      "bonus": "+2%",
+      "cost": null,
+      "delta": "+2%",
+      "cost_per_delta": "N/A"
+    },
+    {
+      "item": "Tome of fire",
+      "bonus": "+10%",
+      "cost": 1455148,
+      "delta": "+10%",
+      "cost_per_delta": "145,514.80"
+    },
+    {
+      "item": "Tome of earth",
+      "bonus": "+10%",
+      "cost": 462576,
+      "delta": "+10%",
+      "cost_per_delta": "46,257.60"
+    },
+    {
+      "item": "Tome of water",
+      "bonus": "+10%",
+      "cost": 413179,
+      "delta": "+10%",
+      "cost_per_delta": "41,317.90"
+    },
+    {
+      "item": "Occult necklace",
+      "bonus": "+5%",
+      "cost": 782416,
+      "delta": "+5%",
+      "cost_per_delta": "156,483.20"
+    },
+    {
+      "item": "Bloodbark helm",
+      "bonus": "+1%",
+      "cost": 80820,
+      "delta": "+1%",
+      "cost_per_delta": "80,820"
+    },
+    {
+      "item": "Bloodbark body",
+      "bonus": "+1%",
+      "cost": 164300,
+      "delta": "+1%",
+      "cost_per_delta": "164,300"
+    },
+    {
+      "item": "Bloodbark legs",
+      "bonus": "+1%",
+      "cost": 155113,
+      "delta": "+1%",
+      "cost_per_delta": "155,113"
+    },
+    {
+      "item": "Mage's book",
+      "bonus": "+2%",
+      "cost": 2185794,
+      "delta": "+2%",
+      "cost_per_delta": "1,092,897.00"
+    },
+    {
+      "item": "Elidinis' ward",
+      "bonus": "+3%",
+      "cost": 3887832,
+      "delta": "+1%",
+      "cost_per_delta": "1,702,038"
+    },
+    {
+      "item": "Seers ring (i)",
+      "bonus": "+0.5%",
+      "cost": 1076002,
+      "delta": "+0.5%",
+      "cost_per_delta": "2,152,004.00"
+    },
+    {
+      "item": "Tormented bracelet",
+      "bonus": "+5%",
+      "cost": 23920442,
+      "delta": "+5%",
+      "cost_per_delta": "4,784,088.40"
+    },
+    {
+      "item": "Augury",
+      "bonus": "+4%",
+      "cost": 4881506,
+      "delta": "+1%",
+      "cost_per_delta": "4,881,506"
+    },
+    {
+      "item": "Eternal boots",
+      "bonus": "+1%",
+      "cost": 5075275,
+      "delta": "+1%",
+      "cost_per_delta": "5,075,275"
+    },
+    {
+      "item": "Virtus mask",
+      "bonus": "+2%",
+      "cost": 8546372,
+      "delta": "+1%",
+      "cost_per_delta": "8,546,372"
+    },
+    {
+      "item": "Virtus robe top",
+      "bonus": "+2%",
+      "cost": 52191975,
+      "delta": "+1%",
+      "cost_per_delta": "52,027,675"
+    },
+    {
+      "item": "Virtus robe bottom",
+      "bonus": "+2%",
+      "cost": 38418646,
+      "delta": "+1%",
+      "cost_per_delta": "38,263,533"
+    },
+    {
+      "item": "Confliction gauntlets",
+      "bonus": "+7%",
+      "cost": 95624873,
+      "delta": "+2%",
+      "cost_per_delta": "35,852,215.50"
+    },
+    {
+      "item": "Magus ring",
+      "bonus": "+2%",
+      "cost": 34761407,
+      "delta": "+1.5%",
+      "cost_per_delta": "22,456,936.67"
+    },
+    {
+      "item": "Elidinis' ward (f)",
+      "bonus": "+5%",
+      "cost": 101064343,
+      "delta": "+2%",
+      "cost_per_delta": "48,588,255.50"
+    },
+    {
+      "item": "Ancestral hat",
+      "bonus": "+3%",
+      "cost": 65382936,
+      "delta": "+1%",
+      "cost_per_delta": "56,836,564"
+    },
+    {
+      "item": "Ancestral robe top",
+      "bonus": "+3%",
+      "cost": 144976282,
+      "delta": "+1%",
+      "cost_per_delta": "92,784,307"
+    },
+    {
+      "item": "Ancestral robe bottom",
+      "bonus": "+3%",
+      "cost": 108568773,
+      "delta": "+1%",
+      "cost_per_delta": "70,150,127"
+    },
+    {
+      "item": "Avernic treads (et)",
+      "bonus": "+2%",
+      "cost": 234163356,
+      "delta": "+1%",
+      "cost_per_delta": "229,088,081"
+    }
+  ]
+}

@@ -5,7 +5,7 @@
 
 import { apiClient } from './client';
 import type { DPSComparisonRequest, DPSComparisonResponse } from '../../features/gear/types';
-import type { FullProgressionResponse } from './types';
+import type { FullProgressionResponse, WikiGuideResponse } from './types';
 
 export interface ItemData {
   id: number;
@@ -206,5 +206,19 @@ export interface SlayerGearResponse {
 /** Fetch full gear progression for a combat style (melee, ranged, magic). */
 export async function fetchFullProgression(style: string): Promise<FullProgressionResponse> {
   const response = await apiClient.get<FullProgressionResponse>(`/gear/progression/${style}`);
+  return response.data;
+}
+
+/**
+ * Fetch wiki guide data for a combat style.
+ * 
+ * Returns the guide data exactly as written in JSON - no transformation.
+ * This is for rendering the exact wiki page structure with full loadouts.
+ * 
+ * @param style - Combat style (melee, ranged, magic)
+ * @returns Wiki guide data with game_stages, slot_order, bonus_table
+ */
+export async function fetchWikiGuide(style: string): Promise<WikiGuideResponse> {
+  const response = await apiClient.get<WikiGuideResponse>(`/gear/wiki-guide/${style}`);
   return response.data;
 }
